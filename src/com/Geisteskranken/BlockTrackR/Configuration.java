@@ -1,25 +1,77 @@
 package com.Geisteskranken.BlockTrackR;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
+import java.util.logging.Level;
 
-public enum Configuration {
+public class Configuration {
 
-	CONF;
+    static Properties prop = new Properties();
+    static OutputStream output = null;
 
-	public static String dbHost = "127.0.0.1";
-	public static String dbPort = "3306";
-	public static String database = "minecraft";
-	public static String dbUser = "db_username";
-	public static String dbPass = "db_password";
+    public static boolean readConfig() {
 
-	public void readConfig(FileConfiguration savedConfig) {
+        Properties prop = new Properties();
+        InputStream input = null;
 
-		Configuration.dbHost = savedConfig.getString(dbHost, "127.0.0.1");
-		Configuration.dbPort = savedConfig.getString(dbPort, "3306");
-		Configuration.database = savedConfig.getString(database, "minecraft");
-		Configuration.dbUser = savedConfig.getString(dbUser, "db_username");
-		Configuration.dbPass = savedConfig.getString(dbPass, "db_password");
-		
-	}
+        try {
+
+            try {
+                input = new FileInputStream("BlockTrackR.config");
+            } catch (FileNotFoundException e) {
+                createConfig();
+                return false;
+            }
+
+            prop.load(input);
+
+            BlockTrackR.host = prop.getProperty("host");
+            BlockTrackR.database = prop.getProperty("database");
+            BlockTrackR.dbuser = prop.getProperty("dbuser");
+            BlockTrackR.dbpass = prop.getProperty("dbpass");
+        } catch (IOException ex) {
+        	BlockTrackR.logger.log(Level.WARNING, "Disabled! Configuration error.", ex);
+        }
+        try {
+            input.close();
+        } catch (IOException e) {
+            BlockTrackR.logger.log(Level.WARNING, "Disabled! Configuration error.", e);
+            return false;
+        }
+        BlockTrackR.logger.info("Config: OK");
+        return true;
+    }
+
+    public static void createConfig() {
+        try {
+
+            output = new FileOutputStream("BlockTrackR.config");
+
+            prop.setProperty("host", "localhost");
+            prop.setProperty("database", "minecraft");
+            prop.setProperty("dbuser", "db_username");
+            prop.setProperty("dbpass", "db_pasword");
+
+            prop.store(output, null);
+
+        } catch (IOException io) {
+            io.printStackTrace();
+        } finally {
+            if (output != null) {
+                try {
+                    output.close();
+                    BlockTrackR.logger.log(Level.WARNING, "Configuration file created. Please edit and restart server");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
 
 }

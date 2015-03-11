@@ -29,20 +29,13 @@ public class BTEvent implements Listener {
 				// Isolates the playername from the player object.
 				final String Player = event.getPlayer().getName();
 				
-				BlockTrackR.logger.info(BlockType);
-				BlockTrackR.logger.info(String.valueOf(X));
-				BlockTrackR.logger.info(String.valueOf(Y));
-				BlockTrackR.logger.info(String.valueOf(Z));
-				BlockTrackR.logger.info(Player);
-				BlockTrackR.logger.info(BlockTrackR.getTime());
-				
 				// Insert to DB
-				//SQLQueue.execute(new Runnable() {
-					//public void run() {
-						//BlockTrackRSQL.insertBlockBreak(Player, X, Y, Z,
-							//	BlockTrackR.getTime(), BlockType);
-					//}
-				//});
+				SQLQueue.execute(new Runnable() {
+					public void run() {
+						BlockTrackRSQL.insertBlockBreak(Player, X, Y, Z,
+								BlockTrackR.getTime(), BlockType);
+					}
+				});
 		}
 	}
 
