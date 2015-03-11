@@ -1,5 +1,6 @@
 package com.Geisteskranken.BlockTrackR;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,6 +14,8 @@ public class Configuration {
 
     static Properties prop = new Properties();
     static OutputStream output = null;
+    static File Dir = new File("plugins\\BlockTrackR");
+    static String ConfDir = "plugins\\BlockTrackR\\BlockTrackR.conf";
 
     public static boolean readConfig() {
 
@@ -22,7 +25,10 @@ public class Configuration {
         try {
 
             try {
-                input = new FileInputStream("BlockTrackR.config");
+            	if(!Dir.exists()){
+            		Dir.mkdir();
+            	}
+                input = new FileInputStream(ConfDir);
             } catch (FileNotFoundException e) {
                 createConfig();
                 return false;
@@ -50,7 +56,7 @@ public class Configuration {
     public static void createConfig() {
         try {
 
-            output = new FileOutputStream("BlockTrackR.config");
+            output = new FileOutputStream(ConfDir);
 
             prop.setProperty("host", "localhost");
             prop.setProperty("database", "minecraft");
