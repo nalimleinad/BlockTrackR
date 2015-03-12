@@ -13,8 +13,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/HikariCP-2.3.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="com"/>
-	<classpathentry exported="true" kind="lib" path="javassist"/>
-	<classpathentry exported="true" kind="lib" path="org"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
