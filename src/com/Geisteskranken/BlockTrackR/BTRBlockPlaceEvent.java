@@ -3,14 +3,14 @@ package com.Geisteskranken.BlockTrackR;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.Geisteskranken.BlockTrackR.BlockTrackR;
 
-public class BTEvent implements Listener {
+public class BTRBlockPlaceEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void BlockBreakEvent(BlockBreakEvent event) {
+	public void BlockPlaceEvent(BlockPlaceEvent event) {
 		if (BlockTrackR.Track) {
 			final String BlockType = String.valueOf(event.getBlock().getType());
 
@@ -22,14 +22,15 @@ public class BTEvent implements Listener {
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
+			final String PlayerUUID = event.getPlayer().getUniqueId().toString();
 
 			// Insert to DB
 			BlockTrackRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
-					currentThread.setName("BlockTrackR SQL Insert - " + Player
+					currentThread.setName("BlockTrackR SQL Insert (PlaceEvent)- " + Player
 							+ ":" + BlockType + "@" + X + "," + Y + "," + Z);
-					BlockTrackRSQL.insertBlockBreak(Player, X, Y, Z,
+					BlockTrackRSQL.insertBlockPlace(Player,PlayerUUID ,X, Y, Z,
 							BlockTrackR.getTime(), BlockType);
 					BlockTrackRDebugger.DLog(currentThread.getName());
 

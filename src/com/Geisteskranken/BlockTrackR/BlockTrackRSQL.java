@@ -33,8 +33,7 @@ public class BlockTrackRSQL {
 		}
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://"
-					+ BlockTrackR.host, BlockTrackR.dbuser,
-					BlockTrackR.dbpass);
+					+ BlockTrackR.host, BlockTrackR.dbuser, BlockTrackR.dbpass);
 		} catch (SQLException err) {
 			BlockTrackR.logger.log(Level.WARNING, "Disabled");
 			BlockTrackR.logger
@@ -87,14 +86,16 @@ public class BlockTrackRSQL {
 			String sql = "USE " + BlockTrackR.database + ";";
 			statement.execute(sql);
 			// Create Table
-			String createTable = "CREATE TABLE IF NOT EXISTS `" + BlockTrackR.database + "`.`blockbreaks` ("
+			String createTable = "CREATE TABLE IF NOT EXISTS `"
+					+ BlockTrackR.database + "`.`blocktrackr` ("
 					+ "`UID` INT NOT NULL AUTO_INCREMENT, "
 					+ "`player` VARCHAR(45) NOT NULL, "
+					+ "`UUID` VARCHAR(60) NOT NULL, "
 					+ "`x` VARCHAR(45) NOT NULL, "
 					+ "`y` VARCHAR(45) NOT NULL, "
 					+ "`z` VARCHAR(45) NOT NULL, "
 					+ "`time` VARCHAR(45) NOT NULL, "
-					+ "`block` VARCHAR(255) NOT NULL, "
+					+ "`content` VARCHAR(255) NOT NULL, "
 					+ "`event` VARCHAR(45) NOT NULL, "
 					+ "PRIMARY KEY (`UID`));";
 			statement.execute(createTable);
@@ -113,8 +114,8 @@ public class BlockTrackRSQL {
 		return true;
 	}
 
-	public static boolean insertBlockBreak(String player, int x, int y, int z,
-			String time, String block) {
+	public static boolean insertBlockBreak(String player, String UUID, int x,
+			int y, int z, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "BlockBreak";
@@ -122,8 +123,10 @@ public class BlockTrackRSQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
 					+ player
+					+ "', '"
+					+ UUID
 					+ "', '"
 					+ x
 					+ "', '"
@@ -131,7 +134,54 @@ public class BlockTrackRSQL {
 					+ "', '"
 					+ z
 					+ "', '"
-					+ time + "', '" + block + "', '" + event + "'" + ")" + ";";
+					+ time
+					+ "', '"
+					+ block
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
+					sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+	
+	public static boolean insertPlayerChat(String player, String UUID, int x,
+			int y, int z, String time, String MSG) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "PlayerChat";
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time
+					+ "', '"
+					+ MSG
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -146,7 +196,7 @@ public class BlockTrackRSQL {
 		return true;
 	}
 
-	public static boolean insertBlockPlace(String player, int x, int y, int z,
+	public static boolean insertBlockPlace(String player,String UUID, int x, int y, int z,
 			String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
@@ -155,8 +205,10 @@ public class BlockTrackRSQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
 					+ player
+					+ "', '"
+					+ UUID
 					+ "', '"
 					+ x
 					+ "', '"
@@ -189,7 +241,7 @@ public class BlockTrackRSQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Fetch = "SELECT * FROM `blockbreaks` WHERE `x`='" + X
+			String Fetch = "SELECT * FROM `blocktrackr` WHERE `x`='" + X
 					+ "' AND `y`='" + Y + "' AND `z`='" + Z + "';";
 			statement.execute(SelectDB);
 			rs = statement.executeQuery(Fetch);
@@ -202,8 +254,8 @@ public class BlockTrackRSQL {
 				result = list.toArray(result);
 
 				for (int i = 0; i < result.length; i++) {
-					//Return this to command
-					//Return this to tool.
+					// Return this to command
+					// Return this to tool.
 					BlockTrackR.logger.info(result[i]);
 				}
 			}

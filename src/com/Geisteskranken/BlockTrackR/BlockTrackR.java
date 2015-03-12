@@ -12,8 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
 public class BlockTrackR extends JavaPlugin {
-
-	public static String Name = "§d[BlockTrackR] ";
+	
 	public static BlockTrackR P;
 	public static Logger logger;
 	public static Boolean Track = true;
@@ -31,16 +30,15 @@ public class BlockTrackR extends JavaPlugin {
 
 		logger = Bukkit.getLogger();
 		
-		//TODO
-		//Change events to record User UUID as well as Username.
-		//This is to track records even when a user changes their name.
-		
 
 		// CommandExecutor TWCommand = new TWCommand();
 		// getCommand("trustworthy").setExecutor(TWCommand);
 		// getCommand("tw").setExecutor(TWCommand);
 
-		getServer().getPluginManager().registerEvents(new BTEvent(), this);
+		//Event Listeners.
+		getServer().getPluginManager().registerEvents(new BTRBlockBreakEvent(), this);
+		getServer().getPluginManager().registerEvents(new BTRBlockPlaceEvent(), this);
+		getServer().getPluginManager().registerEvents(new BTRAsyncPlayerChatEvent(), this);
 
 		logger.info("BlockTracker 1.0");
 		logger.info("Server: v1.7");
