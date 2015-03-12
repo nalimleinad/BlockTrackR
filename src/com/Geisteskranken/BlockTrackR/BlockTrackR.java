@@ -17,6 +17,7 @@ public class BlockTrackR extends JavaPlugin {
 	public static BlockTrackR P;
 	public static Logger logger;
 	public static Boolean Track = true;
+	public static String debug = "false";
 	
 	public static String host;
 	public static String database;
@@ -29,6 +30,11 @@ public class BlockTrackR extends JavaPlugin {
 		P = this;
 
 		logger = Bukkit.getLogger();
+		
+		//TODO
+		//Change events to record User UUID as well as Username.
+		//This is to track records even when a user changes their name.
+		
 
 		// CommandExecutor TWCommand = new TWCommand();
 		// getCommand("trustworthy").setExecutor(TWCommand);
@@ -44,6 +50,7 @@ public class BlockTrackR extends JavaPlugin {
 				logger.info("Checking SQL Table...");
 				if (BlockTrackRSQL.checkTable()) {
 					logger.info("Everything appears OK");
+					logger.info("Debugging: " + debug);
 					logger.info("Enabled!");
 					Track = true;
 				} else {
@@ -59,7 +66,7 @@ public class BlockTrackR extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-
+		BlockTrackRExecutorService.ThreadPool.shutdown();
 	}
 
 	public static String getTime() {

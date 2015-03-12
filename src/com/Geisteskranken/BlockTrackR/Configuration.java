@@ -36,6 +36,7 @@ public class Configuration {
 
             prop.load(input);
 
+            BlockTrackR.debug = prop.getProperty("debug");
             BlockTrackR.host = prop.getProperty("host");
             BlockTrackR.database = prop.getProperty("database");
             BlockTrackR.dbuser = prop.getProperty("dbuser");
@@ -58,6 +59,7 @@ public class Configuration {
 
             output = new FileOutputStream(ConfDir);
 
+            prop.setProperty("debug", "false");
             prop.setProperty("host", "localhost");
             prop.setProperty("database", "minecraft");
             prop.setProperty("dbuser", "db_username");
