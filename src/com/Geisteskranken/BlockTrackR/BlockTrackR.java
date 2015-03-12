@@ -19,6 +19,7 @@ public class BlockTrackR extends JavaPlugin {
 	public static String debug = "false";
 	
 	public static String host;
+	public static String port;
 	public static String database;
 	public static String dbuser;
 	public static String dbpass;

@@ -33,7 +33,7 @@ public class BlockTrackRSQL {
 		}
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://"
-					+ BlockTrackR.host, BlockTrackR.dbuser, BlockTrackR.dbpass);
+					+ BlockTrackR.host + ":" + BlockTrackR.port, BlockTrackR.dbuser, BlockTrackR.dbpass);
 		} catch (SQLException err) {
 			BlockTrackR.logger.log(Level.WARNING, "Disabled");
 			BlockTrackR.logger
@@ -49,7 +49,7 @@ public class BlockTrackRSQL {
 		Connection connection = null;
 		Statement statement = null;
 		try {
-			connection = getConnection();
+			connection = BTRConnectionPool.getConnection();
 			statement = connection.createStatement();
 			String sql = "CREATE DATABASE " + BlockTrackR.database + ";";
 			statement.executeUpdate(sql);
@@ -81,7 +81,7 @@ public class BlockTrackRSQL {
 		Connection connection = null;
 		Statement statement = null;
 		try {
-			connection = getConnection();
+			connection = BTRConnectionPool.getConnection();
 			statement = connection.createStatement();
 			String sql = "USE " + BlockTrackR.database + ";";
 			statement.execute(sql);
@@ -120,7 +120,7 @@ public class BlockTrackRSQL {
 		Statement statement = null;
 		String event = "BlockBreak";
 		try {
-			connection = getConnection();
+			connection = BTRConnectionPool.getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
@@ -161,7 +161,7 @@ public class BlockTrackRSQL {
 		Statement statement = null;
 		String event = "PlayerChat";
 		try {
-			connection = getConnection();
+			connection = BTRConnectionPool.getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
@@ -202,7 +202,7 @@ public class BlockTrackRSQL {
 		Statement statement = null;
 		String event = "BlockPlace";
 		try {
-			connection = getConnection();
+			connection = BTRConnectionPool.getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
@@ -238,7 +238,7 @@ public class BlockTrackRSQL {
 		ResultSet rs;
 
 		try {
-			connection = getConnection();
+			connection = BTRConnectionPool.getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Fetch = "SELECT * FROM `blocktrackr` WHERE `x`='" + X

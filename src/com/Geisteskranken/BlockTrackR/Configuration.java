@@ -37,10 +37,17 @@ public class Configuration {
             prop.load(input);
 
             BlockTrackR.debug = prop.getProperty("debug");
+            
             BlockTrackR.host = prop.getProperty("host");
+            BlockTrackR.port = prop.getProperty("port");
             BlockTrackR.database = prop.getProperty("database");
             BlockTrackR.dbuser = prop.getProperty("dbuser");
             BlockTrackR.dbpass = prop.getProperty("dbpass");
+            
+            //BlockTrackR.host = prop.getProperty("host");
+            //BlockTrackR.database = prop.getProperty("database");
+            //BlockTrackR.dbuser = prop.getProperty("dbuser");
+            //BlockTrackR.dbpass = prop.getProperty("dbpass");
         } catch (IOException ex) {
         	BlockTrackR.logger.log(Level.WARNING, "Disabled! Configuration error.", ex);
         }
@@ -60,7 +67,9 @@ public class Configuration {
             output = new FileOutputStream(ConfDir);
 
             prop.setProperty("debug", "false");
+            
             prop.setProperty("host", "localhost");
+            prop.setProperty("port", "3306");
             prop.setProperty("database", "minecraft");
             prop.setProperty("dbuser", "db_username");
             prop.setProperty("dbpass", "db_pasword");
