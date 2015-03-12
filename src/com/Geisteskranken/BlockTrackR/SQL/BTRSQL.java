@@ -265,6 +265,194 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
+	
+	/**
+	 * insertDropItem
+	 * 
+	 * Called on PlayerDropItemEvent to parse the data to the SQL server.
+	 * 
+	 **/
+	public static boolean insertDropItem(String player, String UUID, int x,
+			int y, int z, String time, String ItemType) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "DropItem";
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time
+					+ "', '"
+					+ ItemType
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
+					sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+	
+	/**
+	 * insertPickupItem
+	 * 
+	 * Called on BTRPlayerPickupItemEvent to parse the data to the SQL server.
+	 * 
+	 **/
+	public static boolean insertPickupItem(String player, String UUID, int x,
+			int y, int z, String time, String ItemType) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "PickupItem";
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time
+					+ "', '"
+					+ ItemType
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
+					sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+	
+	/**
+	 * insertPlayerLogin
+	 * 
+	 * Called on PlayerLoginEvent to parse the data to the SQL server.
+	 * 
+	 **/
+	public static boolean insertPlayerLogin(String player, String UUID, int x,
+			int y, int z, String time, String IP) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "PlayerLogin";
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time
+					+ "', '"
+					+ IP
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
+					sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+	
+	/**
+	 * insertPlayerQuit
+	 * 
+	 * Called on PlayerQuitEvent to parse the data to the SQL server.
+	 * 
+	 **/
+	public static boolean insertPlayerQuit(String player, String UUID, int x,
+			int y, int z, String time, String Name) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "PlayerQuit";
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time
+					+ "', '"
+					+ Name
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
+					sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
 
 	/**
 	 * getBlockRecord

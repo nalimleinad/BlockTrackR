@@ -37,9 +37,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.Geisteskranken.BlockTrackR.Event.BTRAsyncPlayerChatEvent;
-import com.Geisteskranken.BlockTrackR.Event.BTRBlockBreakEvent;
-import com.Geisteskranken.BlockTrackR.Event.BTRBlockPlaceEvent;
+import com.Geisteskranken.BlockTrackR.Event.*;
 import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
 
 @SuppressWarnings("unused")
@@ -73,6 +71,10 @@ public class BlockTrackR extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BTRBlockBreakEvent(), this);
 		getServer().getPluginManager().registerEvents(new BTRBlockPlaceEvent(), this);
 		getServer().getPluginManager().registerEvents(new BTRAsyncPlayerChatEvent(), this);
+		getServer().getPluginManager().registerEvents(new BTRPlayerDropItemEvent(), this);
+		getServer().getPluginManager().registerEvents(new BTRPlayerPickupItemEvent(), this);
+		getServer().getPluginManager().registerEvents(new BTRPlayerLoginEvent(), this);
+		getServer().getPluginManager().registerEvents(new BTRPlayerQuitEvent(), this);
 
 		logger.info("BlockTracker 1.0");
 		logger.info("Server: v1.7");
