@@ -12,6 +12,9 @@
 			<attribute name="javadoc_location" value="https://hub.spigotmc.org/javadocs/bukkit/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/HikariCP-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/HikariCP-2.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="com"/>
+	<classpathentry exported="true" kind="lib" path="javassist"/>
+	<classpathentry exported="true" kind="lib" path="org"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
