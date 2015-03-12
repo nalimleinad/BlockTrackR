@@ -27,10 +27,8 @@
  */
 package com.Geisteskranken.BlockTrackR.SQL;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -39,37 +37,26 @@ import java.sql.Statement;
 
 import com.Geisteskranken.BlockTrackR.BlockTrackR;
 
+/**
+ * BTRSQL
+ * 
+ * Contains all callable methods to handle SQL functions. All methods fetch SQL
+ * connections from the Hikari Connection Pool via method openConnection.
+ * 
+ **/
 public class BTRSQL {
 
-	Properties prop = new Properties();
-	OutputStream output = null;
-
 	/**
-	 * This method has now been deprecated in favor of HikariCP.
+	 * CheckDB
 	 * 
-	 * See BTRConnectionPool.
+	 * Will return true if DB exists or has been created.
 	 * 
 	 **/
-	/*
-	 * public synchronized static Connection getConnection() throws SQLException
-	 * { Connection conn = null; try { Class.forName("com.mysql.jdbc.Driver"); }
-	 * catch (ClassNotFoundException e) { BlockTrackR.logger.log(Level.WARNING,
-	 * "Disabled"); BlockTrackR.logger .log(Level.WARNING,
-	 * "mySQL dependencies error", e); } try { conn =
-	 * DriverManager.getConnection("jdbc:mysql://" + BlockTrackR.host + ":" +
-	 * BlockTrackR.port, BlockTrackR.dbuser, BlockTrackR.dbpass); } catch
-	 * (SQLException err) { BlockTrackR.logger.log(Level.WARNING, "Disabled");
-	 * BlockTrackR.logger .log(Level.WARNING, "mySQL connection error", err); }
-	 * return conn; }
-	 */
-
-	// Returns true if DB exists or if it has been created.
-	// Returns false if error.
 	public static boolean checkDB() {
 		Connection connection = null;
 		Statement statement = null;
 		try {
-			connection = BTRConnectionPool.getConnection();
+			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String sql = "CREATE DATABASE " + BlockTrackR.database + ";";
 			statement.executeUpdate(sql);
@@ -95,12 +82,17 @@ public class BTRSQL {
 		return true;
 	}
 
-	// Returns true if Table exists or if it has been created.
+	/**
+	 * CheckTables
+	 * 
+	 * Will return true if the table exists or has been created.
+	 * 
+	 **/
 	public static boolean checkTable() {
 		Connection connection = null;
 		Statement statement = null;
 		try {
-			connection = BTRConnectionPool.getConnection();
+			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String sql = "USE " + BlockTrackR.database + ";";
 			statement.execute(sql);
@@ -133,13 +125,19 @@ public class BTRSQL {
 		return true;
 	}
 
+	/**
+	 * insertBlockBreak
+	 * 
+	 * Called on BlockBreakEvents to parse the data to the SQL server.
+	 * 
+	 **/
 	public static boolean insertBlockBreak(String player, String UUID, int x,
 			int y, int z, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "BlockBreak";
 		try {
-			connection = BTRConnectionPool.getConnection();
+			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
@@ -174,13 +172,66 @@ public class BTRSQL {
 		return true;
 	}
 
+	/**
+	 * insertBlockPlace
+	 * 
+	 * Called on BlockPlaceEvents to parse the data to the SQL server.
+	 * 
+	 **/
+	public static boolean insertBlockPlace(String player, String UUID, int x,
+			int y, int z, String time, String block) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "BlockPlace";
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time
+					+ "', '"
+					+ block
+					+ "', '"
+					+ event
+					+ "'"
+					+ ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
+					sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+
+	/**
+	 * insertPlayerChat
+	 * 
+	 * Called on AsyncPlayerChatEvents to parse the data to the SQL server.
+	 * 
+	 **/
 	public static boolean insertPlayerChat(String player, String UUID, int x,
 			int y, int z, String time, String MSG) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "PlayerChat";
 		try {
-			connection = BTRConnectionPool.getConnection();
+			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
@@ -215,47 +266,13 @@ public class BTRSQL {
 		return true;
 	}
 
-	public static boolean insertBlockPlace(String player, String UUID, int x,
-			int y, int z, String time, String block) {
-		Connection connection = null;
-		Statement statement = null;
-		String event = "BlockPlace";
-		try {
-			connection = BTRConnectionPool.getConnection();
-			statement = connection.createStatement();
-			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
-					+ player
-					+ "', '"
-					+ UUID
-					+ "', '"
-					+ x
-					+ "', '"
-					+ y
-					+ "', '"
-					+ z
-					+ "', '"
-					+ time
-					+ "', '"
-					+ block
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
-			statement.execute(SelectDB);
-			statement.execute(Insert);
-		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
-			closeStatement(statement);
-			closeConnection(connection);
-			return false;
-		}
-		closeStatement(statement);
-		closeConnection(connection);
-		return true;
-	}
-
+	/**
+	 * getBlockRecord
+	 * 
+	 * Fetches edits to provided coordinates.
+	 * 
+	 **/
+	//TODO
 	public static List<String> getBlockRecord(int X, int Y, int Z, String event) {
 
 		Connection connection = null;
@@ -263,7 +280,7 @@ public class BTRSQL {
 		ResultSet rs;
 
 		try {
-			connection = BTRConnectionPool.getConnection();
+			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
 			String Fetch = "SELECT * FROM `blocktrackr` WHERE `x`='" + X
@@ -295,6 +312,28 @@ public class BTRSQL {
 
 	}
 
+	/**
+	 * openConnection
+	 * 
+	 * Returns a connection fetched from HikariCP
+	 * 
+	 **/
+	public static Connection openConnection(Connection connection) {
+		try {
+			connection = BTRConnectionPool.getConnection();
+		} catch (SQLException e) {
+			BlockTrackR.logger.log(Level.WARNING,
+					"mySQL error: Could not close connection", e);
+		}
+		return connection;
+	}
+
+	/**
+	 * closeConnection
+	 * 
+	 * Closes a connection.
+	 * 
+	 **/
 	public static void closeConnection(Connection connection) {
 		try {
 			connection.close();
@@ -304,6 +343,12 @@ public class BTRSQL {
 		}
 	}
 
+	/**
+	 * closeStatement
+	 * 
+	 * Closes a statement.
+	 * 
+	 **/
 	public static void closeStatement(Statement statement) {
 		try {
 			statement.close();
@@ -312,5 +357,24 @@ public class BTRSQL {
 					"mySQL error: Could not close statement", e);
 		}
 	}
+
+	/**
+	 * This method has now been deprecated in favor of HikariCP.
+	 * 
+	 * See BTRConnectionPool.
+	 * 
+	 **/
+	/*
+	 * public synchronized static Connection getConnection() throws SQLException
+	 * { Connection conn = null; try { Class.forName("com.mysql.jdbc.Driver"); }
+	 * catch (ClassNotFoundException e) { BlockTrackR.logger.log(Level.WARNING,
+	 * "Disabled"); BlockTrackR.logger .log(Level.WARNING,
+	 * "mySQL dependencies error", e); } try { conn =
+	 * DriverManager.getConnection("jdbc:mysql://" + BlockTrackR.host + ":" +
+	 * BlockTrackR.port, BlockTrackR.dbuser, BlockTrackR.dbpass); } catch
+	 * (SQLException err) { BlockTrackR.logger.log(Level.WARNING, "Disabled");
+	 * BlockTrackR.logger .log(Level.WARNING, "mySQL connection error", err); }
+	 * return conn; }
+	 */
 
 }

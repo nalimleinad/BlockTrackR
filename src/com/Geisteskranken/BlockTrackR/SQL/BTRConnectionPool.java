@@ -51,7 +51,7 @@ public class BTRConnectionPool {
 	private BTRConnectionPool() {
 		HikariConfig config = new HikariConfig();
 		config.setMaximumPoolSize(10);
-		config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+		config.setDataSourceClassName(BlockTrackR.connector);
 		config.setJdbcUrl("jdbc:mysql://" + BlockTrackR.host + ":"
 				+ BlockTrackR.port);
 		config.setUsername(BlockTrackR.dbuser);
