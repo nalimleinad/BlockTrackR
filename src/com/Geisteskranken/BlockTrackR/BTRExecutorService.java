@@ -38,7 +38,7 @@ public class BTRExecutorService {
 	final static ThreadFactory threadFactory = new ThreadFactoryBuilder()
 			.setNameFormat("Orders-%d").setDaemon(true).build();
 
-	final static ExecutorService ThreadPool = Executors.newFixedThreadPool(4,
+	public final static ExecutorService ThreadPool = Executors.newFixedThreadPool(4,
 			threadFactory);
 
 	public void ThreadPoolStatus() {

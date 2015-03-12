@@ -25,7 +25,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.Geisteskranken.BlockTrackR;
+package com.Geisteskranken.BlockTrackR.SQL;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.Geisteskranken.BlockTrackR.BlockTrackR;
 
 public class BTRSQL {
 

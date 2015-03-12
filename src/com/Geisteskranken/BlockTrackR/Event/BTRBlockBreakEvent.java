@@ -25,19 +25,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.Geisteskranken.BlockTrackR;
+package com.Geisteskranken.BlockTrackR.Event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 
+import com.Geisteskranken.BlockTrackR.BTRDebugger;
+import com.Geisteskranken.BlockTrackR.BTRExecutorService;
 import com.Geisteskranken.BlockTrackR.BlockTrackR;
+import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
 
-public class BTRBlockPlaceEvent implements Listener {
+public class BTRBlockBreakEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void BlockPlaceEvent(BlockPlaceEvent event) {
+	public void BlockBreakEvent(BlockBreakEvent event) {
 		if (BlockTrackR.Track) {
 			final String BlockType = String.valueOf(event.getBlock().getType());
 
@@ -55,9 +58,9 @@ public class BTRBlockPlaceEvent implements Listener {
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
-					currentThread.setName("BlockTrackR SQL Insert (PlaceEvent)- " + Player
+					currentThread.setName("BlockTrackR SQL Insert (BreakEvent) - " + Player
 							+ ":" + BlockType + "@" + X + "," + Y + "," + Z);
-					BTRSQL.insertBlockPlace(Player,PlayerUUID ,X, Y, Z,
+					BTRSQL.insertBlockBreak(Player,PlayerUUID ,X, Y, Z,
 							BlockTrackR.getTime(), BlockType);
 					BTRDebugger.DLog(currentThread.getName());
 

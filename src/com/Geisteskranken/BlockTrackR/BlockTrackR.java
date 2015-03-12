@@ -37,6 +37,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.Geisteskranken.BlockTrackR.Event.BTRAsyncPlayerChatEvent;
+import com.Geisteskranken.BlockTrackR.Event.BTRBlockBreakEvent;
+import com.Geisteskranken.BlockTrackR.Event.BTRBlockPlaceEvent;
+import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
+
 @SuppressWarnings("unused")
 public class BlockTrackR extends JavaPlugin {
 	

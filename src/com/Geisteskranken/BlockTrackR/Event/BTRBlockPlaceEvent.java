@@ -25,27 +25,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.Geisteskranken.BlockTrackR;
+package com.Geisteskranken.BlockTrackR.Event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
+import com.Geisteskranken.BlockTrackR.BTRDebugger;
+import com.Geisteskranken.BlockTrackR.BTRExecutorService;
 import com.Geisteskranken.BlockTrackR.BlockTrackR;
+import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
 
-public class BTRAsyncPlayerChatEvent implements Listener {
+public class BTRBlockPlaceEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+	public void BlockPlaceEvent(BlockPlaceEvent event) {
 		if (BlockTrackR.Track) {
-			final String MSG = String.valueOf(event.getMessage());
+			final String BlockType = String.valueOf(event.getBlock().getType());
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getPlayer().getLocation().getBlockX();
-			final int Y = event.getPlayer().getLocation().getBlockY();
-			final int Z = event.getPlayer().getLocation().getBlockZ();
+			final int X = event.getBlock().getX();
+			final int Y = event.getBlock().getY();
+			final int Z = event.getBlock().getZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -55,10 +58,10 @@ public class BTRAsyncPlayerChatEvent implements Listener {
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
-					currentThread.setName("BlockTrackR SQL Insert (AsyncPlayerChatEvent)- " + Player
-							+ ":" + MSG + "@" + X + "," + Y + "," + Z);
-					BTRSQL.insertPlayerChat(Player,PlayerUUID ,X, Y, Z,
-							BlockTrackR.getTime(), MSG);
+					currentThread.setName("BlockTrackR SQL Insert (PlaceEvent)- " + Player
+							+ ":" + BlockType + "@" + X + "," + Y + "," + Z);
+					BTRSQL.insertBlockPlace(Player,PlayerUUID ,X, Y, Z,
+							BlockTrackR.getTime(), BlockType);
 					BTRDebugger.DLog(currentThread.getName());
 
 				}

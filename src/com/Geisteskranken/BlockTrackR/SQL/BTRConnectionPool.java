@@ -25,8 +25,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.Geisteskranken.BlockTrackR;
+package com.Geisteskranken.BlockTrackR.SQL;
 
+import com.Geisteskranken.BlockTrackR.BlockTrackR;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
