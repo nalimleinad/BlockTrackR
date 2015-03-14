@@ -27,6 +27,7 @@
  */
 package com.Geisteskranken.BlockTrackR.Event;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,6 +44,8 @@ public class BTRAsyncPlayerChatEvent implements Listener {
 	public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 		if (BlockTrackR.Track) {
 			final String MSG = String.valueOf(event.getMessage());
+			
+			final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
@@ -66,14 +69,14 @@ public class BTRAsyncPlayerChatEvent implements Listener {
 							.setName("BlockTrackR SQL Insert (AsyncPlayerChatEvent)- "
 									+ Player
 									+ ":"
-									+ MSG
+									+ SanatizedMSG
 									+ "@"
 									+ X
 									+ ","
 									+ Y
 									+ "," + Z + ":" + world);
 					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), MSG);
+							BlockTrackR.getTime(), SanatizedMSG);
 					BTRDebugger.DLog(currentThread.getName());
 
 				}
