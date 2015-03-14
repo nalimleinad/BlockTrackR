@@ -42,7 +42,8 @@ public class BTRPlayerPickupItemEvent implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void PlayerPickupItemEvent(PlayerPickupItemEvent event) {
 		if (BlockTrackR.Track) {
-			final String ItemType = event.getItem().getItemStack().getType().toString();
+			final String ItemType = event.getItem().getItemStack().getType()
+					.toString();
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
@@ -52,15 +53,26 @@ public class BTRPlayerPickupItemEvent implements Listener {
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
-			final String PlayerUUID = event.getPlayer().getUniqueId().toString();
+			final String PlayerUUID = event.getPlayer().getUniqueId()
+					.toString();
+
+			// Get player's world.
+			final String world = event.getPlayer().getWorld().getName();
 
 			// Insert to DB
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
-					currentThread.setName("BlockTrackR SQL Insert (PickupItemEvent) - " + Player
-							+ ":" + ItemType + "@" + X + "," + Y + "," + Z);
-					BTRSQL.insertPickupItem(Player,PlayerUUID ,X, Y, Z,
+					currentThread
+							.setName("BlockTrackR SQL Insert (PickupItemEvent) - "
+									+ Player
+									+ ":"
+									+ ItemType
+									+ "@"
+									+ X
+									+ ","
+									+ Y + "," + Z + ":" + world);
+					BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world,
 							BlockTrackR.getTime(), ItemType);
 					BTRDebugger.DLog(currentThread.getName());
 

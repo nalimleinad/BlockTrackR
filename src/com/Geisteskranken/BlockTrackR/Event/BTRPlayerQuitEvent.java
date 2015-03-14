@@ -52,15 +52,21 @@ public class BTRPlayerQuitEvent implements Listener {
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
-			final String PlayerUUID = event.getPlayer().getUniqueId().toString();
+			final String PlayerUUID = event.getPlayer().getUniqueId()
+					.toString();
+
+			// Get player's world.
+			final String world = event.getPlayer().getWorld().getName();
 
 			// Insert to DB
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
-					currentThread.setName("BlockTrackR SQL Insert (QuitEvent) - " + Player
-							+ ":" + Name + "@" + X + "," + Y + "," + Z);
-					BTRSQL.insertPlayerQuit(Player,PlayerUUID ,X, Y, Z,
+					currentThread
+							.setName("BlockTrackR SQL Insert (QuitEvent) - "
+									+ Player + ":" + Name + "@" + X + "," + Y
+									+ "," + Z + ":" + world);
+					BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z, world,
 							BlockTrackR.getTime(), Name);
 					BTRDebugger.DLog(currentThread.getName());
 

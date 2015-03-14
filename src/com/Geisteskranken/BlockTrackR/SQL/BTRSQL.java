@@ -105,6 +105,7 @@ public class BTRSQL {
 					+ "`x` VARCHAR(45) NOT NULL, "
 					+ "`y` VARCHAR(45) NOT NULL, "
 					+ "`z` VARCHAR(45) NOT NULL, "
+					+ "`world` VARCHAR(60) NOT NULL, "
 					+ "`time` VARCHAR(45) NOT NULL, "
 					+ "`content` VARCHAR(255) NOT NULL, "
 					+ "`event` VARCHAR(45) NOT NULL, "
@@ -132,7 +133,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertBlockBreak(String player, String UUID, int x,
-			int y, int z, String time, String block) {
+			int y, int z, String world, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "BlockBreak";
@@ -140,7 +141,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -150,6 +151,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
@@ -179,7 +182,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertBlockPlace(String player, String UUID, int x,
-			int y, int z, String time, String block) {
+			int y, int z, String world, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "BlockPlace";
@@ -187,7 +190,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -197,6 +200,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
@@ -226,7 +231,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertPlayerChat(String player, String UUID, int x,
-			int y, int z, String time, String MSG) {
+			int y, int z, String world, String time, String MSG) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "PlayerChat";
@@ -234,7 +239,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -244,6 +249,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
@@ -273,7 +280,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertDropItem(String player, String UUID, int x,
-			int y, int z, String time, String ItemType) {
+			int y, int z, String world, String time, String ItemType) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "DropItem";
@@ -281,7 +288,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -291,6 +298,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
@@ -320,7 +329,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertPickupItem(String player, String UUID, int x,
-			int y, int z, String time, String ItemType) {
+			int y, int z, String world, String time, String ItemType) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "PickupItem";
@@ -328,7 +337,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -338,6 +347,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
@@ -367,7 +378,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertPlayerLogin(String player, String UUID, int x,
-			int y, int z, String time, String IP) {
+			int y, int z, String world, String time, String IP) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "PlayerLogin";
@@ -375,7 +386,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -385,6 +396,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
@@ -414,7 +427,7 @@ public class BTRSQL {
 	 * 
 	 **/
 	public static boolean insertPlayerQuit(String player, String UUID, int x,
-			int y, int z, String time, String Name) {
+			int y, int z, String world, String time, String Name) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "PlayerQuit";
@@ -422,7 +435,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -432,6 +445,8 @@ public class BTRSQL {
 					+ y
 					+ "', '"
 					+ z
+					+ "', '"
+					+ world
 					+ "', '"
 					+ time
 					+ "', '"
