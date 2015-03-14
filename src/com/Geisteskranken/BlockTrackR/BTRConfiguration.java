@@ -41,8 +41,8 @@ public class BTRConfiguration {
 
 	static Properties prop = new Properties();
 	static OutputStream output = null;
-	static File Dir = new File("plugins\\BlockTrackR");
-	static String ConfDir = "plugins\\BlockTrackR\\BlockTrackR.conf";
+	static File Dir = new File("plugins//BlockTrackR");
+	static String ConfDir = "plugins//BlockTrackR//BlockTrackR.conf";
 
 	public static boolean readConfig() {
 
