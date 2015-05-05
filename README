@@ -4,9 +4,9 @@ BlockTrackR
 BlockTrackR is currently under heavy development. 
 The end goal is a product that monitors major world events such as block breaks, block placement, and item usage.
 
-This data will be written to a SQL database for storage and will be accesiable via in-game command or by way of the provided tool (TODO).
+This data will be written to a SQL database for storage and will be accessible via in-game command or by way of the provided tool (TODO).
 A front-end web interface is also planned for easy access to the data from an out-of-game environment.
 
-BlockTrackR is currently being written for CraftBukkit-1.7.10 but will be ported to 1.8 when it has attained a stable state.
+BlockTrackR is currently being written for Sponge development builds.
 
-BlockTrackR will always be compiled with Java 7. Please consider this if you find yourself with concurrency errors.
+BlockTrackR will always be compiled with Java 8. Please consider this if you find yourself with concurrency errors.
