@@ -15,33 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR.Event;
+package com.Volition21.BlockTrackR.Event;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
-import com.Geisteskranken.BlockTrackR.BTRDebugger;
-import com.Geisteskranken.BlockTrackR.BTRExecutorService;
-import com.Geisteskranken.BlockTrackR.BlockTrackR;
-import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.BTRDebugger;
+import com.Volition21.BlockTrackR.BTRExecutorService;
+import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRAsyncPlayerChatEvent implements Listener {
+public class BTRPlayerPickupItemEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+	public void PlayerPickupItemEvent(PlayerPickupItemEvent event) {
 		if (BlockTrackR.Track) {
-			final String MSG = String.valueOf(event.getMessage());
-
-			final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
+			final String ItemType = event.getItem().getItemStack().getType()
+					.toString();
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getPlayer().getLocation().getBlockX();
-			final int Y = event.getPlayer().getLocation().getBlockY();
-			final int Z = event.getPlayer().getLocation().getBlockZ();
+			final int X = event.getItem().getLocation().getBlockX();
+			final int Y = event.getItem().getLocation().getBlockY();
+			final int Z = event.getItem().getLocation().getBlockZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -56,15 +54,16 @@ public class BTRAsyncPlayerChatEvent implements Listener {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
 					currentThread
-							.setName("BlockTrackR SQL Insert (AsyncPlayerChatEvent)- "
+							.setName("BlockTrackR SQL Insert (PickupItemEvent) - "
 									+ Player
 									+ ":"
-									+ SanatizedMSG
+									+ ItemType
 									+ "@"
 									+ X
-									+ "," + Y + "," + Z + ":" + world);
-					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), SanatizedMSG);
+									+ ","
+									+ Y + "," + Z + ":" + world);
+					BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), ItemType);
 					BTRDebugger.DLog(currentThread.getName());
 
 				}

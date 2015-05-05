@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR;
+package com.Volition21.BlockTrackR;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

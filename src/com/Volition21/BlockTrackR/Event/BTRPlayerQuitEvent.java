@@ -15,17 +15,17 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR.Event;
+package com.Volition21.BlockTrackR.Event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.Geisteskranken.BlockTrackR.BTRDebugger;
-import com.Geisteskranken.BlockTrackR.BTRExecutorService;
-import com.Geisteskranken.BlockTrackR.BlockTrackR;
-import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.BTRDebugger;
+import com.Volition21.BlockTrackR.BTRExecutorService;
+import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
 public class BTRPlayerQuitEvent implements Listener {
 

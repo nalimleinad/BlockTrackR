@@ -15,31 +15,30 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR.Event;
+package com.Volition21.BlockTrackR.Event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 
-import com.Geisteskranken.BlockTrackR.BTRDebugger;
-import com.Geisteskranken.BlockTrackR.BTRExecutorService;
-import com.Geisteskranken.BlockTrackR.BlockTrackR;
-import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.BTRDebugger;
+import com.Volition21.BlockTrackR.BTRExecutorService;
+import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRPlayerDropItemEvent implements Listener {
+public class BTRBlockBreakEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void PlayerDropItemEvent(PlayerDropItemEvent event) {
+	public void BlockBreakEvent(BlockBreakEvent event) {
 		if (BlockTrackR.Track) {
-			final String ItemType = event.getItemDrop().getItemStack()
-					.getType().toString();
+			final String BlockType = String.valueOf(event.getBlock().getType());
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getItemDrop().getLocation().getBlockX();
-			final int Y = event.getItemDrop().getLocation().getBlockY();
-			final int Z = event.getItemDrop().getLocation().getBlockZ();
+			final int X = event.getBlock().getX();
+			final int Y = event.getBlock().getY();
+			final int Z = event.getBlock().getZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -54,16 +53,11 @@ public class BTRPlayerDropItemEvent implements Listener {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
 					currentThread
-							.setName("BlockTrackR SQL Insert (DropItemEvent) - "
-									+ Player
-									+ ":"
-									+ ItemType
-									+ "@"
-									+ X
-									+ ","
+							.setName("BlockTrackR SQL Insert (BreakEvent) - "
+									+ Player + ":" + BlockType + "@" + X + ","
 									+ Y + "," + Z + ":" + world);
-					BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), ItemType);
+					BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), BlockType);
 					BTRDebugger.DLog(currentThread.getName());
 
 				}

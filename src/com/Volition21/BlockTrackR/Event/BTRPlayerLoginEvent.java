@@ -15,30 +15,30 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR.Event;
+package com.Volition21.BlockTrackR.Event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
-import com.Geisteskranken.BlockTrackR.BTRDebugger;
-import com.Geisteskranken.BlockTrackR.BTRExecutorService;
-import com.Geisteskranken.BlockTrackR.BlockTrackR;
-import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.BTRDebugger;
+import com.Volition21.BlockTrackR.BTRExecutorService;
+import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRBlockPlaceEvent implements Listener {
+public class BTRPlayerLoginEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void BlockPlaceEvent(BlockPlaceEvent event) {
+	public void PlayerLoginEvent(PlayerLoginEvent event) {
 		if (BlockTrackR.Track) {
-			final String BlockType = String.valueOf(event.getBlock().getType());
+			final String IP = event.getAddress().getHostAddress();
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getBlock().getX();
-			final int Y = event.getBlock().getY();
-			final int Z = event.getBlock().getZ();
+			final int X = event.getPlayer().getLocation().getBlockX();
+			final int Y = event.getPlayer().getLocation().getBlockY();
+			final int Z = event.getPlayer().getLocation().getBlockZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -53,11 +53,11 @@ public class BTRBlockPlaceEvent implements Listener {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
 					currentThread
-							.setName("BlockTrackR SQL Insert (PlaceEvent)- "
-									+ Player + ":" + BlockType + "@" + X + ","
-									+ Y + "," + Z + ":" + world);
-					BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), BlockType);
+							.setName("BlockTrackR SQL Insert (LoginEvent) - "
+									+ Player + ":" + IP + "@" + X + "," + Y
+									+ "," + Z + ":" + world);
+					BTRSQL.insertPlayerLogin(Player, PlayerUUID, X, Y, Z,
+							world, BlockTrackR.getTime(), IP);
 					BTRDebugger.DLog(currentThread.getName());
 
 				}

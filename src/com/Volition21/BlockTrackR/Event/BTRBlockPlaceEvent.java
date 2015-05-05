@@ -15,31 +15,30 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR.Event;
+package com.Volition21.BlockTrackR.Event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
-import com.Geisteskranken.BlockTrackR.BTRDebugger;
-import com.Geisteskranken.BlockTrackR.BTRExecutorService;
-import com.Geisteskranken.BlockTrackR.BlockTrackR;
-import com.Geisteskranken.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.BTRDebugger;
+import com.Volition21.BlockTrackR.BTRExecutorService;
+import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRPlayerPickupItemEvent implements Listener {
+public class BTRBlockPlaceEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void PlayerPickupItemEvent(PlayerPickupItemEvent event) {
+	public void BlockPlaceEvent(BlockPlaceEvent event) {
 		if (BlockTrackR.Track) {
-			final String ItemType = event.getItem().getItemStack().getType()
-					.toString();
+			final String BlockType = String.valueOf(event.getBlock().getType());
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getItem().getLocation().getBlockX();
-			final int Y = event.getItem().getLocation().getBlockY();
-			final int Z = event.getItem().getLocation().getBlockZ();
+			final int X = event.getBlock().getX();
+			final int Y = event.getBlock().getY();
+			final int Z = event.getBlock().getZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -54,16 +53,11 @@ public class BTRPlayerPickupItemEvent implements Listener {
 				public void run() {
 					Thread currentThread = Thread.currentThread();
 					currentThread
-							.setName("BlockTrackR SQL Insert (PickupItemEvent) - "
-									+ Player
-									+ ":"
-									+ ItemType
-									+ "@"
-									+ X
-									+ ","
+							.setName("BlockTrackR SQL Insert (PlaceEvent)- "
+									+ Player + ":" + BlockType + "@" + X + ","
 									+ Y + "," + Z + ":" + world);
-					BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), ItemType);
+					BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), BlockType);
 					BTRDebugger.DLog(currentThread.getName());
 
 				}

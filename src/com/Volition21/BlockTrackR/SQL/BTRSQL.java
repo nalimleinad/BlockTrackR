@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Geisteskranken.BlockTrackR.SQL;
+package com.Volition21.BlockTrackR.SQL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.Geisteskranken.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.BlockTrackR;
 
 /**
  * BTRSQL
