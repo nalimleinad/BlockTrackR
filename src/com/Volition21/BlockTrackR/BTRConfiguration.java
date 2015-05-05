@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public class BTRConfiguration {
 
@@ -63,14 +62,12 @@ public class BTRConfiguration {
 			BlockTrackR.dbpass = prop.getProperty("dbpass");
 
 		} catch (IOException ex) {
-			BlockTrackR.logger.log(Level.WARNING,
-					"Disabled! Configuration error.", ex);
+			BlockTrackR.logger.warn("Disabled! Configuration error.", ex);;
 		}
 		try {
 			input.close();
 		} catch (IOException e) {
-			BlockTrackR.logger.log(Level.WARNING,
-					"Disabled! Configuration error.", e);
+			BlockTrackR.logger.warn("Disabled! Configuration error.", e);
 			return false;
 		}
 		BlockTrackR.logger.info("Config: OK");
@@ -100,9 +97,7 @@ public class BTRConfiguration {
 			if (output != null) {
 				try {
 					output.close();
-					BlockTrackR.logger
-							.log(Level.WARNING,
-									"Configuration file created. Please edit and restart server");
+					BlockTrackR.logger.warn("Configuration file created. Please edit and restart server");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

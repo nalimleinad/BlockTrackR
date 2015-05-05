@@ -19,7 +19,6 @@ package com.Volition21.BlockTrackR.SQL;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,8 +57,7 @@ public class BTRSQL {
 				BlockTrackR.logger.info("Database: OK");
 				return true;
 			} else {
-				BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-						sqlException);
+				BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 				closeStatement(statement);
 				closeConnection(connection);
 				return false;
@@ -102,9 +100,8 @@ public class BTRSQL {
 					+ "PRIMARY KEY (`UID`));";
 			statement.execute(createTable);
 		} catch (SQLException e) {
-			BlockTrackR.logger.log(Level.WARNING, "Disabled!");
-			BlockTrackR.logger.log(Level.WARNING, "mySQL table related error",
-					e);
+			BlockTrackR.logger.warn("Disabled!");
+			BlockTrackR.logger.warn("mySQL table related error", e);
 			closeConnection(connection);
 			closeStatement(statement);
 			return false;
@@ -147,15 +144,11 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ block
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -196,15 +189,11 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ block
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -245,15 +234,11 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ MSG
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -262,7 +247,7 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
+
 	/**
 	 * insertDropItem
 	 * 
@@ -294,15 +279,11 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ ItemType
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -311,7 +292,7 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
+
 	/**
 	 * insertPickupItem
 	 * 
@@ -343,15 +324,11 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ ItemType
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -360,7 +337,7 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
+
 	/**
 	 * insertPlayerLogin
 	 * 
@@ -393,14 +370,11 @@ public class BTRSQL {
 					+ "', '"
 					+ IP
 					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -409,7 +383,7 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
+
 	/**
 	 * insertPlayerQuit
 	 * 
@@ -441,15 +415,11 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ Name
-					+ "', '"
-					+ event
-					+ "'"
-					+ ")" + ";";
+					+ "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTrackR.logger.log(Level.WARNING, "BlockTrackR Disabled!",
-					sqlException);
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -465,7 +435,7 @@ public class BTRSQL {
 	 * Fetches edits to provided coordinates.
 	 * 
 	 **/
-	//TODO
+	// TODO
 	public static List<String> getBlockRecord(int X, int Y, int Z, String event) {
 
 		Connection connection = null;
@@ -496,7 +466,7 @@ public class BTRSQL {
 			}
 
 		} catch (SQLException ex) {
-			BlockTrackR.logger.log(Level.WARNING, ex.toString());
+			BlockTrackR.logger.warn(ex.toString());
 		}
 
 		closeConnection(connection);
@@ -515,8 +485,8 @@ public class BTRSQL {
 		try {
 			connection = BTRConnectionPool.getConnection();
 		} catch (SQLException e) {
-			BlockTrackR.logger.log(Level.WARNING,
-					"mySQL error: Could not close connection", e);
+			BlockTrackR.logger.warn("mySQL error: Could not close connection",
+					e);
 		}
 		return connection;
 	}
@@ -531,8 +501,8 @@ public class BTRSQL {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			BlockTrackR.logger.log(Level.WARNING,
-					"mySQL error: Could not close connection", e);
+			BlockTrackR.logger.warn("mySQL error: Could not close connection",
+					e);
 		}
 	}
 
@@ -546,8 +516,8 @@ public class BTRSQL {
 		try {
 			statement.close();
 		} catch (SQLException e) {
-			BlockTrackR.logger.log(Level.WARNING,
-					"mySQL error: Could not close statement", e);
+			BlockTrackR.logger
+					.warn("mySQL error: Could not close statement", e);
 		}
 	}
 

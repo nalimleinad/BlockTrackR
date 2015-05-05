@@ -30,8 +30,11 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.event.Subscribe;
+import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
+import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
 import org.spongepowered.api.event.state.ServerStartedEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.service.event.EventManager;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
@@ -78,44 +81,24 @@ public class BlockTrackR {
 
 		game.getCommandDispatcher().register(this, TestCommand, "test");
 
-		// Event Listeners.
-		/**
-		 * getServer().getPluginManager().registerEvents(new
-		 * BTRBlockBreakEvent(), this);
-		 * getServer().getPluginManager().registerEvents(new
-		 * BTRBlockPlaceEvent(), this);
-		 * getServer().getPluginManager().registerEvents( new
-		 * BTRAsyncPlayerChatEvent(), this);
-		 * getServer().getPluginManager().registerEvents( new
-		 * BTRPlayerDropItemEvent(), this);
-		 * getServer().getPluginManager().registerEvents( new
-		 * BTRPlayerPickupItemEvent(), this);
-		 * getServer().getPluginManager().registerEvents( new
-		 * BTRPlayerLoginEvent(), this);
-		 * getServer().getPluginManager().registerEvents(new
-		 * BTRPlayerQuitEvent(), this);
-		 */
+		BTRDebugger.DLog("Reg BTRPJE");
+		game.getEventManager().register(this, new BTRPlayerJoinEvent());
+		BTRDebugger.DLog("Reg BTRPPUIE");
+		game.getEventManager().register(this, new BTRPlayerPickUpItemEvent());
+		BTRDebugger.DLog("Reg BTRBBE");
+		game.getEventManager().register(this, new BTRBlockBreakEvent());
 
 		logger.info("BlockTracker 1.0");
-		logger.info("Server: v1.7");
+		logger.info("Server: v1.8");
 		logger.info("Checking Config...");
-		if (BTRConfiguration.readConfig()) {
-			if (BTRSQL.checkDB()) {
-				logger.info("Checking SQL Table...");
-				if (BTRSQL.checkTable()) {
-					logger.info("Everything appears OK");
-					logger.info("Debugging: " + debug);
-					logger.info("Enabled!");
-					Track = true;
-				} else {
-					Track = false;
-				}
-			} else {
-				Track = false;
-			}
-		} else {
-			Track = false;
-		}
+		/**
+		 * if (BTRConfiguration.readConfig()) { if (BTRSQL.checkDB()) {
+		 * logger.info("Checking SQL Table..."); if (BTRSQL.checkTable()) {
+		 * logger.info("Everything appears OK"); logger.info("Debugging: " +
+		 * debug); logger.info("Enabled!"); Track = true; } else { Track =
+		 * false; } } else { Track = false; } } else { Track = false; }
+		 */
+		Track = true;
 	}
 
 	public static String getTime() {

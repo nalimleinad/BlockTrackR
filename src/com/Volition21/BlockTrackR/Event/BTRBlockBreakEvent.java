@@ -17,28 +17,28 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.spongepowered.api.event.Subscribe;
 
 import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRBlockBreakEvent implements Listener {
+import org.spongepowered.api.event.entity.player.PlayerBreakBlockEvent;
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void BlockBreakEvent(BlockBreakEvent event) {
+@SuppressWarnings("unused")
+public class BTRBlockBreakEvent {
+
+	@Subscribe
+	public void PlayerBreakBlockEvent(PlayerBreakBlockEvent event) {
 		if (BlockTrackR.Track) {
 			final String BlockType = String.valueOf(event.getBlock().getType());
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getBlock().getX();
-			final int Y = event.getBlock().getY();
-			final int Z = event.getBlock().getZ();
+			final int X = event.getBlock().getBlockX();
+			final int Y = event.getBlock().getBlockY();
+			final int Z = event.getBlock().getBlockZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -49,19 +49,20 @@ public class BTRBlockBreakEvent implements Listener {
 			final String world = event.getPlayer().getWorld().getName();
 
 			// Insert to DB
-			BTRExecutorService.ThreadPool.execute(new Runnable() {
-				public void run() {
-					Thread currentThread = Thread.currentThread();
-					currentThread
-							.setName("BlockTrackR SQL Insert (BreakEvent) - "
-									+ Player + ":" + BlockType + "@" + X + ","
-									+ Y + "," + Z + ":" + world);
-					BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), BlockType);
-					BTRDebugger.DLog(currentThread.getName());
-
-				}
-			});
+			BTRDebugger.DLog("BreakBlock Event: " + "&" + BlockType + "&" + X
+					+ "&" + Y + "&" + Z + "&" + Player + "&" + PlayerUUID + "&"
+					+ world);
+			/**
+			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
+			 * void run() { Thread currentThread = Thread.currentThread();
+			 * currentThread .setName("BlockTrackR SQL Insert (BreakEvent) - " +
+			 * Player + ":" + BlockType + "@" + X + "," + Y + "," + Z + ":" +
+			 * world); BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z,
+			 * world, BlockTrackR.getTime(), BlockType);
+			 * BTRDebugger.DLog(currentThread.getName());
+			 * 
+			 * } });
+			 */
 		}
 	}
 

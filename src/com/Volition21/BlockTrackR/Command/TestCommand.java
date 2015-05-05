@@ -15,15 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Volition21.BlockTrackR;
+package com.Volition21.BlockTrackR.Command;
 
-public class BTRDebugger {
+import org.spongepowered.api.Server;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.util.command.CommandException;
+import org.spongepowered.api.util.command.CommandResult;
+import org.spongepowered.api.util.command.CommandSource;
+import org.spongepowered.api.util.command.args.CommandContext;
+import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-	public static void DLog(String msg) {
-		// if (BlockTrackR.debug.equals("true")) {
-		BlockTrackR.logger.info(msg);
-		// }
+public class TestCommand implements CommandExecutor {
 
+	private Server server;
+
+	public TestCommand(Server server) {
+		this.server = server;
+	}
+
+	@Override
+	public CommandResult execute(CommandSource src, CommandContext args)
+			throws CommandException {
+		server.broadcastMessage(Texts.of("This is a broadcasted message!"));
+		src.sendMessage(Texts.of("Response message!"));
+
+		return CommandResult.success();
 	}
 
 }
