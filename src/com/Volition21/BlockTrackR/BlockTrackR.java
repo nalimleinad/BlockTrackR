@@ -83,10 +83,18 @@ public class BlockTrackR {
 
 		BTRDebugger.DLog("Reg BTRPJE");
 		game.getEventManager().register(this, new BTRPlayerJoinEvent());
+		BTRDebugger.DLog("Reg BTRPQE");
+		game.getEventManager().register(this, new BTRPlayerQuitEvent());
 		BTRDebugger.DLog("Reg BTRPPUIE");
 		game.getEventManager().register(this, new BTRPlayerPickUpItemEvent());
+		BTRDebugger.DLog("Reg BTRPDIE");
+		game.getEventManager().register(this, new BTRPlayerDropItemEvent());
+		BTRDebugger.DLog("Reg BTRBPE");
+		game.getEventManager().register(this, new BTRBlockPlaceEvent());
 		BTRDebugger.DLog("Reg BTRBBE");
 		game.getEventManager().register(this, new BTRBlockBreakEvent());
+		BTRDebugger.DLog("Reg BTRAPCE");
+		game.getEventManager().register(this, new BTRAsyncPlayerChatEvent());
 
 		logger.info("BlockTracker 1.0");
 		logger.info("Server: v1.8");

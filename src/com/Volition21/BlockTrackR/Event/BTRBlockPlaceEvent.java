@@ -17,51 +17,48 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
-
 import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import org.spongepowered.api.event.entity.living.human.HumanPlaceBlockEvent;
 
-public class BTRBlockPlaceEvent implements Listener {
+@SuppressWarnings("unused")
+public class BTRBlockPlaceEvent {
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void BlockPlaceEvent(BlockPlaceEvent event) {
+	public void PlayerBlockPlaceEvent(HumanPlaceBlockEvent event) {
 		if (BlockTrackR.Track) {
 			final String BlockType = String.valueOf(event.getBlock().getType());
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getBlock().getX();
-			final int Y = event.getBlock().getY();
-			final int Z = event.getBlock().getZ();
+			final int X = event.getBlock().getBlockX();
+			final int Y = event.getBlock().getBlockY();
+			final int Z = event.getBlock().getBlockZ();
 
 			// Isolates the playername from the player object.
-			final String Player = event.getPlayer().getName();
-			final String PlayerUUID = event.getPlayer().getUniqueId()
+			final String Player = event.getEntity().getName();
+			final String PlayerUUID = event.getEntity().getUniqueId()
 					.toString();
 
 			// Get player's world.
-			final String world = event.getPlayer().getWorld().getName();
+			final String world = event.getEntity().getWorld().toString();
 
 			// Insert to DB
-			BTRExecutorService.ThreadPool.execute(new Runnable() {
-				public void run() {
-					Thread currentThread = Thread.currentThread();
-					currentThread
-							.setName("BlockTrackR SQL Insert (PlaceEvent)- "
-									+ Player + ":" + BlockType + "@" + X + ","
-									+ Y + "," + Z + ":" + world);
-					BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), BlockType);
-					BTRDebugger.DLog(currentThread.getName());
-
-				}
-			});
+			BTRDebugger.DLog("Block Place Event: " + "&" + BlockType + "&" + X
+					+ "&" + Y + "&" + Z + "&" + Player + "&" + PlayerUUID + "&"
+					+ world);
+			/**
+			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
+			 * void run() { Thread currentThread = Thread.currentThread();
+			 * currentThread .setName("BlockTrackR SQL Insert (PlaceEvent)- " +
+			 * Player + ":" + BlockType + "@" + X + "," + Y + "," + Z + ":" +
+			 * world); BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z,
+			 * world, BlockTrackR.getTime(), BlockType);
+			 * BTRDebugger.DLog(currentThread.getName());
+			 * 
+			 * } });
+			 */
 		}
 	}
 

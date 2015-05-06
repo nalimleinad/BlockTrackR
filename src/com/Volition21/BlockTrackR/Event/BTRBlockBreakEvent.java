@@ -23,7 +23,6 @@ import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
-
 import org.spongepowered.api.event.entity.player.PlayerBreakBlockEvent;
 
 @SuppressWarnings("unused")
@@ -49,7 +48,7 @@ public class BTRBlockBreakEvent {
 			final String world = event.getPlayer().getWorld().getName();
 
 			// Insert to DB
-			BTRDebugger.DLog("BreakBlock Event: " + "&" + BlockType + "&" + X
+			BTRDebugger.DLog("Block Break Event: " + "&" + BlockType + "&" + X
 					+ "&" + Y + "&" + Z + "&" + Player + "&" + PlayerUUID + "&"
 					+ world);
 			/**

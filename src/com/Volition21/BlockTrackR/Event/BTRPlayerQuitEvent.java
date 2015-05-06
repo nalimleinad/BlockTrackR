@@ -17,19 +17,16 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
-
 import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRPlayerQuitEvent implements Listener {
+import org.spongepowered.api.event.entity.player.PlayerQuitEvent;
 
-	@EventHandler(priority = EventPriority.MONITOR)
+@SuppressWarnings("unused")
+public class BTRPlayerQuitEvent {
+
 	public void PlayerQuitEvent(PlayerQuitEvent event) {
 		if (BlockTrackR.Track) {
 			final String Name = event.getPlayer().getName();
@@ -49,19 +46,20 @@ public class BTRPlayerQuitEvent implements Listener {
 			final String world = event.getPlayer().getWorld().getName();
 
 			// Insert to DB
-			BTRExecutorService.ThreadPool.execute(new Runnable() {
-				public void run() {
-					Thread currentThread = Thread.currentThread();
-					currentThread
-							.setName("BlockTrackR SQL Insert (QuitEvent) - "
-									+ Player + ":" + Name + "@" + X + "," + Y
-									+ "," + Z + ":" + world);
-					BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), Name);
-					BTRDebugger.DLog(currentThread.getName());
-
-				}
-			});
+			BTRDebugger.DLog("Player Quite Event: " + "&" + Name + "&" + X
+					+ "&" + Y + "&" + Z + "&" + Player + "&" + PlayerUUID + "&"
+					+ world);
+			/**
+			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
+			 * void run() { Thread currentThread = Thread.currentThread();
+			 * currentThread .setName("BlockTrackR SQL Insert (QuitEvent) - " +
+			 * Player + ":" + Name + "@" + X + "," + Y + "," + Z + ":" + world);
+			 * BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z, world,
+			 * BlockTrackR.getTime(), Name);
+			 * BTRDebugger.DLog(currentThread.getName());
+			 * 
+			 * } });
+			 */
 		}
 	}
 

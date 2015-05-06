@@ -17,29 +17,24 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
-
 import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import org.spongepowered.api.event.entity.player.PlayerDropItemEvent;
 
-public class BTRPlayerDropItemEvent implements Listener {
+@SuppressWarnings("unused")
+public class BTRPlayerDropItemEvent {
 
-	@EventHandler(priority = EventPriority.MONITOR)
 	public void PlayerDropItemEvent(PlayerDropItemEvent event) {
 		if (BlockTrackR.Track) {
-			final String ItemType = event.getItemDrop().getItemStack()
-					.getType().toString();
+			final String ItemType = event.getDroppedItems().toString();
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getItemDrop().getLocation().getBlockX();
-			final int Y = event.getItemDrop().getLocation().getBlockY();
-			final int Z = event.getItemDrop().getLocation().getBlockZ();
+			final int X = event.getPlayer().getLocation().getBlockX();
+			final int Y = event.getPlayer().getLocation().getBlockY();
+			final int Z = event.getPlayer().getLocation().getBlockZ();
 
 			// Isolates the playername from the player object.
 			final String Player = event.getPlayer().getName();
@@ -50,24 +45,20 @@ public class BTRPlayerDropItemEvent implements Listener {
 			final String world = event.getPlayer().getWorld().getName();
 
 			// Insert to DB
-			BTRExecutorService.ThreadPool.execute(new Runnable() {
-				public void run() {
-					Thread currentThread = Thread.currentThread();
-					currentThread
-							.setName("BlockTrackR SQL Insert (DropItemEvent) - "
-									+ Player
-									+ ":"
-									+ ItemType
-									+ "@"
-									+ X
-									+ ","
-									+ Y + "," + Z + ":" + world);
-					BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), ItemType);
-					BTRDebugger.DLog(currentThread.getName());
-
-				}
-			});
+			BTRDebugger.DLog("Drop Item Event: " + ItemType + "&" + X + "&" + Y
+					+ "&" + Z + "&" + Player + "&" + PlayerUUID + "&" + world);
+			/**
+			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
+			 * void run() { Thread currentThread = Thread.currentThread();
+			 * currentThread
+			 * .setName("BlockTrackR SQL Insert (DropItemEvent) - " + Player +
+			 * ":" + ItemType + "@" + X + "," + Y + "," + Z + ":" + world);
+			 * BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world,
+			 * BlockTrackR.getTime(), ItemType);
+			 * BTRDebugger.DLog(currentThread.getName());
+			 * 
+			 * } });
+			 */
 		}
 	}
 

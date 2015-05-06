@@ -34,9 +34,9 @@ public class BTRPlayerPickUpItemEvent {
 
 		final String ItemType = event.getInventory().getName().toString();
 
-		final int X = event.getEntity().getLocation().getBlockX();
-		final int Y = event.getEntity().getLocation().getBlockY();
-		final int Z = event.getEntity().getLocation().getBlockZ();
+		final int X = event.getPlayer().getLocation().getBlockX();
+		final int Y = event.getPlayer().getLocation().getBlockY();
+		final int Z = event.getPlayer().getLocation().getBlockZ();
 
 		// Isolates the playername from the player object.
 		final String Player = event.getPlayer().getName();
@@ -46,8 +46,8 @@ public class BTRPlayerPickUpItemEvent {
 		final String world = event.getPlayer().getWorld().getName();
 
 		// Insert to DB
-		BTRDebugger.DLog("PickupItem Event: " + ItemType + X + Y + Z + Player
-				+ PlayerUUID + world);
+		BTRDebugger.DLog("Drop Item Event: " + ItemType + "&" + X + "&" + Y
+				+ "&" + Z + "&" + Player + "&" + PlayerUUID + "&" + world);
 		/**
 		 * BTRExecutorService.ThreadPool.execute(new Runnable() { public void
 		 * run() { Thread currentThread = Thread.currentThread(); currentThread

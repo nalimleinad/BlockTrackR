@@ -17,58 +17,61 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+//import org.apache.commons.lang.StringEscapeUtils;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.Tamer;
+import org.spongepowered.api.entity.player.User;
+import org.spongepowered.api.event.message.MessageEvent;
+import org.spongepowered.api.util.Identifiable;
 
 import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-public class BTRAsyncPlayerChatEvent implements Listener {
+@SuppressWarnings("unused")
+public class BTRAsyncPlayerChatEvent {
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
-			final String MSG = String.valueOf(event.getMessage());
+			final String MSG = event.getMessage().toString();
 
-			final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
+			// final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = event.getPlayer().getLocation().getBlockX();
-			final int Y = event.getPlayer().getLocation().getBlockY();
-			final int Z = event.getPlayer().getLocation().getBlockZ();
+			final int X = ((Entity) ((User) event).getPlayer()).getLocation()
+					.getBlockY();
+			final int Y = ((Entity) ((User) event).getPlayer()).getLocation()
+					.getBlockY();
+			final int Z = ((Entity) ((User) event).getPlayer()).getLocation()
+					.getBlockZ();
 
 			// Isolates the playername from the player object.
-			final String Player = event.getPlayer().getName();
-			final String PlayerUUID = event.getPlayer().getUniqueId()
-					.toString();
+			final String Player = ((Tamer) ((User) event).getPlayer())
+					.getName();
+			final String PlayerUUID = ((Identifiable) ((User) event)
+					.getPlayer()).getUniqueId().toString();
 
 			// Get player's world.
-			final String world = event.getPlayer().getWorld().getName();
+			final String world = ((Entity) ((User) event).getPlayer())
+					.getWorld().toString();
 
 			// Insert to DB
-			BTRExecutorService.ThreadPool.execute(new Runnable() {
-				public void run() {
-					Thread currentThread = Thread.currentThread();
-					currentThread
-							.setName("BlockTrackR SQL Insert (AsyncPlayerChatEvent)- "
-									+ Player
-									+ ":"
-									+ SanatizedMSG
-									+ "@"
-									+ X
-									+ "," + Y + "," + Z + ":" + world);
-					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), SanatizedMSG);
-					BTRDebugger.DLog(currentThread.getName());
-
-				}
-			});
+			BTRDebugger.DLog("Message Event: " + "&" + MSG + "&" + X + "&" + Y
+					+ "&" + Z + "&" + Player + "&" + PlayerUUID + "&" + world);
+			/**
+			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
+			 * void run() { Thread currentThread = Thread.currentThread();
+			 * currentThread
+			 * .setName("BlockTrackR SQL Insert (AsyncPlayerChatEvent)- " +
+			 * Player + ":" + SanatizedMSG + "@" + X + "," + Y + "," + Z + ":" +
+			 * world); BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z,
+			 * world, BlockTrackR.getTime(), SanatizedMSG);
+			 * BTRDebugger.DLog(currentThread.getName());
+			 * 
+			 * } });
+			 */
 		}
 	}
 
