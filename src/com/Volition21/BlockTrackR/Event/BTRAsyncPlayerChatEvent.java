@@ -23,6 +23,10 @@ import org.spongepowered.api.entity.Tamer;
 import org.spongepowered.api.entity.player.User;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.message.MessageEvent;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.TextBuilder;
+import org.spongepowered.api.text.TextBuilder.Literal;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.Identifiable;
 
 import com.Volition21.BlockTrackR.BTRDebugger;
@@ -36,32 +40,25 @@ public class BTRAsyncPlayerChatEvent {
 	@Subscribe
 	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
-			final String MSG = event.getMessage().toString();
-
+			final String MSG = Texts.toPlain(event.getMessage());
+			
 			// final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
 
 			// Extrapolates the X,Y,and Z coordinates from the broken block
 			// object.
-			final int X = ((Entity) ((User) event).getPlayer()).getLocation()
-					.getBlockY();
-			final int Y = ((Entity) ((User) event).getPlayer()).getLocation()
-					.getBlockY();
-			final int Z = ((Entity) ((User) event).getPlayer()).getLocation()
-					.getBlockZ();
+			// final int X = event.getSource()
+			// final int Y = event.getSource()
+			// final int Z = event.getSource()
 
 			// Isolates the playername from the player object.
-			final String Player = ((Tamer) ((User) event).getPlayer())
-					.getName();
-			final String PlayerUUID = ((Identifiable) ((User) event)
-					.getPlayer()).getUniqueId().toString();
+			// final String Player = event.getSource()
+			// final String PlayerUUID = event.getSource()
 
 			// Get player's world.
-			final String world = ((Entity) ((User) event).getPlayer())
-					.getWorld().toString();
+			// final String world = event.getSource()
 
 			// Insert to DB
-			BTRDebugger.DLog("Message Event: " + "&" + MSG + "&" + X + "&" + Y
-					+ "&" + Z + "&" + Player + "&" + PlayerUUID + "&" + world);
+			BTRDebugger.DLog("Message Event: " + MSG);
 			/**
 			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
 			 * void run() { Thread currentThread = Thread.currentThread();
@@ -76,5 +73,4 @@ public class BTRAsyncPlayerChatEvent {
 			 */
 		}
 	}
-
 }
