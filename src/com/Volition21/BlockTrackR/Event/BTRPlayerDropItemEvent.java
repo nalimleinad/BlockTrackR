@@ -21,11 +21,14 @@ import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerDropItemEvent;
 
 @SuppressWarnings("unused")
 public class BTRPlayerDropItemEvent {
 
+	@Subscribe
 	public void PlayerDropItemEvent(PlayerDropItemEvent event) {
 		if (BlockTrackR.Track) {
 			final String ItemType = event.getDroppedItems().toString();

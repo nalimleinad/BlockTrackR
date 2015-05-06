@@ -21,11 +21,14 @@ import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.living.human.HumanPlaceBlockEvent;
 
 @SuppressWarnings("unused")
 public class BTRBlockPlaceEvent {
 
+	@Subscribe
 	public void PlayerBlockPlaceEvent(HumanPlaceBlockEvent event) {
 		if (BlockTrackR.Track) {
 			final String BlockType = String.valueOf(event.getBlock().getType());

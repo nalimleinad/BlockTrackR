@@ -21,6 +21,7 @@ package com.Volition21.BlockTrackR.Event;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.Tamer;
 import org.spongepowered.api.entity.player.User;
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.message.MessageEvent;
 import org.spongepowered.api.util.Identifiable;
 
@@ -32,6 +33,7 @@ import com.Volition21.BlockTrackR.SQL.BTRSQL;
 @SuppressWarnings("unused")
 public class BTRAsyncPlayerChatEvent {
 
+	@Subscribe
 	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
 			final String MSG = event.getMessage().toString();

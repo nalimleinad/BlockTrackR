@@ -22,11 +22,13 @@ import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerQuitEvent;
 
 @SuppressWarnings("unused")
 public class BTRPlayerQuitEvent {
 
+	@Subscribe
 	public void PlayerQuitEvent(PlayerQuitEvent event) {
 		if (BlockTrackR.Track) {
 			final String Name = event.getPlayer().getName();
