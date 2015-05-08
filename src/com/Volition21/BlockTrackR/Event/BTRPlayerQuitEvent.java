@@ -22,6 +22,7 @@ import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
+import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerQuitEvent;
 
@@ -31,37 +32,63 @@ public class BTRPlayerQuitEvent {
 	@Subscribe
 	public void PlayerQuitEvent(PlayerQuitEvent event) {
 		if (BlockTrackR.Track) {
-			final String Name = event.getPlayer().getName();
+			/**
+			 * Initialize a Player object with the event's source cast as a
+			 * Player object.
+			 */
+			Player player = event.getPlayer();
 
-			// Extrapolates the X,Y,and Z coordinates from the broken block
-			// object.
-			final int X = event.getPlayer().getLocation().getBlockX();
-			final int Y = event.getPlayer().getLocation().getBlockY();
-			final int Z = event.getPlayer().getLocation().getBlockZ();
-
-			// Isolates the playername from the player object.
-			final String Player = event.getPlayer().getName();
-			final String PlayerUUID = event.getPlayer().getUniqueId()
+			/**
+			 * Initialize a String object with the IP address of the connecting
+			 * player.
+			 */
+			final String IP = event.getPlayer().getConnection().getAddress()
 					.toString();
 
-			// Get player's world.
-			final String world = event.getPlayer().getWorld().getName();
-
-			// Insert to DB
-			BTRDebugger.DLog("Player Quite Event: " + "&" + Name + "&" + X
-					+ "&" + Y + "&" + Z + "&" + Player + "&" + PlayerUUID + "&"
-					+ world);
 			/**
-			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
-			 * void run() { Thread currentThread = Thread.currentThread();
-			 * currentThread .setName("BlockTrackR SQL Insert (QuitEvent) - " +
-			 * Player + ":" + Name + "@" + X + "," + Y + "," + Z + ":" + world);
-			 * BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z, world,
-			 * BlockTrackR.getTime(), Name);
-			 * BTRDebugger.DLog(currentThread.getName());
-			 * 
-			 * } });
+			 * Extrapolates the X,Y,and Z coordinates from the Player object.
 			 */
+			final int X = player.getLocation().getBlockX();
+			final int Y = player.getLocation().getBlockY();
+			final int Z = player.getLocation().getBlockZ();
+
+			/**
+			 * Isolates the player's name and UUID from the MessageEvent object.
+			 */
+			final String PlayerUUID = player.getIdentifier();
+			final String Player = player.getName();
+
+			/**
+			 * Extrapolates the world name from the Player object.
+			 */
+			final String world = player.getWorld().getName();
+
+			/**
+			 * Add to queue for insertion to SQL database.
+			 */
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					// Name this thread for debug purposes.
+					Thread.currentThread().setName("BTRPQE");
+					// Debug output controlled by switch in configuration file.
+					BTRDebugger.DLog("BTRPlayerQuitEvent");
+					BTRDebugger.DLog("IP Address: " + IP);
+					BTRDebugger.DLog("Player: " + Player);
+					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);
+					BTRDebugger.DLog("X: " + X);
+					BTRDebugger.DLog("Y: " + Y);
+					BTRDebugger.DLog("Z: " + Z);
+					BTRDebugger.DLog("World: " + world);
+
+					// Insert to DB
+					/**
+					 * BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z,
+					 * world, BlockTrackR.getTime(), Name);
+					 */
+
+				}
+			});
+
 		}
 	}
 

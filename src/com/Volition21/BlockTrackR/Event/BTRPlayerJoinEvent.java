@@ -72,7 +72,7 @@ public class BTRPlayerJoinEvent {
 					Thread.currentThread().setName("BTRPJE");
 					// Debug output controlled by switch in configuration file.
 					BTRDebugger.DLog("BTRPlayerJoinEvent");
-					BTRDebugger.DLog("ItemType: " + IP);
+					BTRDebugger.DLog("IP Address: " + IP);
 					BTRDebugger.DLog("Player: " + Player);
 					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);
 					BTRDebugger.DLog("X: " + X);
