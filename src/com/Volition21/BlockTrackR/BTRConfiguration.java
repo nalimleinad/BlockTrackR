@@ -30,8 +30,8 @@ public class BTRConfiguration {
 
 	static Properties prop = new Properties();
 	static OutputStream output = null;
-	static File Dir = new File("plugins//BlockTrackR");
-	static String ConfDir = "plugins//BlockTrackR//BlockTrackR.conf";
+	static File Dir = new File("config//BlockTrackR");
+	static String ConfDir = "config//BlockTrackR//BlockTrackR.conf";
 
 	public static boolean readConfig() {
 
@@ -53,7 +53,6 @@ public class BTRConfiguration {
 			prop.load(input);
 
 			BlockTrackR.debug = prop.getProperty("debug");
-
 			BlockTrackR.host = prop.getProperty("host");
 			BlockTrackR.port = prop.getProperty("port");
 			BlockTrackR.connector = prop.getProperty("connector");
@@ -62,7 +61,8 @@ public class BTRConfiguration {
 			BlockTrackR.dbpass = prop.getProperty("dbpass");
 
 		} catch (IOException ex) {
-			BlockTrackR.logger.warn("Disabled! Configuration error.", ex);;
+			BlockTrackR.logger.warn("Disabled! Configuration error.", ex);
+			;
 		}
 		try {
 			input.close();
@@ -70,7 +70,6 @@ public class BTRConfiguration {
 			BlockTrackR.logger.warn("Disabled! Configuration error.", e);
 			return false;
 		}
-		BlockTrackR.logger.info("Config: OK");
 		return true;
 	}
 
@@ -80,7 +79,6 @@ public class BTRConfiguration {
 			output = new FileOutputStream(ConfDir);
 
 			prop.setProperty("debug", "false");
-
 			prop.setProperty("host", "localhost");
 			prop.setProperty("port", "3306");
 			prop.setProperty("connector",
@@ -97,7 +95,8 @@ public class BTRConfiguration {
 			if (output != null) {
 				try {
 					output.close();
-					BlockTrackR.logger.warn("Configuration file created. Please edit and restart server");
+					BlockTrackR.logger
+							.warn("Configuration file created. Please edit and restart server");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

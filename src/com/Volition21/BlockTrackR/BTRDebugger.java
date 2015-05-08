@@ -20,9 +20,9 @@ package com.Volition21.BlockTrackR;
 public class BTRDebugger {
 
 	public static void DLog(String msg) {
-		// if (BlockTrackR.debug.equals("true")) {
-		BlockTrackR.logger.info(msg);
-		// }
+		if (BlockTrackR.debug.equals("true")) {
+			BlockTrackR.logger.info(msg);
+		}
 
 	}
 

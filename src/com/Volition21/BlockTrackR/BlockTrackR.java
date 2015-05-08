@@ -57,7 +57,7 @@ public class BlockTrackR {
 		BlockTrackR.logger = logger;
 	}
 
-	public static Boolean Track = true;
+	public static Boolean Track = false;
 	public static String debug = "false";
 
 	public static String host;
@@ -99,7 +99,7 @@ public class BlockTrackR {
 		/**
 		 * Register all the event listeners with the EventManager
 		 */
-		BTRDebugger.DLog("Registering Events...");
+		logger.info("Registering Events...");
 		try {
 			game.getEventManager().register(this, new BTRPlayerJoinEvent());
 			game.getEventManager().register(this, new BTRPlayerQuitEvent());
@@ -112,25 +112,33 @@ public class BlockTrackR {
 					.register(this, new BTRAsyncPlayerChatEvent());
 		} catch (Exception e) {
 			// This should pretty much never ever happen. Ever.
-			BTRDebugger
-					.DLog("Event registration error, please submit bug report to Volition21 with your log files.");
-			BTRDebugger.DLog(e.toString());
-		} finally {
-			BTRDebugger.DLog("OK");
+			logger.info("Event registration error, please submit bug report to Volition21 with your log files.");
+			logger.info(e.toString());
+			Track = false;
 		}
 
 		/**
 		 * Check Configuration and SQL feasibility.
 		 */
 		logger.info("Checking Config...");
-		/**
-		 * if (BTRConfiguration.readConfig()) { if (BTRSQL.checkDB()) {
-		 * logger.info("Checking SQL Table..."); if (BTRSQL.checkTable()) {
-		 * logger.info("Everything appears OK"); logger.info("Debugging: " +
-		 * debug); logger.info("Enabled!"); Track = true; } else { Track =
-		 * false; } } else { Track = false; } } else { Track = false; }
-		 */
-		Track = true;
+		if (BTRConfiguration.readConfig()) {
+			logger.info("Checking SQL DB...");
+			if (BTRSQL.checkDB()) {
+				logger.info("Checking SQL Table...");
+				if (BTRSQL.checkTable()) {
+					logger.info("Everything appears OK");
+					logger.info("Debugging: " + debug);
+					logger.info("Enabled!");
+					Track = true;
+				} else {
+					Track = false;
+				}
+			} else {
+				Track = false;
+			}
+		} else {
+			Track = false;
+		}
 	}
 
 	public static String getTime() {

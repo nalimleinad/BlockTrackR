@@ -54,7 +54,6 @@ public class BTRSQL {
 				// Database already exists error
 				closeStatement(statement);
 				closeConnection(connection);
-				BlockTrackR.logger.info("Database: OK");
 				return true;
 			} else {
 				BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
@@ -64,7 +63,6 @@ public class BTRSQL {
 			}
 		}
 		// Database created
-		BlockTrackR.logger.info("Database: OK");
 		closeStatement(statement);
 		closeConnection(connection);
 		return true;
@@ -109,7 +107,6 @@ public class BTRSQL {
 		// Table exists
 		closeConnection(connection);
 		closeStatement(statement);
-		BlockTrackR.logger.info("Tables OK");
 		return true;
 	}
 
