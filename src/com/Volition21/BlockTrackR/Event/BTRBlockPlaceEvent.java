@@ -21,47 +21,71 @@ import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.google.common.base.Optional;
 
+import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.living.human.HumanPlaceBlockEvent;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.entity.player.PlayerPlaceBlockEvent;
 
 @SuppressWarnings("unused")
 public class BTRBlockPlaceEvent {
 
 	@Subscribe
-	public void PlayerBlockPlaceEvent(HumanPlaceBlockEvent event) {
+	public void PlayerBlockPlaceEvent(PlayerPlaceBlockEvent event) {
 		if (BlockTrackR.Track) {
-			final String BlockType = String.valueOf(event.getBlock().getType());
-
-			// Extrapolates the X,Y,and Z coordinates from the broken block
-			// object.
-			final int X = event.getBlock().getBlockX();
-			final int Y = event.getBlock().getBlockY();
-			final int Z = event.getBlock().getBlockZ();
-
-			// Isolates the playername from the player object.
-			final String Player = event.getEntity().getName();
-			final String PlayerUUID = event.getEntity().getUniqueId()
-					.toString();
-
-			// Get player's world.
-			final String world = event.getEntity().getWorld().toString();
-
-			// Insert to DB
-			BTRDebugger.DLog("Block Place Event: " + "&" + BlockType + "&" + X
-					+ "&" + Y + "&" + Z + "&" + Player + "&" + PlayerUUID + "&"
-					+ world);
 			/**
-			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
-			 * void run() { Thread currentThread = Thread.currentThread();
-			 * currentThread .setName("BlockTrackR SQL Insert (PlaceEvent)- " +
-			 * Player + ":" + BlockType + "@" + X + "," + Y + "," + Z + ":" +
-			 * world); BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z,
-			 * world, BlockTrackR.getTime(), BlockType);
-			 * BTRDebugger.DLog(currentThread.getName());
-			 * 
-			 * } });
+			 * Initialize a Player object with the event's source cast as a
+			 * Player object.
 			 */
+			Player player = event.getPlayer();
+
+			final String BlockType = event.getBlock().getType().getName();
+
+			/**
+			 * Extrapolates the X,Y,and Z coordinates from the Player object.
+			 */
+			final int X = player.getLocation().getBlockX();
+			final int Y = player.getLocation().getBlockY();
+			final int Z = player.getLocation().getBlockZ();
+
+			/**
+			 * Isolates the player's name and UUID from the MessageEvent object.
+			 */
+			final String PlayerUUID = player.getIdentifier();
+			final String Player = player.getName();
+
+			/**
+			 * Extrapolates the world name from the Player object.
+			 */
+			final String world = player.getWorld().getName();
+
+			/**
+			 * Add to queue for insertion to SQL database.
+			 */
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					// Name this thread for debug purposes.
+					Thread.currentThread().setName("BTRBPE");
+					// Debug output controlled by switch in configuration file.
+					BTRDebugger.DLog("BTRBlockPlaceEvent");
+					BTRDebugger.DLog("BlockType: " + BlockType);
+					BTRDebugger.DLog("Player: " + Player);
+					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);
+					BTRDebugger.DLog("X: " + X);
+					BTRDebugger.DLog("Y: " + Y);
+					BTRDebugger.DLog("Z: " + Z);
+					BTRDebugger.DLog("World: " + world);
+
+					// Insert to DB
+					/**
+					 * BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z,
+					 * world, BlockTrackR.getTime(), BlockType);
+					 */
+
+				}
+			});
+
 		}
 	}
 
