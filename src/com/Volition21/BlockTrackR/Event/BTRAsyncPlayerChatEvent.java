@@ -83,6 +83,7 @@ public class BTRAsyncPlayerChatEvent {
 					// Name this thread for debug purposes.
 					Thread.currentThread().setName("BTRAPCE");
 					// Debug output controlled by switch in configuration file.
+					BTRDebugger.DLog("BTRAsyncPlayerChatEvent");
 					BTRDebugger.DLog("MSG: " + MSG);
 					BTRDebugger.DLog("Player: " + Player);
 					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);

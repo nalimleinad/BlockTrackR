@@ -17,13 +17,17 @@
  */
 package com.Volition21.BlockTrackR;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 
 import com.Volition21.BlockTrackR.Command.TestCommand;
 import com.Volition21.BlockTrackR.Event.*;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Inject;
 
 import org.slf4j.Logger;
@@ -63,15 +67,23 @@ public class BlockTrackR {
 	public static String dbuser;
 	public static String dbpass;
 
+	/**
+	 * Initialize all of BlockTrackR
+	 */
 	@Subscribe
 	public void onServerStart(ServerStartedEvent event) {
 
-		server = game.getServer(); // Have to getServer() onServerStart and not
-		// before for obvious reasons.
+		logger.info("BlockTracker Starting Up...");
+		logger.info("Server: v1.8 - Sponge");
+		/**
+		 * Initialize the Server object with the game's server instance. Must
+		 * not be attempted before the server has started - for obvious reasons.
+		 */
+		server = game.getServer();
 
-		logger.debug("This is a log message.");
-
-		// Command format
+		/**
+		 * Initialize Commands.
+		 */
 		CommandSpec TestCommand = CommandSpec.builder()
 				.setDescription(Texts.of("Short Desc."))
 				.setExtendedDescription(Texts.of("Long Desc."))
@@ -79,25 +91,37 @@ public class BlockTrackR {
 				// .setPermission("BlockTrackR.command")
 				.setExecutor(new TestCommand(server)).build();
 
+		/**
+		 * Register Commands.
+		 */
 		game.getCommandDispatcher().register(this, TestCommand, "test");
 
-		BTRDebugger.DLog("Reg BTRPJE");
-		game.getEventManager().register(this, new BTRPlayerJoinEvent());
-		BTRDebugger.DLog("Reg BTRPQE");
-		game.getEventManager().register(this, new BTRPlayerQuitEvent());
-		BTRDebugger.DLog("Reg BTRPPUIE");
-		game.getEventManager().register(this, new BTRPlayerPickUpItemEvent());
-		BTRDebugger.DLog("Reg BTRPDIE");
-		game.getEventManager().register(this, new BTRPlayerDropItemEvent());
-		BTRDebugger.DLog("Reg BTRBPE");
-		game.getEventManager().register(this, new BTRBlockPlaceEvent());
-		BTRDebugger.DLog("Reg BTRBBE");
-		game.getEventManager().register(this, new BTRBlockBreakEvent());
-		BTRDebugger.DLog("Reg BTRAPCE");
-		game.getEventManager().register(this, new BTRAsyncPlayerChatEvent());
+		/**
+		 * Register all the event listeners with the EventManager
+		 */
+		BTRDebugger.DLog("Registering Events...");
+		try {
+			game.getEventManager().register(this, new BTRPlayerJoinEvent());
+			game.getEventManager().register(this, new BTRPlayerQuitEvent());
+			game.getEventManager().register(this,
+					new BTRPlayerPickUpItemEvent());
+			game.getEventManager().register(this, new BTRPlayerDropItemEvent());
+			game.getEventManager().register(this, new BTRBlockPlaceEvent());
+			game.getEventManager().register(this, new BTRBlockBreakEvent());
+			game.getEventManager()
+					.register(this, new BTRAsyncPlayerChatEvent());
+		} catch (Exception e) {
+			// This should pretty much never ever happen. Ever.
+			BTRDebugger
+					.DLog("Event registration error, please submit bug report to Volition21 with your log files.");
+			BTRDebugger.DLog(e.toString());
+		} finally {
+			BTRDebugger.DLog("OK");
+		}
 
-		logger.info("BlockTracker 1.0");
-		logger.info("Server: v1.8");
+		/**
+		 * Check Configuration and SQL feasibility.
+		 */
 		logger.info("Checking Config...");
 		/**
 		 * if (BTRConfiguration.readConfig()) { if (BTRSQL.checkDB()) {
