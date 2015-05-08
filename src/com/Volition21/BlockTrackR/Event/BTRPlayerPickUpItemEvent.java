@@ -17,8 +17,10 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
+import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
+
 import com.Volition21.BlockTrackR.BTRDebugger;
 import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
@@ -29,34 +31,63 @@ public class BTRPlayerPickUpItemEvent {
 
 	@Subscribe
 	public void PlayerPickUpItemEvent(PlayerPickUpItemEvent event) {
-		BTRDebugger.DLog("BTRPPUIE instance");
-		// if (BlockTrackR.Track) {
+		if (BlockTrackR.Track) {
+			/**
+			 * Initialize a Player object with the event's source cast as a
+			 * Player object.
+			 */
+			Player player = event.getPlayer();
 
-		final String ItemType = event.getInventory().getName().toString();
+			/**
+			 * Initialize a String object with the name of the affected item.
+			 */
+			final String ItemType = event.getItems().toString();
 
-		final int X = event.getPlayer().getLocation().getBlockX();
-		final int Y = event.getPlayer().getLocation().getBlockY();
-		final int Z = event.getPlayer().getLocation().getBlockZ();
+			/**
+			 * Extrapolates the X,Y,and Z coordinates from the Player object.
+			 */
+			final int X = player.getLocation().getBlockX();
+			final int Y = player.getLocation().getBlockY();
+			final int Z = player.getLocation().getBlockZ();
 
-		// Isolates the playername from the player object.
-		final String Player = event.getPlayer().getName();
-		final String PlayerUUID = event.getPlayer().getUniqueId().toString();
+			/**
+			 * Isolates the player's name and UUID from the MessageEvent object.
+			 */
+			final String PlayerUUID = player.getIdentifier();
+			final String Player = player.getName();
 
-		// Get player's world.
-		final String world = event.getPlayer().getWorld().getName();
+			/**
+			 * Extrapolates the world name from the Player object.
+			 */
+			final String world = player.getWorld().getName();
 
-		// Insert to DB
-		BTRDebugger.DLog("Drop Item Event: " + ItemType + "&" + X + "&" + Y
-				+ "&" + Z + "&" + Player + "&" + PlayerUUID + "&" + world);
-		/**
-		 * BTRExecutorService.ThreadPool.execute(new Runnable() { public void
-		 * run() { Thread currentThread = Thread.currentThread(); currentThread
-		 * .setName("BlockTrackR SQL Insert (PickupItemEvent) - " + Player + ":"
-		 * + ItemType + "@" + X + "," + Y + "," + Z + ":" + world);
-		 * BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world,
-		 * BlockTrackR.getTime(), ItemType); } });
-		 */
-		// }
+			/**
+			 * Add to queue for insertion to SQL database.
+			 */
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					// Name this thread for debug purposes.
+					Thread.currentThread().setName("BTRPPUIE");
+					// Debug output controlled by switch in configuration file.
+					BTRDebugger.DLog("BTRPlayerPickUpItemEvent");
+					BTRDebugger.DLog("ItemType: " + ItemType);
+					BTRDebugger.DLog("Player: " + Player);
+					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);
+					BTRDebugger.DLog("X: " + X);
+					BTRDebugger.DLog("Y: " + Y);
+					BTRDebugger.DLog("Z: " + Z);
+					BTRDebugger.DLog("World: " + world);
+
+					// Insert to DB
+					/**
+					 * BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z,
+					 * world, BlockTrackR.getTime(), ItemType);
+					 */
+
+				}
+			});
+
+		}
 	}
 
 }
