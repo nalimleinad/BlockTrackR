@@ -31,7 +31,6 @@ public class BTRPlayerJoinEvent {
 
 	@Subscribe
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		BTRDebugger.DLog("BTRPJE instance");
 		if (BlockTrackR.Track) {
 			/**
 			 * Initialize a Player object with the event's source cast as a
