@@ -20,6 +20,7 @@ package com.Volition21.BlockTrackR.Event;
 //import org.apache.commons.lang.StringEscapeUtils;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.Tamer;
+import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.entity.player.User;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.message.MessageEvent;
@@ -41,24 +42,33 @@ public class BTRAsyncPlayerChatEvent {
 	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
 			final String MSG = Texts.toPlain(event.getMessage());
-			
+
 			// final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
 
-			// Extrapolates the X,Y,and Z coordinates from the broken block
+			// Cannot seem to get X,Y, and Z coordiantes from the MessageEvent
 			// object.
-			// final int X = event.getSource()
-			// final int Y = event.getSource()
-			// final int Z = event.getSource()
+			// Will come back to this later, might ask a SpongeDev.
+			/**
+			 * //Extrapolates the X,Y,and Z coordinates from the event. final
+			 * int X = event.getSource() final int Y = event.getSource() final
+			 * int Z = event.getSource()
+			 */
 
-			// Isolates the playername from the player object.
-			// final String Player = event.getSource()
-			// final String PlayerUUID = event.getSource()
+			// Isolates the player's name and UUID from the MessageEvent object.
+			final String PlayerUUID = event.getSource().getIdentifier();
+			final String Player = event.getSource().getName();
 
 			// Get player's world.
-			// final String world = event.getSource()
+			final String world = event.getSource().getName();
+			Object obj = event.getSource().getName();
+
+			// Debug content (Output determined by configuration file).
+			BTRDebugger.DLog("BTRAsyncPlayerChatEvent");
+			BTRDebugger.DLog("BTRAPCE MSG: " + MSG);
+			BTRDebugger.DLog("BTRAPCE Player:" + Player);
+			BTRDebugger.DLog("BTRAPCE PlayerUUID:" + PlayerUUID);
 
 			// Insert to DB
-			BTRDebugger.DLog("Message Event: " + MSG);
 			/**
 			 * BTRExecutorService.ThreadPool.execute(new Runnable() { public
 			 * void run() { Thread currentThread = Thread.currentThread();
