@@ -40,6 +40,9 @@ public class BTRBlockPlaceEvent {
 			 */
 			Player player = event.getPlayer();
 
+			/**
+			 * Initialize a String object with the name of the affected block.
+			 */
 			final String BlockType = event.getBlock().getType().getName();
 
 			/**
