@@ -26,14 +26,14 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 public class BTRExecutorService {
 
 	final static ThreadFactory threadFactory = new ThreadFactoryBuilder()
-			.setNameFormat("Orders-%d").setDaemon(true).build();
+			.setDaemon(true).build();
 
 	public final static ExecutorService ThreadPool = Executors
 			.newFixedThreadPool(4, threadFactory);
 
 	public void ThreadPoolStatus() {
 		// BlockTrackR.logger.info();
-		// Fetch ThreadPool repsonse time.
+		// Fetch ThreadPool response time.
 	}
 
 }
