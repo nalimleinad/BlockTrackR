@@ -17,35 +17,39 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
-import org.spongepowered.api.Server;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
+import com.Volition21.BlockTrackR.BTRDebugger;
+import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BTRVersionCheck;
+import com.Volition21.BlockTrackR.BlockTrackR;
 
-public class TestCommand implements CommandExecutor {
-
-	@SuppressWarnings("unused")
-	private Server server;
-
-	public TestCommand(Server server) {
-		this.server = server;
-	}
+public class BTRVersionCheckCommand {
 
 	BTRVersionCheck BTRvc = new BTRVersionCheck();
 
-	@Override
-	public CommandResult execute(CommandSource src, CommandContext args)
-			throws CommandException {
-		// server.broadcastMessage(Texts.of(BTRvc.getJSONasString("description")));
-		// forces a version check.
-		// This will probably become the version checking command.
-		BTRvc.versionCheck();
+	public void VersionCheckCommand(final CommandSource cs) {
+		BTRExecutorService.ThreadPool.execute(new Runnable() {
+			public void run() {
+				Thread.currentThread().setName("BTRVCC");
+				if (BlockTrackR.id.equals(BTRvc.getJSONasString("id"))) {
+					String tempversion = BTRvc.getJSONasString("version");
+					if (!(BlockTrackR.version.equals(tempversion))) {
+						cs.sendMessage(Texts
+								.of("This version of BlockTrackR may be outdated!"));
+						cs.sendMessage(Texts.of("Current Version: "
+								+ BlockTrackR.version));
+						cs.sendMessage(Texts.of("Available Version: "
+								+ tempversion));
+					} else {
+						cs.sendMessage(Texts.of("BlockTrackR is up-to-date."));
+					}
+				} else {
+					BTRDebugger.DLog("Version Checking Error.");
+				}
 
-		return CommandResult.success();
+			}
+		});
 	}
-
 }

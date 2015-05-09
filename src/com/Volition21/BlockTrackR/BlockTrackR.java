@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
-import com.Volition21.BlockTrackR.Command.TestCommand;
+import com.Volition21.BlockTrackR.Command.BTRMainCommand;
 import com.Volition21.BlockTrackR.Event.*;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.google.common.reflect.ClassPath;
@@ -38,6 +38,7 @@ import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
 import org.spongepowered.api.event.state.ServerStartedEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.event.EventManager;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.args.CommandElement;
@@ -63,6 +64,7 @@ public class BlockTrackR {
 	@Inject
 	public Game game;
 
+	public CommandService cs;
 	public Server server;
 	public static Logger logger;
 
@@ -81,25 +83,20 @@ public class BlockTrackR {
 		logger.info("BlockTracker Starting Up...");
 		logger.info("Minecraft: v1.8 - Sponge");
 		/**
-		 * Initialize the Server object with the game's server instance. Must
-		 * not be attempted before the server has started - for obvious reasons.
+		 * Initialize
+		 * 
+		 * -The Server object with the game's server instance. Must not be
+		 * attempted before the server has started - for obvious reasons.
+		 * 
+		 * -The CommandService object with the game's CommandDispatcher.
 		 */
 		server = game.getServer();
-
-		/**
-		 * Initialize Commands.
-		 */
-		CommandSpec TestCommand = CommandSpec.builder()
-				.setDescription(Texts.of("Short Desc."))
-				.setExtendedDescription(Texts.of("Long Desc."))
-				// .setChildren(subcommands)
-				// .setPermission("BlockTrackR.command")
-				.setExecutor(new TestCommand(server)).build();
+		cs = game.getCommandDispatcher();
 
 		/**
 		 * Register Commands.
 		 */
-		game.getCommandDispatcher().register(this, TestCommand, "test");
+		cs.register(this, new BTRMainCommand(server), "BTR");
 
 		/**
 		 * Register all the event listeners with the EventManager
