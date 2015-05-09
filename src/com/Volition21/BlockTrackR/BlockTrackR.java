@@ -40,11 +40,25 @@ import org.spongepowered.api.event.state.ServerStartedEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.event.EventManager;
 import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.util.command.args.CommandElement;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
 @SuppressWarnings("unused")
 @Plugin(id = "BTR", name = "BlockTrackR", version = "1.0")
 public class BlockTrackR {
+
+	public static String id = "BTR";
+	public static String version = "1.0";
+
+	public static Boolean Track = false;
+	public static String debug = "false";
+
+	public static String host;
+	public static String port;
+	public static String connector;
+	public static String database;
+	public static String dbuser;
+	public static String dbpass;
 
 	@Inject
 	public Game game;
@@ -57,24 +71,15 @@ public class BlockTrackR {
 		BlockTrackR.logger = logger;
 	}
 
-	public static Boolean Track = false;
-	public static String debug = "false";
-
-	public static String host;
-	public static String port;
-	public static String connector;
-	public static String database;
-	public static String dbuser;
-	public static String dbpass;
+	BTRVersionCheck BTRvc = new BTRVersionCheck();
 
 	/**
 	 * Initialize all of BlockTrackR
 	 */
 	@Subscribe
 	public void onServerStart(ServerStartedEvent event) {
-
 		logger.info("BlockTracker Starting Up...");
-		logger.info("Server: v1.8 - Sponge");
+		logger.info("Minecraft: v1.8 - Sponge");
 		/**
 		 * Initialize the Server object with the game's server instance. Must
 		 * not be attempted before the server has started - for obvious reasons.
@@ -127,9 +132,11 @@ public class BlockTrackR {
 				logger.info("Checking SQL Table...");
 				if (BTRSQL.checkTable()) {
 					logger.info("Everything appears OK");
-					logger.info("Debugginsg: " + debug);
+					logger.info("Debugging: " + debug);
 					logger.info("Enabled!");
 					Track = true;
+					// Do a quick version check.
+					BTRvc.versionCheck();
 				} else {
 					Track = false;
 				}

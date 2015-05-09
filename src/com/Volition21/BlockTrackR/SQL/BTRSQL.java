@@ -482,7 +482,7 @@ public class BTRSQL {
 		try {
 			connection = BTRConnectionPool.getConnection();
 		} catch (SQLException e) {
-			BlockTrackR.logger.warn("mySQL error: Could not close connection",
+			BlockTrackR.logger.warn("mySQL error: Could not open connection.",
 					e);
 		}
 		return connection;

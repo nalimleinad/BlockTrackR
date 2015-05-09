@@ -18,26 +18,32 @@
 package com.Volition21.BlockTrackR.Command;
 
 import org.spongepowered.api.Server;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
+import com.Volition21.BlockTrackR.BTRVersionCheck;
+
 public class TestCommand implements CommandExecutor {
 
+	@SuppressWarnings("unused")
 	private Server server;
 
 	public TestCommand(Server server) {
 		this.server = server;
 	}
 
+	BTRVersionCheck BTRvc = new BTRVersionCheck();
+
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args)
 			throws CommandException {
-		server.broadcastMessage(Texts.of("This is a broadcasted message!"));
-		src.sendMessage(Texts.of("Response message!"));
+		// server.broadcastMessage(Texts.of(BTRvc.getJSONasString("description")));
+		// forces a version check.
+		// This will probably become the version checking command.
+		BTRvc.versionCheck();
 
 		return CommandResult.success();
 	}
