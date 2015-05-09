@@ -26,8 +26,10 @@ import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
-@SuppressWarnings("unused")
 public class BTRPlayerPickUpItemEvent {
+
+	// TODO
+	// Change to human event, player not firing.
 
 	@Subscribe
 	public void PlayerPickUpItemEvent(PlayerPickUpItemEvent event) {
@@ -79,11 +81,8 @@ public class BTRPlayerPickUpItemEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					/**
-					 * BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z,
-					 * world, BlockTrackR.getTime(), ItemType);
-					 */
-
+					BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), ItemType);
 				}
 			});
 

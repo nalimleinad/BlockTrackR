@@ -81,11 +81,8 @@ public class BTRBlockPlaceEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					/**
-					 * BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z,
-					 * world, BlockTrackR.getTime(), BlockType);
-					 */
-
+					BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), BlockType);
 				}
 			});
 

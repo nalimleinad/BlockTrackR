@@ -26,7 +26,6 @@ import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 
-@SuppressWarnings("unused")
 public class BTRPlayerJoinEvent {
 
 	@Subscribe
@@ -81,11 +80,8 @@ public class BTRPlayerJoinEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					/**
-					 * BTRSQL.insertPlayerLogin(Player, PlayerUUID, X, Y, Z,
-					 * world, BlockTrackR.getTime(), IP);
-					 */
-
+					BTRSQL.insertPlayerLogin(Player, PlayerUUID, X, Y, Z,
+							world, BlockTrackR.getTime(), IP);
 				}
 			});
 

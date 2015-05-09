@@ -93,11 +93,8 @@ public class BTRAsyncPlayerChatEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					/**
-					 * BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z,
-					 * world, BlockTrackR.getTime(), SanatizedMSG);
-					 */
-
+					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), MSG);
 				}
 			});
 

@@ -1,6 +1,0 @@
-#Config File depricated by internal configuration methods.
-dbHost: 127.0.0.1
-dbPort: 3306
-database: minecraft
-dbUser: db_username
-dbPass: db_password

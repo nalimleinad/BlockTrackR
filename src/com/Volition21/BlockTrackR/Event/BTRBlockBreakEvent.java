@@ -27,7 +27,6 @@ import com.Volition21.BlockTrackR.SQL.BTRSQL;
 
 import org.spongepowered.api.event.entity.player.PlayerBreakBlockEvent;
 
-@SuppressWarnings("unused")
 public class BTRBlockBreakEvent {
 
 	@Subscribe
@@ -80,11 +79,8 @@ public class BTRBlockBreakEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					/**
-					 * BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z,
-					 * world, BlockTrackR.getTime(), BlockType);
-					 */
-
+					BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), BlockType);
 				}
 			});
 

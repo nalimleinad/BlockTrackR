@@ -127,7 +127,7 @@ public class BlockTrackR {
 				logger.info("Checking SQL Table...");
 				if (BTRSQL.checkTable()) {
 					logger.info("Everything appears OK");
-					logger.info("Debugging: " + debug);
+					logger.info("Debugginsg: " + debug);
 					logger.info("Enabled!");
 					Track = true;
 				} else {

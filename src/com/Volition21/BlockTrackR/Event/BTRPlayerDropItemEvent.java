@@ -26,7 +26,6 @@ import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerDropItemEvent;
 
-@SuppressWarnings("unused")
 public class BTRPlayerDropItemEvent {
 
 	@Subscribe
@@ -79,11 +78,8 @@ public class BTRPlayerDropItemEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					/**
-					 * BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world,
-					 * BlockTrackR.getTime(), ItemType);
-					 */
-
+					BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world,
+							BlockTrackR.getTime(), ItemType);
 				}
 			});
 
