@@ -26,6 +26,8 @@ import java.util.Set;
 import com.Volition21.BlockTrackR.Command.BTRMainCommand;
 import com.Volition21.BlockTrackR.Event.*;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
+import com.Volition21.BlockTrackR.Utility.BTRVersionCheck;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Inject;

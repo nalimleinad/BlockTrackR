@@ -15,25 +15,17 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Volition21.BlockTrackR;
+package com.Volition21.BlockTrackR.Utility;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import com.Volition21.BlockTrackR.BlockTrackR;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
+public class BTRDebugger {
 
-public class BTRExecutorService {
+	public static void DLog(String msg) {
+		if (BlockTrackR.debug.equals("true")) {
+			BlockTrackR.logger.info(msg);
+		}
 
-	final static ThreadFactory threadFactory = new ThreadFactoryBuilder()
-			.setDaemon(true).build();
-
-	public final static ExecutorService ThreadPool = Executors
-			.newFixedThreadPool(4, threadFactory);
-
-	public void ThreadPoolStatus() {
-		// BlockTrackR.logger.info();
-		// Fetch ThreadPool response time.
 	}
 
 }

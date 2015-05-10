@@ -31,10 +31,10 @@ import org.spongepowered.api.text.TextBuilder.Literal;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.Identifiable;
 
-import com.Volition21.BlockTrackR.BTRDebugger;
-import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
+import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
 @SuppressWarnings("unused")
 public class BTRAsyncPlayerChatEvent {

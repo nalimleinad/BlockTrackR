@@ -21,10 +21,10 @@ import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
 
-import com.Volition21.BlockTrackR.BTRDebugger;
-import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
+import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
 public class BTRPlayerPickUpItemEvent {
 

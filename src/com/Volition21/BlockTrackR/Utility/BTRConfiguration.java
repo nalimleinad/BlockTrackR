@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Volition21.BlockTrackR;
+package com.Volition21.BlockTrackR.Utility;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,12 +26,32 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import com.Volition21.BlockTrackR.BlockTrackR;
+
 public class BTRConfiguration {
 
 	static Properties prop = new Properties();
 	static OutputStream output = null;
 	static File Dir = new File("config//BlockTrackR");
 	static String ConfDir = "config//BlockTrackR//BlockTrackR.conf";
+
+	public void setConfigValue(String key, String value) {
+
+		try {
+			FileInputStream in = new FileInputStream(ConfDir);
+			Properties prop = new Properties();
+			prop.load(in);
+			in.close();
+
+			FileOutputStream out = new FileOutputStream(ConfDir);
+			prop.setProperty(key, value);
+			prop.store(out, null);
+			out.close();
+		} catch (IOException e) {
+			BlockTrackR.logger.info(e.toString());
+		}
+
+	}
 
 	public static boolean readConfig() {
 
@@ -52,6 +72,7 @@ public class BTRConfiguration {
 
 			prop.load(input);
 
+			BlockTrackR.debug = prop.getProperty("version_check");
 			BlockTrackR.debug = prop.getProperty("debug");
 			BlockTrackR.host = prop.getProperty("host");
 			BlockTrackR.port = prop.getProperty("port");
@@ -78,6 +99,7 @@ public class BTRConfiguration {
 
 			output = new FileOutputStream(ConfDir);
 
+			prop.setProperty("version_check", "true");
 			prop.setProperty("debug", "false");
 			prop.setProperty("host", "localhost");
 			prop.setProperty("port", "3306");

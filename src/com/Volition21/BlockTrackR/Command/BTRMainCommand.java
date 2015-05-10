@@ -44,15 +44,21 @@ public class BTRMainCommand implements CommandCallable {
 	}
 
 	BTRVersionCheckCommand BTRVCC = new BTRVersionCheckCommand();
+	BTRDebugCommand BTRDC = new BTRDebugCommand();
 
 	@Override
 	public Optional<CommandResult> process(CommandSource cs, String args)
 			throws CommandException {
-		if (args.startsWith("version")) {
+		if (args.startsWith("debug")) {
+			CommandSource css = cs;
+			BTRDC.ToggleDebug(css);
+		} else if (args.startsWith("version")) {
 			BTRVCC.VersionCheckCommand(cs);
 		} else {
 			cs.sendMessage(Texts.of("BTR Commands:", TextColors.RED));
 			cs.sendMessage(Texts.of("/BTR version - Check for updates.",
+					TextColors.RED));
+			cs.sendMessage(Texts.of("/BTR debug - Toggle debug output.",
 					TextColors.RED));
 		}
 		return Optional.of(CommandResult.success());

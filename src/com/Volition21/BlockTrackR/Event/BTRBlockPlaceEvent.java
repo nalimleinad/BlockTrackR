@@ -17,10 +17,10 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import com.Volition21.BlockTrackR.BTRDebugger;
-import com.Volition21.BlockTrackR.BTRExecutorService;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
+import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.google.common.base.Optional;
 
 import org.spongepowered.api.entity.player.Player;

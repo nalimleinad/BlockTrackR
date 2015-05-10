@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Volition21.BlockTrackR;
+package com.Volition21.BlockTrackR.Utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import com.Volition21.BlockTrackR.BlockTrackR;
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
 
@@ -93,7 +94,6 @@ public class BTRVersionCheck {
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 			}
-			BTRDebugger.DLog(builder.toString());
 			JsonParserFactory factory = JsonParserFactory.getInstance();
 			JSONParser parser = factory.newJsonParser();
 			Map<?, ?> jsonData = parser.parseJson(builder.toString());

@@ -19,36 +19,39 @@ package com.Volition21.BlockTrackR.Command;
 
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
+import org.spongepowered.api.util.command.source.ConsoleSource;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
-import com.Volition21.BlockTrackR.Utility.BTRDebugger;
+import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRVersionCheck;
 
-public class BTRVersionCheckCommand {
+public class BTRDebugCommand {
 
 	BTRVersionCheck BTRvc = new BTRVersionCheck();
+	BTRConfiguration BTRc = new BTRConfiguration();
 
-	public void VersionCheckCommand(final CommandSource cs) {
+	public void ToggleDebug(final CommandSource cs) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
 			public void run() {
-				Thread.currentThread().setName("BTRVCC");
-				if (BlockTrackR.id.equals(BTRvc.getJSONasString("id"))) {
-					String tempversion = BTRvc.getJSONasString("version");
-					if (!(BlockTrackR.version.equals(tempversion))) {
-						cs.sendMessage(Texts
-								.of("This version of BlockTrackR may be outdated!"));
-						cs.sendMessage(Texts.of("Current Version: "
-								+ BlockTrackR.version));
-						cs.sendMessage(Texts.of("Available Version: "
-								+ tempversion));
-					} else {
-						cs.sendMessage(Texts.of("BlockTrackR is up-to-date."));
+				Thread.currentThread().setName("BTRDC");
+				if (BlockTrackR.debug.equals("true")) {
+					BlockTrackR.debug = "false";
+					BlockTrackR.logger.info("Debugging: " + BlockTrackR.debug);
+					if (!(cs instanceof ConsoleSource)) {
+						cs.sendMessage(Texts.of("Debugging: "
+								+ BlockTrackR.debug));
 					}
+					BTRc.setConfigValue("debug", "false");
 				} else {
-					BTRDebugger.DLog("Version Checking Error.");
+					BlockTrackR.debug = "true";
+					BTRc.setConfigValue("debug", "true");
+					BlockTrackR.logger.info("Debugging: " + BlockTrackR.debug);
+					if (!(cs instanceof ConsoleSource)) {
+						cs.sendMessage(Texts.of("Debugging: "
+								+ BlockTrackR.debug));
+					}
 				}
-
 			}
 		});
 	}
