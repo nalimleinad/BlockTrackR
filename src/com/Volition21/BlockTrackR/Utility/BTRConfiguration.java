@@ -72,7 +72,7 @@ public class BTRConfiguration {
 
 			prop.load(input);
 
-			BlockTrackR.debug = prop.getProperty("version_check");
+			BlockTrackR.version_check = prop.getProperty("version_check");
 			BlockTrackR.debug = prop.getProperty("debug");
 			BlockTrackR.host = prop.getProperty("host");
 			BlockTrackR.port = prop.getProperty("port");

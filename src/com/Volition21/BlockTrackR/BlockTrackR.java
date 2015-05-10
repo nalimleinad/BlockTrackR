@@ -39,6 +39,7 @@ import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
 import org.spongepowered.api.event.state.ServerStartedEvent;
+import org.spongepowered.api.event.state.ServerStartingEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.event.EventManager;
@@ -54,6 +55,7 @@ public class BlockTrackR {
 	public static String version = "1.0";
 
 	public static Boolean Track = false;
+	public static String version_check = "true";
 	public static String debug = "false";
 
 	public static String host;
@@ -81,7 +83,7 @@ public class BlockTrackR {
 	 * Initialize all of BlockTrackR
 	 */
 	@Subscribe
-	public void onServerStart(ServerStartedEvent event) {
+	public void onServerStarting(ServerStartingEvent event) {
 		logger.info("BlockTracker Starting Up...");
 		logger.info("Minecraft: v1.8 - Sponge");
 		/**
@@ -134,8 +136,9 @@ public class BlockTrackR {
 					logger.info("Debugging: " + debug);
 					logger.info("Enabled!");
 					Track = true;
-					// Do a quick version check.
-					BTRvc.versionCheck();
+					if (version_check.equals("true")) {
+						BTRvc.versionCheck();
+					}
 				} else {
 					Track = false;
 				}
