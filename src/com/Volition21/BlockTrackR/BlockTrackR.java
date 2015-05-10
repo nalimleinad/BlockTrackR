@@ -17,37 +17,26 @@
  */
 package com.Volition21.BlockTrackR;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
 
 import com.Volition21.BlockTrackR.Command.BTRMainCommand;
 import com.Volition21.BlockTrackR.Event.*;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRVersionCheck;
-import com.google.common.reflect.ClassPath;
-import com.google.common.reflect.ClassPath.ClassInfo;
-import com.google.inject.Inject;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
+
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
-import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
-import org.spongepowered.api.event.state.ServerStartedEvent;
 import org.spongepowered.api.event.state.ServerStartingEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
-import org.spongepowered.api.service.event.EventManager;
-import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.command.args.CommandElement;
-import org.spongepowered.api.util.command.spec.CommandSpec;
 
-@SuppressWarnings("unused")
 @Plugin(id = "BTR", name = "BlockTrackR", version = "1.0")
 public class BlockTrackR {
 

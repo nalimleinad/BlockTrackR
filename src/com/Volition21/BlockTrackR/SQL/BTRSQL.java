@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 
 /**
  * BTRSQL
@@ -433,11 +434,12 @@ public class BTRSQL {
 	 * 
 	 **/
 	// TODO
-	public static List<String> getBlockRecord(int X, int Y, int Z, String event) {
+	public List<String> getBlockRecord(String X, String Y, String Z) {
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs;
+		ArrayList<String> list = new ArrayList<String>();
 
 		try {
 			connection = openConnection(connection);
@@ -446,19 +448,23 @@ public class BTRSQL {
 			String Fetch = "SELECT * FROM `blocktrackr` WHERE `x`='" + X
 					+ "' AND `y`='" + Y + "' AND `z`='" + Z + "';";
 			statement.execute(SelectDB);
+			BTRDebugger.DLog(Fetch);
 			rs = statement.executeQuery(Fetch);
 
-			ArrayList<String> list = new ArrayList<String>();
 			while (rs.next()) {
-				list.add(rs.getString("player"));
+				list.add(rs.getString("player") + " : "
+						+ rs.getString("content") + " : "
+						+ rs.getString("event"));
+			}
 
-				String[] result = new String[list.size()];
-				result = list.toArray(result);
+			String[] result = new String[list.size()];
+			result = list.toArray(result);
 
+			if (!(rs.last())) {
+				BTRDebugger.DLog("No Rows");
+			} else {
 				for (int i = 0; i < result.length; i++) {
-					// Return this to command
-					// Return this to tool.
-					BlockTrackR.logger.info(result[i]);
+					BTRDebugger.DLog(result[i]);
 				}
 			}
 
@@ -468,7 +474,7 @@ public class BTRSQL {
 
 		closeConnection(connection);
 		closeStatement(statement);
-		return null;
+		return list;
 
 	}
 
