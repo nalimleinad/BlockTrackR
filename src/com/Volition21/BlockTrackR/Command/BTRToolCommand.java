@@ -23,7 +23,7 @@ import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.Volition21.BlockTrackR.Utility.BTRItemManipulation;
+import com.Volition21.BlockTrackR.Tool.BTRItemManipulation;
 
 public class BTRToolCommand {
 	BTRItemManipulation BTRIM = new BTRItemManipulation();

@@ -17,13 +17,83 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
-import com.Volition21.BlockTrackR.Utility.BTRRetriveRecord;
+
+import com.Volition21.BlockTrackR.SQL.BTRSQL;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
+import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
 public class BTRRetriveCommand {
-	BTRRetriveRecord BTRR = new BTRRetriveRecord();
 
+	BTRSQL BTRsql = new BTRSQL();
+
+	List<String> listresults;
+
+	public String[] results;
+
+	/**
+	 * Retries all SQL records at the provided X, Y, and Z coordinates and sends
+	 * them back to the CommandSource. Requires three arguments (args[1] = Z,
+	 * args[2] = Y, args[3] = Z)
+	 * 
+	 * @param cs
+	 *            The CommandSource.
+	 * @param args
+	 *            The commands arguments.
+	 */
 	public void retriveCommand(final CommandSource cs, final String[] args) {
-		BTRR.retriveRecordsByCommand(cs, args);
+		BTRExecutorService.ThreadPool.execute(new Runnable() {
+			String X;
+			String Y;
+			String Z;
+
+			public void run() {
+				Thread.currentThread().setName("BTRRR");
+				try {
+					String X_ = args[1];
+					String Y_ = args[2];
+					String Z_ = args[3];
+					X = StringEscapeUtils.escapeSql(X_);
+					Y = StringEscapeUtils.escapeSql(Y_);
+					Z = StringEscapeUtils.escapeSql(Z_);
+				} catch (IndexOutOfBoundsException e) {
+					cs.sendMessage(Texts.of(TextColors.RED,
+							"Inncorrect Syntax."));
+					cs.sendMessage(Texts.of(TextColors.RED,
+							"/BTR retrive [x] [y] [z]"));
+				}
+				if (!(X == null || Y == null || Z == null)) {
+					BTRDebugger.DLog("BTRRetriveRecord");
+					BTRDebugger.DLog("X: " + X);
+					BTRDebugger.DLog("Y: " + Y);
+					BTRDebugger.DLog("Z: " + Z);
+					listresults = BTRsql.getBlockRecord(X, Y, Z);
+					results = new String[listresults.size()];
+
+					results = listresults.toArray(results);
+
+					int length = results.length;
+					if (length == 0) {
+						cs.sendMessage(Texts.of(TextColors.RED, "No Results"));
+					} else {
+						cs.sendMessage(Texts.of(TextColors.RED,
+								"BlockTrackR Results @ " + X + "," + Y + ","
+										+ Z));
+						cs.sendMessage(Texts.of(TextColors.RED,
+								"----------------------------"));
+						for (int i = 0; i < results.length; i++) {
+							cs.sendMessage(Texts.of(TextColors.RED, results[i]));
+						}
+						cs.sendMessage(Texts.of(TextColors.RED,
+								"----------------------------"));
+					}
+				}
+			}
+		});
 	}
 }

@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Volition21.BlockTrackR.Utility;
+package com.Volition21.BlockTrackR.Tool;
 
 import org.spongepowered.api.Game;
 import org.spongepowered.api.data.manipulators.DisplayNameData;

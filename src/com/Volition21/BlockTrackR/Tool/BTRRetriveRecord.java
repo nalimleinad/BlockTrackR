@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.Volition21.BlockTrackR.Utility;
+package com.Volition21.BlockTrackR.Tool;
 
 import java.util.List;
 
@@ -36,58 +36,14 @@ public class BTRRetriveRecord {
 
 	public String[] results;
 
-	public void retriveRecordsByCommand(final CommandSource cs,
-			final String[] args) {
-		BTRExecutorService.ThreadPool.execute(new Runnable() {
-			String X;
-			String Y;
-			String Z;
-
-			public void run() {
-				Thread.currentThread().setName("BTRRR");
-				try {
-					String X_ = args[1];
-					String Y_ = args[2];
-					String Z_ = args[3];
-					X = StringEscapeUtils.escapeSql(X_);
-					Y = StringEscapeUtils.escapeSql(Y_);
-					Z = StringEscapeUtils.escapeSql(Z_);
-				} catch (IndexOutOfBoundsException e) {
-					cs.sendMessage(Texts.of(TextColors.RED,
-							"Inncorrect Syntax."));
-					cs.sendMessage(Texts.of(TextColors.RED,
-							"/BTR retrive [x] [y] [z]"));
-				}
-				if (!(X == null || Y == null || Z == null)) {
-					BTRDebugger.DLog("BTRRetriveRecord");
-					BTRDebugger.DLog("X: " + X);
-					BTRDebugger.DLog("Y: " + Y);
-					BTRDebugger.DLog("Z: " + Z);
-					listresults = BTRsql.getBlockRecord(X, Y, Z);
-					results = new String[listresults.size()];
-
-					results = listresults.toArray(results);
-
-					int length = results.length;
-					if (length == 0) {
-						cs.sendMessage(Texts.of(TextColors.RED, "No Results"));
-					} else {
-						cs.sendMessage(Texts.of(TextColors.RED,
-								"BlockTrackR Results @ " + X + "," + Y + ","
-										+ Z));
-						cs.sendMessage(Texts.of(TextColors.RED,
-								"----------------------------"));
-						for (int i = 0; i < results.length; i++) {
-							cs.sendMessage(Texts.of(TextColors.RED, results[i]));
-						}
-						cs.sendMessage(Texts.of(TextColors.RED,
-								"----------------------------"));
-					}
-				}
-			}
-		});
-	}
-
+	/*
+	 * TODO
+	 * 
+	 * This will eventually be the class and methods to get records for the log
+	 * block tool.
+	 * 
+	 * -The InventoryAPI is not yet complete.
+	 */
 	public void retriveRecordsByTool(final CommandSource cs, final String[] args) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
 			String X;

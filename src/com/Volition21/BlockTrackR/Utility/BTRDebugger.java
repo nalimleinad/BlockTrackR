@@ -21,6 +21,11 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 
 public class BTRDebugger {
 
+	/**
+	 * Outputs verbose information to the console if the configuration property is set to true.
+	 * 
+	 * @param msg The verbose information to output.
+	 */
 	public static void DLog(String msg) {
 		if (BlockTrackR.debug.equals("true")) {
 			BlockTrackR.logger.info(msg);

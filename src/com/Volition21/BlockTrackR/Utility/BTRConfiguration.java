@@ -35,6 +35,12 @@ public class BTRConfiguration {
 	static File Dir = new File("config//BlockTrackR");
 	static String ConfDir = "config//BlockTrackR//BlockTrackR.conf";
 
+	/**
+	 * Writes the provided configuration key and value to the config file.
+	 * 
+	 * @param key The property identifier. EX: "debug"
+	 * @param value The property's value. EX: "true"
+	 */
 	public void setConfigValue(String key, String value) {
 
 		try {
@@ -53,6 +59,11 @@ public class BTRConfiguration {
 
 	}
 
+	/**
+	 * Reads the configuration file and updates all the relevant variables.
+	 * 
+	 * @return Returns false if the configuration file could not be read OR did not exist and was created.
+	 */
 	public static boolean readConfig() {
 
 		Properties prop = new Properties();
@@ -94,6 +105,9 @@ public class BTRConfiguration {
 		return true;
 	}
 
+	/**
+	 * Creates the configuration file with default values and informs the end user a restart is necessary.
+	 */
 	public static void createConfig() {
 		try {
 
