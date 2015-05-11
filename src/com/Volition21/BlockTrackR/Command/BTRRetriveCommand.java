@@ -81,15 +81,15 @@ public class BTRRetriveCommand {
 					if (length == 0) {
 						cs.sendMessage(Texts.of(TextColors.RED, "No Results"));
 					} else {
-						cs.sendMessage(Texts.of(TextColors.RED,
+						cs.sendMessage(Texts.of(TextColors.DARK_AQUA,
 								"BlockTrackR Results @ " + X + "," + Y + ","
 										+ Z));
-						cs.sendMessage(Texts.of(TextColors.RED,
-								"----------------------------"));
+						cs.sendMessage(Texts.of(TextColors.DARK_RED,
+								"------------------------------"));
 						for (int i = 0; i < results.length; i++) {
 							cs.sendMessage(Texts.of(TextColors.RED, results[i]));
 						}
-						cs.sendMessage(Texts.of(TextColors.RED,
+						cs.sendMessage(Texts.of(TextColors.DARK_RED,
 								"----------------------------"));
 					}
 				}
