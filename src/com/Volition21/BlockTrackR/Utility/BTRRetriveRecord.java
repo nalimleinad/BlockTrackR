@@ -46,9 +46,12 @@ public class BTRRetriveRecord {
 			public void run() {
 				Thread.currentThread().setName("BTRRR");
 				try {
-					X = args[1];
-					Y = args[2];
-					Z = args[3];
+					String X_ = args[1];
+					String Y_ = args[2];
+					String Z_ = args[3];
+					X = StringEscapeUtils.escapeSql(X_);
+					Y = StringEscapeUtils.escapeSql(Y_);
+					Z = StringEscapeUtils.escapeSql(Z_);
 				} catch (IndexOutOfBoundsException e) {
 					cs.sendMessage(Texts.of(TextColors.RED,
 							"Inncorrect Syntax."));
