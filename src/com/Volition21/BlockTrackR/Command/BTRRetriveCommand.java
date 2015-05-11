@@ -17,59 +17,13 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
-import java.util.List;
-
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
-
-import com.Volition21.BlockTrackR.BlockTrackR;
-import com.Volition21.BlockTrackR.SQL.BTRSQL;
-import com.Volition21.BlockTrackR.Utility.BTRDebugger;
-import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRRetriveRecord;
 
 public class BTRRetriveCommand {
+	BTRRetriveRecord BTRR = new BTRRetriveRecord();
 
-	BTRSQL BTRsql = new BTRSQL();
-
-	String X;
-	String Y;
-	String Z;
-
-	List<String> listresults;
-
-	public String[] results;
-
-	public void ToggleDebug(final CommandSource cs, final String[] args) {
-		BTRExecutorService.ThreadPool.execute(new Runnable() {
-			public void run() {
-				Thread.currentThread().setName("BTRRC");
-				try {
-					X = args[1];
-					Y = args[2];
-					Z = args[3];
-				} catch (IndexOutOfBoundsException e) {
-					cs.sendMessage(Texts.of("Not enough arguments"));
-				}
-				if (!(X == null || Y == null || Z == null)) {
-					BTRDebugger.DLog("BTRRetriveCommand");
-					BTRDebugger.DLog("X: " + X);
-					BTRDebugger.DLog("Y: " + Y);
-					BTRDebugger.DLog("Z: " + Z);
-					listresults = BTRsql.getBlockRecord(X, Y, Z);
-					results = new String[listresults.size()];
-
-					results = listresults.toArray(results);
-
-					int length = results.length;
-					if (length == 0) {
-						cs.sendMessage(Texts.of("No Results"));
-					} else {
-						for (int i = 0; i < results.length; i++) {
-							cs.sendMessage(Texts.of(results[i]));
-						}
-					}
-				}
-			}
-		});
+	public void retriveCommand(final CommandSource cs, final String[] args) {
+		BTRR.retriveRecordsByCommand(cs, args);
 	}
 }

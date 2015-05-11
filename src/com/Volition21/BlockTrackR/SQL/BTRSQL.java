@@ -454,14 +454,14 @@ public class BTRSQL {
 			while (rs.next()) {
 				list.add(rs.getString("player") + " : "
 						+ rs.getString("content") + " : "
-						+ rs.getString("event"));
+						+ rs.getString("event") + " : " + rs.getString("time"));
 			}
 
 			String[] result = new String[list.size()];
 			result = list.toArray(result);
 
 			if (!(rs.last())) {
-				BTRDebugger.DLog("No Rows");
+				BTRDebugger.DLog("getBlockRecord - No Rows");
 			} else {
 				for (int i = 0; i < result.length; i++) {
 					BTRDebugger.DLog(result[i]);

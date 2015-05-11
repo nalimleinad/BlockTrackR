@@ -52,21 +52,20 @@ public class BTRMainCommand implements CommandCallable {
 			throws CommandException {
 		String[] args = arguments.split("\\s|\\s+");
 		if (args[0].equals("debug")) {
-			CommandSource css = cs;
-			BTRDC.ToggleDebug(css);
+			BTRDC.ToggleDebug(cs);
 		} else if (args[0].equals("version")) {
 			BTRVCC.VersionCheckCommand(cs);
 		} else if (args[0].equals("retrive")) {
-			BTRRC.ToggleDebug(cs, args);
+			BTRRC.retriveCommand(cs, args);
 		} else {
-			cs.sendMessage(Texts.of("BTR Commands:", TextColors.RED));
-			cs.sendMessage(Texts.of("/BTR version - Check for updates.",
-					TextColors.RED));
-			cs.sendMessage(Texts.of("/BTR debug - Toggle debug output.",
-					TextColors.RED));
+			cs.sendMessage(Texts.of(TextColors.RED, "BTR Commands:"));
+			cs.sendMessage(Texts.of(TextColors.GREEN,
+					"/BTR version - Check for updates."));
+			cs.sendMessage(Texts.of(TextColors.GREEN,
+					"/BTR debug - Toggle debug output."));
 			cs.sendMessage(Texts
-					.of("/BTR retrive [x] [y] [z] - Retrive records at X Y Z coordaintes.",
-							TextColors.RED));
+					.of(TextColors.GREEN,
+							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinate."));
 		}
 		return Optional.of(CommandResult.success());
 	}
