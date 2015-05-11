@@ -89,7 +89,7 @@ public class BlockTrackR {
 		/*
 		 * Register Commands.
 		 */
-		cs.register(this, new BTRMainCommand(server), "BTR");
+		cs.register(this, new BTRMainCommand(server, game), "BTR");
 
 		/*
 		 * Register all the event listeners with the EventManager

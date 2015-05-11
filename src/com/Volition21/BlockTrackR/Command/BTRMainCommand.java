@@ -20,6 +20,7 @@ package com.Volition21.BlockTrackR.Command;
 import java.util.Arrays;
 import java.util.List;
 
+import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Text;
@@ -36,11 +37,14 @@ public class BTRMainCommand implements CommandCallable {
 
 	@SuppressWarnings("unused")
 	private Server server;
+	@SuppressWarnings("unused")
+	private Game game;
 
 	Player p;
 
-	public BTRMainCommand(Server server) {
+	public BTRMainCommand(Server server, Game game) {
 		this.server = server;
+		this.game = game;
 	}
 
 	BTRVersionCheckCommand BTRVCC = new BTRVersionCheckCommand();
