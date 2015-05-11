@@ -17,7 +17,7 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-//import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.Tamer;
 import org.spongepowered.api.entity.player.Player;
@@ -42,40 +42,39 @@ public class BTRAsyncPlayerChatEvent {
 	@Subscribe
 	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
-			/**
+			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
 			Player player = (org.spongepowered.api.entity.player.Player) event
 					.getSource();
 
-			/**
+			/*
 			 * Initialize a String object with the Text object converted to a
 			 * plain String. Sanitize the String for insertion to SQL database.
 			 */
 			final String MSG = Texts.toPlain(event.getMessage());
-			// TODO
-			// final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
+			final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
 
-			/**
+			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
 			 */
 			final int X = player.getLocation().getBlockX();
 			final int Y = player.getLocation().getBlockY();
 			final int Z = player.getLocation().getBlockZ();
 
-			/**
+			/*
 			 * Isolates the player's name and UUID from the MessageEvent object.
 			 */
 			final String PlayerUUID = player.getIdentifier();
 			final String Player = player.getName();
 
-			/**
+			/*
 			 * Extrapolates the world name from the Player object.
 			 */
 			final String world = player.getWorld().getName();
 
-			/**
+			/*
 			 * Add to queue for insertion to SQL database.
 			 */
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
@@ -84,7 +83,7 @@ public class BTRAsyncPlayerChatEvent {
 					Thread.currentThread().setName("BTRAPCE");
 					// Debug output controlled by switch in configuration file.
 					BTRDebugger.DLog("BTRAsyncPlayerChatEvent");
-					BTRDebugger.DLog("MSG: " + MSG);
+					BTRDebugger.DLog("MSG: " + SanatizedMSG);
 					BTRDebugger.DLog("Player: " + Player);
 					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);
 					BTRDebugger.DLog("X: " + X);
@@ -94,7 +93,7 @@ public class BTRAsyncPlayerChatEvent {
 
 					// Insert to DB
 					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), MSG);
+							BlockTrackR.getTime(), SanatizedMSG);
 				}
 			});
 

@@ -32,36 +32,36 @@ public class BTRBlockBreakEvent {
 	@Subscribe
 	public void PlayerBreakBlockEvent(PlayerBreakBlockEvent event) {
 		if (BlockTrackR.Track) {
-			/**
+			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
 			Player player = event.getPlayer();
 
-			/**
+			/*
 			 * Initialize a String object with the name of the affected block.
 			 */
 			final String BlockType = event.getBlock().getType().getName();
 
-			/**
+			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
 			 */
-			final int X = player.getLocation().getBlockX();
-			final int Y = player.getLocation().getBlockY();
-			final int Z = player.getLocation().getBlockZ();
+			final int X = event.getBlock().getBlockX();
+			final int Y = event.getBlock().getBlockY();
+			final int Z = event.getBlock().getBlockZ();
 
-			/**
+			/*
 			 * Isolates the player's name and UUID from the MessageEvent object.
 			 */
 			final String PlayerUUID = player.getIdentifier();
 			final String Player = player.getName();
 
-			/**
+			/*
 			 * Extrapolates the world name from the Player object.
 			 */
 			final String world = player.getWorld().getName();
 
-			/**
+			/*
 			 * Add to queue for insertion to SQL database.
 			 */
 			BTRExecutorService.ThreadPool.execute(new Runnable() {

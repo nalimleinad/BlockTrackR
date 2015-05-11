@@ -75,7 +75,7 @@ public class BlockTrackR {
 	public void onServerStarting(ServerStartingEvent event) {
 		logger.info("BlockTracker Starting Up...");
 		logger.info("Minecraft: v1.8 - Sponge");
-		/**
+		/*
 		 * Initialize
 		 * 
 		 * -The Server object with the game's server instance. Must not be
@@ -86,12 +86,12 @@ public class BlockTrackR {
 		server = game.getServer();
 		cs = game.getCommandDispatcher();
 
-		/**
+		/*
 		 * Register Commands.
 		 */
 		cs.register(this, new BTRMainCommand(server), "BTR");
 
-		/**
+		/*
 		 * Register all the event listeners with the EventManager
 		 */
 		logger.info("Registering Events...");
@@ -112,7 +112,7 @@ public class BlockTrackR {
 			Track = false;
 		}
 
-		/**
+		/*
 		 * Check Configuration and SQL feasibility.
 		 */
 		logger.info("Checking Config...");

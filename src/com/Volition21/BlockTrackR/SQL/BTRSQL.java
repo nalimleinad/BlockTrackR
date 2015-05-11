@@ -37,11 +37,10 @@ import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 public class BTRSQL {
 
 	/**
-	 * CheckDB
+	 * Checks if the DB exists or has been created.
 	 * 
-	 * Will return true if DB exists or has been created.
-	 * 
-	 **/
+	 * @return True if DB exists or has been created, False if otherwise.
+	 */
 	public static boolean checkDB() {
 		Connection connection = null;
 		Statement statement = null;
@@ -70,11 +69,10 @@ public class BTRSQL {
 	}
 
 	/**
-	 * CheckTables
+	 * Checks if the Table exists or has been created.
 	 * 
-	 * Will return true if the table exists or has been created.
-	 * 
-	 **/
+	 * @return True if Table exists or has been created, False if otherwise.
+	 */
 	public static boolean checkTable() {
 		Connection connection = null;
 		Statement statement = null;
@@ -110,13 +108,21 @@ public class BTRSQL {
 		closeStatement(statement);
 		return true;
 	}
-
+	
 	/**
-	 * insertBlockBreak
+	 * Inserts BlockBreakEvent data to the SQL server.
 	 * 
-	 * Called on BlockBreakEvents to parse the data to the SQL server.
 	 * 
-	 **/
+	 * @param player The responsible player's name.
+	 * @param UUID The responsible player's Universal Unique Identifier.
+	 * @param x The X coordinate of the affected block.
+	 * @param y The Y coordinate of the affected block.
+	 * @param z The Z coordinate of the affected block.
+	 * @param world The world the affected block resides in.
+	 * @param time The time this action took place.
+	 * @param block The name of the blocktype that was affected.
+	 * @return True on successful insert.
+	 */
 	public static boolean insertBlockBreak(String player, String UUID, int x,
 			int y, int z, String world, String time, String block) {
 		Connection connection = null;
@@ -155,13 +161,21 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-
+	
 	/**
-	 * insertBlockPlace
+	 * Inserts BlockPlaceEvent data to the SQL server.
 	 * 
-	 * Called on BlockPlaceEvents to parse the data to the SQL server.
 	 * 
-	 **/
+	 * @param player The responsible player's name.
+	 * @param UUID The responsible player's Universal Unique Identifier.
+	 * @param x The X coordinate of the affected block.
+	 * @param y The Y coordinate of the affected block.
+	 * @param z The Z coordinate of the affected block.
+	 * @param world The world the affected block resides in.
+	 * @param time The time this action took place.
+	 * @param block The name of the blocktype that was affected.
+	 * @return True on successful insert.
+	 */
 	public static boolean insertBlockPlace(String player, String UUID, int x,
 			int y, int z, String world, String time, String block) {
 		Connection connection = null;
@@ -200,13 +214,21 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-
+	
 	/**
-	 * insertPlayerChat
+	 * Inserts AsyncPlayerChatEvent data to the SQL server.
 	 * 
-	 * Called on AsyncPlayerChatEvents to parse the data to the SQL server.
 	 * 
-	 **/
+	 * @param player The responsible player's name.
+	 * @param UUID The responsible player's Universal Unique Identifier.
+	 * @param x The X coordinate of the responsible player.
+	 * @param y The Y coordinate of the responsible player.
+	 * @param z The Z coordinate of the responsible player.
+	 * @param world The world the responsible player resides in.
+	 * @param time The time this action took place.
+	 * @param MSG The message itself.
+	 * @return True on successful insert.
+	 */
 	public static boolean insertPlayerChat(String player, String UUID, int x,
 			int y, int z, String world, String time, String MSG) {
 		Connection connection = null;

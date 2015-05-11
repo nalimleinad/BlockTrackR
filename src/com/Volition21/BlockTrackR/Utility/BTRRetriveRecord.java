@@ -19,6 +19,7 @@ package com.Volition21.BlockTrackR.Utility;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
@@ -31,10 +32,6 @@ public class BTRRetriveRecord {
 
 	BTRSQL BTRsql = new BTRSQL();
 
-	String X;
-	String Y;
-	String Z;
-
 	List<String> listresults;
 
 	public String[] results;
@@ -42,6 +39,10 @@ public class BTRRetriveRecord {
 	public void retriveRecordsByCommand(final CommandSource cs,
 			final String[] args) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
+			String X;
+			String Y;
+			String Z;
+
 			public void run() {
 				Thread.currentThread().setName("BTRRR");
 				try {
@@ -86,14 +87,19 @@ public class BTRRetriveRecord {
 
 	public void retriveRecordsByTool(final CommandSource cs, final String[] args) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
+			String X;
+			String Y;
+			String Z;
+
 			public void run() {
 				Thread.currentThread().setName("BTRRR");
 				try {
-					// TODO
-					// Sanatize Strings
-					X = args[1];
-					Y = args[2];
-					Z = args[3];
+					String X_ = args[1];
+					String Y_ = args[2];
+					String Z_ = args[3];
+					X = StringEscapeUtils.escapeSql(X_);
+					Y = StringEscapeUtils.escapeSql(Y_);
+					Z = StringEscapeUtils.escapeSql(Z_);
 				} catch (IndexOutOfBoundsException e) {
 					cs.sendMessage(Texts.of(TextColors.RED,
 							"Inncorrect Syntax."));
