@@ -23,7 +23,7 @@ import org.spongepowered.api.entity.Tamer;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.entity.player.User;
 import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.message.MessageEvent;
+import org.spongepowered.api.event.entity.player.PlayerChatEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextBuilder;
@@ -40,14 +40,13 @@ import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 public class BTRAsyncPlayerChatEvent {
 
 	@Subscribe
-	public void AsyncPlayerChatEvent(MessageEvent event) {
+	public void AsyncPlayerChatEvent(PlayerChatEvent event) {
 		if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = (org.spongepowered.api.entity.player.Player) event
-					.getSource();
+			Player player = event.getPlayer();
 
 			/*
 			 * Initialize a String object with the Text object converted to a
