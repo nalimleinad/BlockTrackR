@@ -59,7 +59,8 @@ public class BTRAuthCommand {
 								authorizeUser(cs, player.get());
 							} else {
 								cs.sendMessage(Texts
-										.of(TextColors.RED, "BTR authorization requires OP privilages."));
+										.of(TextColors.RED,
+												"BTR authorization requires OP privilages."));
 							}
 						} else if (cs instanceof ConsoleSource) {
 							authorizeUser(cs, player.get());
