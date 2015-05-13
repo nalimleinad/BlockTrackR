@@ -17,12 +17,19 @@
  */
 package com.Volition21.BlockTrackR.Utility;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.util.command.CommandSource;
+import org.spongepowered.api.util.command.source.ConsoleSource;
+
+import com.Volition21.BlockTrackR.BlockTrackR;
+
 public class BTRPermissionCheck {
 
-	BTRJSONTools BTRJSONT = new BTRJSONTools();
+	
 
 	private String value;
 	private String[] values;
@@ -36,6 +43,7 @@ public class BTRPermissionCheck {
 	 * @return True if the UUID is found in ops.JSON.
 	 */
 	public boolean isOP(String UUID) {
+		BTRJSONTools BTRJSONT = new BTRJSONTools();
 		Map<?, ?> opsJSONasMAP = BTRJSONT.getOpsJSONasMap();
 		if (!(opsJSONasMAP == null)) {
 			for (Entry<?, ?> entry : opsJSONasMAP.entrySet()) {
@@ -44,18 +52,96 @@ public class BTRPermissionCheck {
 						.substring(2, value.length() - 2).split(",");
 				OP_UUID = values[2].replace("uuid=", "");
 				OP_UUID = OP_UUID.replaceAll("\\s|\\s+", "");
-				BTRDebugger.DLog("UUID:    " + UUID);
+				BTRDebugger.DLog("UUID___: " + UUID);
+				BTRDebugger.DLog("OP_UUID: " + OP_UUID);
 				if (OP_UUID.equals(UUID)) {
 					BTRDebugger.DLog("Is op.");
 					return true;
+				} else {
+					BTRDebugger.DLog("Is not op.");
+					return false;
 				}
 			}
 			BTRDebugger.DLog("Is not op.");
 			return false;
 		} else {
-			BTRDebugger.DLog("UUID:    " + UUID);
+			BTRDebugger.DLog("opsJSONasMAP has returned null");
+			BTRDebugger.DLog("UUID: " + UUID);
 			BTRDebugger.DLog("Is not op.");
 			return false;
 		}
 	}
+
+	/**
+	 * Takes a UUID and checks if it is contained within the array
+	 * "BlockTrackR.authorized_player".
+	 * 
+	 * @param UUID
+	 *            The UUID of the player.
+	 * @return True if the UUID is found in the array
+	 *         "BlockTrackR.authorized_players".
+	 */
+	public boolean isAuthed(String UUID) {
+		if (isOP(UUID)) {
+			return true;
+		} else {
+			BTRDebugger.DLog("isOP returned false");
+			if (BlockTrackR.authorized_players != null) {
+				BTRDebugger.DLog("authorized_players is not null");
+				if (Arrays.asList(BlockTrackR.authorized_players)
+						.contains(UUID)) {
+					BTRDebugger.DLog("UUID found in authorized_players");
+					return true;
+				} else {
+					BTRDebugger.DLog("UUID NOT found in authed_players");
+					return false;
+				}
+			} else {
+				BTRDebugger.DLog("authorized_players is null");
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * Takes a UUID and checks if it is contained within
+	 * BlockTrackR.authorized_players.
+	 * 
+	 * @param player
+	 *            The player object.
+	 * @return True if the player's UUID is found in the array
+	 *         "BlockTrackR.authorized_players".
+	 */
+	public boolean isAuthed(Player player) {
+		if (isAuthed(player.getUniqueId().toString())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Takes a CommandSource and returns true if it's a player and is
+	 * authorized, or if it's a ConsoleSource.
+	 * 
+	 * @param cs
+	 *            The CommandSource
+	 * @return True if the source is a player and is authorized or is a
+	 *         ConsoleSource.
+	 */
+	public boolean isAuthed(CommandSource cs) {
+		if (cs instanceof Player) {
+			if (isAuthed(((Player) cs).getUniqueId().toString())) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} else if (cs instanceof ConsoleSource) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

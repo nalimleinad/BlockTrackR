@@ -25,34 +25,47 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
 
 public class BTRDebugCommand {
 
 	BTRJSONTools BTRvc = new BTRJSONTools();
 	BTRConfiguration BTRc = new BTRConfiguration();
+	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
 
 	public void ToggleDebug(final CommandSource cs) {
-		BTRExecutorService.ThreadPool.execute(new Runnable() {
-			public void run() {
-				Thread.currentThread().setName("BTRDC");
-				if (BlockTrackR.debug.equals("true")) {
-					BlockTrackR.debug = "false";
-					BlockTrackR.logger.info("Debugging: " + BlockTrackR.debug);
-					if (!(cs instanceof ConsoleSource)) {
-						cs.sendMessage(Texts.of("Debugging: "
-								+ BlockTrackR.debug));
-					}
-					BTRc.setConfigValue("debug", "false");
-				} else {
-					BlockTrackR.debug = "true";
-					BTRc.setConfigValue("debug", "true");
-					BlockTrackR.logger.info("Debugging: " + BlockTrackR.debug);
-					if (!(cs instanceof ConsoleSource)) {
-						cs.sendMessage(Texts.of("Debugging: "
-								+ BlockTrackR.debug));
+		BlockTrackR.logger.info("ToggleDebug - preAuth");
+		if (BTRPC.isAuthed(cs)) {
+			BlockTrackR.logger.info("ToggleDebug - isAuthed");
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					Thread.currentThread().setName("BTRDC");
+					if (BlockTrackR.debug.equals("true")) {
+						BlockTrackR.debug = "false";
+						BlockTrackR.logger.info("Debugging: "
+								+ BlockTrackR.debug);
+						if (!(cs instanceof ConsoleSource)) {
+							cs.sendMessage(Texts.of("Debugging: "
+									+ BlockTrackR.debug));
+						}
+						BTRc.setConfigValue("debug", "false");
+					} else {
+						BlockTrackR.debug = "true";
+						BTRc.setConfigValue("debug", "true");
+						BlockTrackR.logger.info("Debugging: "
+								+ BlockTrackR.debug);
+						if (!(cs instanceof ConsoleSource)) {
+							cs.sendMessage(Texts.of("Debugging: "
+									+ BlockTrackR.debug));
+						}
 					}
 				}
-			}
-		});
+			});
+		} else {
+			BlockTrackR.logger.info("ToggleDebug - notAuthed");
+			cs.sendMessage(Texts.of("You are not an authorized user."));
+			cs.sendMessage(Texts
+					.of("/btr auth [Playername] - Requires OP privilages."));
+		}
 	}
 }
