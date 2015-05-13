@@ -134,7 +134,7 @@ public class BTRConfiguration {
 			prop.load(input);
 
 			String AP_Temp = prop.getProperty("authorized_players");
-			if (!(AP_Temp.equals(""))) {
+			if (!((AP_Temp.equals("")) || (AP_Temp.equals("[]")))) {
 				BlockTrackR.authorized_players = AP_Temp.substring(1,
 						AP_Temp.length() - 1).split(",");
 			} else {
@@ -171,7 +171,7 @@ public class BTRConfiguration {
 
 			output = new FileOutputStream(ConfDir);
 
-			prop.setProperty("authorized_players", "");
+			prop.setProperty("authorized_players", "[]");
 			prop.setProperty("version_check", "true");
 			prop.setProperty("debug", "false");
 			prop.setProperty("host", "localhost");

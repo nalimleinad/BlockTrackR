@@ -17,8 +17,6 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
-import java.util.Arrays;
-
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Texts;
@@ -29,12 +27,12 @@ import org.spongepowered.api.util.command.source.ConsoleSource;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
-import com.Volition21.BlockTrackR.Utility.BTROperatorCheck;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
 import com.google.common.base.Optional;
 
 public class BTRAuthCommand {
 
-	BTROperatorCheck BTROC = new BTROperatorCheck();
+	BTRPermissionCheck BTROC = new BTRPermissionCheck();
 	BTRConfiguration BTRC = new BTRConfiguration();
 
 	public void authCommand(final CommandSource cs, final String[] args,
@@ -61,7 +59,7 @@ public class BTRAuthCommand {
 								authorizeUser(cs, player.get());
 							} else {
 								cs.sendMessage(Texts
-										.of("/BTR Auth requires OP privilages."));
+										.of(TextColors.RED, "BTR authorization requires OP privilages."));
 							}
 						} else if (cs instanceof ConsoleSource) {
 							authorizeUser(cs, player.get());
@@ -96,7 +94,5 @@ public class BTRAuthCommand {
 			BlockTrackR.logger
 					.info("There was an error, setConfigValue has returned a value other than 1 or 2");
 		}
-		BlockTrackR.logger
-				.info(Arrays.toString(BlockTrackR.authorized_players));
 	}
 }

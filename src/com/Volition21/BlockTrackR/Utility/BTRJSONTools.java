@@ -80,6 +80,7 @@ public class BTRJSONTools {
 
 	public Map<?, ?> getOpsJSONasMap() {
 		try {
+			Map<?, ?> jsonData = null;
 			String line;
 			String ConfDir = "ops.json";
 			FileInputStream in = new FileInputStream(ConfDir);
@@ -91,7 +92,9 @@ public class BTRJSONTools {
 			}
 			JsonParserFactory factory = JsonParserFactory.getInstance();
 			JSONParser parser = factory.newJsonParser();
-			Map<?, ?> jsonData = parser.parseJson(builder.toString());
+			if (!(builder.toString().equals("[]"))) {
+				jsonData = parser.parseJson(builder.toString());
+			}
 			in.close();
 			return jsonData;
 		} catch (MalformedURLException e) {

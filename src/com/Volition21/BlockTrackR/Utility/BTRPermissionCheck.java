@@ -20,11 +20,9 @@ package com.Volition21.BlockTrackR.Utility;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class BTROperatorCheck {
+public class BTRPermissionCheck {
 
-	static BTRJSONTools BTRJSONT = new BTRJSONTools();
-
-	static Map<?, ?> mm = BTRJSONT.getOpsJSONasMap();
+	BTRJSONTools BTRJSONT = new BTRJSONTools();
 
 	private String value;
 	private String[] values;
@@ -38,18 +36,26 @@ public class BTROperatorCheck {
 	 * @return True if the UUID is found in ops.JSON.
 	 */
 	public boolean isOP(String UUID) {
-		for (Entry<?, ?> entry : mm.entrySet()) {
-			value = entry.getValue().toString();
-			values = entry.getValue().toString()
-					.substring(2, value.length() - 2).split(",");
-			OP_UUID = values[2].replace("uuid=", "");
-			OP_UUID = OP_UUID.replaceAll("\\s|\\s+", "");
-			if (OP_UUID.equals(UUID)) {
-				return true;
+		Map<?, ?> opsJSONasMAP = BTRJSONT.getOpsJSONasMap();
+		if (!(opsJSONasMAP == null)) {
+			for (Entry<?, ?> entry : opsJSONasMAP.entrySet()) {
+				value = entry.getValue().toString();
+				values = entry.getValue().toString()
+						.substring(2, value.length() - 2).split(",");
+				OP_UUID = values[2].replace("uuid=", "");
+				OP_UUID = OP_UUID.replaceAll("\\s|\\s+", "");
+				BTRDebugger.DLog("UUID:    " + UUID);
+				if (OP_UUID.equals(UUID)) {
+					BTRDebugger.DLog("Is op.");
+					return true;
+				}
 			}
+			BTRDebugger.DLog("Is not op.");
+			return false;
+		} else {
+			BTRDebugger.DLog("UUID:    " + UUID);
+			BTRDebugger.DLog("Is not op.");
+			return false;
 		}
-		return false;
-
 	}
-
 }
