@@ -55,6 +55,8 @@ public class BTRMainCommand implements CommandCallable {
 	public Optional<CommandResult> process(CommandSource cs, String arguments)
 			throws CommandException {
 		String[] args = arguments.split("\\s|\\s+");
+		// TODO
+		// Change this to a case
 		if (args[0].equals("debug")) {
 			BTRDC.ToggleDebug(cs);
 		} else if (args[0].equals("version")) {
@@ -72,6 +74,8 @@ public class BTRMainCommand implements CommandCallable {
 			cs.sendMessage(Texts
 					.of(TextColors.GREEN,
 							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinate."));
+			cs.sendMessage(Texts.of(TextColors.GREEN,
+					"/BTR auth [Playername] - Player must be online."));
 		}
 		return Optional.of(CommandResult.success());
 	}

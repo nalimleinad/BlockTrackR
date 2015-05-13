@@ -31,10 +31,11 @@ import com.json.parsers.JsonParserFactory;
 public class BTRJSONTools {
 
 	/**
-	 * Gets the JSON data and returns the string value relative to the
-	 * key that was parsed to this method.
+	 * Gets the JSON data and returns the string value relative to the key that
+	 * was parsed to this method.
 	 * 
-	 * @param key The key of the value to retrieve.
+	 * @param key
+	 *            The key of the value to retrieve.
 	 * @return The value relative to the key.
 	 */
 	public String getValueFromJSON(String key) {

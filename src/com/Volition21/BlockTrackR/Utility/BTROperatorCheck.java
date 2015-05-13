@@ -36,9 +36,12 @@ public class BTROperatorCheck {
 	public boolean isOP(String UUID) {
 		for (Entry<?, ?> entry : mm.entrySet()) {
 			String value = entry.getValue().toString();
-			String[] types = value.substring(1, value.length() - 1).split(",");
-			String OP_UUID = types[0].replace("uuid=", "");
-			
+			String[] values = entry.getValue().toString()
+					.substring(2, value.length() - 2).split(",");
+			String OP_UUID = values[2].replace("uuid=", "");
+			OP_UUID = OP_UUID.replaceAll("\\s|\\s+", "");
+			BTRDebugger.DLog("REQ_UUID: " + UUID);
+			BTRDebugger.DLog("OP__UUID: " + OP_UUID);
 			if (OP_UUID.equals(UUID)) {
 				return true;
 			}

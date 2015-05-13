@@ -58,6 +58,9 @@ public class BTRAuthCommand {
 							cs.sendMessage(Texts.of(TextColors.RED,
 									"Player is NOT OP"));
 						}
+					} else {
+						cs.sendMessage(Texts.of(TextColors.RED, PlayerName
+								+ " is not online."));
 					}
 
 				}
