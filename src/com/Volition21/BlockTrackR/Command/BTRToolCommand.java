@@ -21,12 +21,16 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.Volition21.BlockTrackR.Tool.BTRItemManipulation;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
 
 public class BTRToolCommand {
 	BTRItemManipulation BTRIM = new BTRItemManipulation();
+	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
 
 	/*
 	 * TODO
@@ -39,9 +43,19 @@ public class BTRToolCommand {
 	 */
 
 	public void giveTool(Game game, final CommandSource cs, final String[] args) {
-		ItemStack i = BTRIM.createCustomItem(game, "Log Block", ItemTypes.LOG);
-		if (cs instanceof Player) {
-			((Player) cs).getInventory().offer(i);
+		BTRDebugger.DLog("giveTool - preAuth");
+		if (BTRPC.isAuthed(cs)) {
+			BTRDebugger.DLog("giveTool - isAuthed");
+			ItemStack i = BTRIM.createCustomItem(game, "Log Block",
+					ItemTypes.LOG);
+			if (cs instanceof Player) {
+				((Player) cs).getInventory().offer(i);
+			}
+		} else {
+			BTRDebugger.DLog("giveTool - notAuthed");
+			cs.sendMessage(Texts.of("You are not an authorized user."));
+			cs.sendMessage(Texts
+					.of("/btr tool - Gives you the block tool."));
 		}
 	}
 }

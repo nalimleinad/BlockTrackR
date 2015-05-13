@@ -24,32 +24,41 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
 
 public class BTRVersionCheckCommand {
 
 	BTRJSONTools BTRvc = new BTRJSONTools();
+	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
 
 	public void VersionCheckCommand(final CommandSource cs) {
-		BTRExecutorService.ThreadPool.execute(new Runnable() {
-			public void run() {
-				Thread.currentThread().setName("BTRVCC");
-				if (BlockTrackR.id.equals(BTRvc.getValueFromJSON("id"))) {
-					String tempversion = BTRvc.getValueFromJSON("version");
-					if (!(BlockTrackR.version.equals(tempversion))) {
-						cs.sendMessage(Texts
-								.of("This version of BlockTrackR may be outdated!"));
-						cs.sendMessage(Texts.of("Current Version: "
-								+ BlockTrackR.version));
-						cs.sendMessage(Texts.of("Available Version: "
-								+ tempversion));
+		BTRDebugger.DLog("VersionCheckCommand - preAuth");
+		if (BTRPC.isAuthed(cs)) {
+			BTRDebugger.DLog("VersionCheckCommand - isAuthed");
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					Thread.currentThread().setName("BTRVCC");
+					if (BlockTrackR.id.equals(BTRvc.getValueFromJSON("id"))) {
+						String tempversion = BTRvc.getValueFromJSON("version");
+						if (!(BlockTrackR.version.equals(tempversion))) {
+							cs.sendMessage(Texts
+									.of("This version of BlockTrackR may be outdated!"));
+							cs.sendMessage(Texts.of("Current Version: "
+									+ BlockTrackR.version));
+							cs.sendMessage(Texts.of("Available Version: "
+									+ tempversion));
+						} else {
+							cs.sendMessage(Texts
+									.of("BlockTrackR is up-to-date."));
+						}
 					} else {
-						cs.sendMessage(Texts.of("BlockTrackR is up-to-date."));
+						BTRDebugger.DLog("Version Checking Error.");
 					}
-				} else {
-					BTRDebugger.DLog("Version Checking Error.");
-				}
 
-			}
-		});
+				}
+			});
+		} else {
+			BTRDebugger.DLog("VersionCheckCommand - notAuthed");
+		}
 	}
 }

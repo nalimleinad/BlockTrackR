@@ -55,17 +55,20 @@ public class BTRMainCommand implements CommandCallable {
 	public Optional<CommandResult> process(CommandSource cs, String arguments)
 			throws CommandException {
 		String[] args = arguments.split("\\s|\\s+");
-		// TODO
-		// Change this to a case
-		if (args[0].equals("debug")) {
-			BTRDC.ToggleDebug(cs);
-		} else if (args[0].equals("version")) {
+		switch (args[0]) {
+		case "version":
 			BTRVCC.VersionCheckCommand(cs);
-		} else if (args[0].equals("retrive")) {
+			break;
+		case "retrive":
 			BTRRC.retriveCommand(cs, args);
-		} else if (args[0].equals("auth")) {
+			break;
+		case "debug":
+			BTRDC.ToggleDebug(cs);
+			break;
+		case "auth":
 			BTRAC.authCommand(cs, args, server);
-		} else {
+			break;
+		default:
 			cs.sendMessage(Texts.of(TextColors.RED, "BTR Commands:"));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
 					"/BTR version - Check for updates."));
@@ -76,6 +79,7 @@ public class BTRMainCommand implements CommandCallable {
 							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinate."));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
 					"/BTR auth [Playername] - Player must be online."));
+			break;
 		}
 		return Optional.of(CommandResult.success());
 	}

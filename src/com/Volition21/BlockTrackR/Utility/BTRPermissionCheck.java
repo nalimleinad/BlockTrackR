@@ -22,14 +22,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.source.ConsoleSource;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 
 public class BTRPermissionCheck {
-
-	
 
 	private String value;
 	private String[] values;
@@ -72,6 +72,22 @@ public class BTRPermissionCheck {
 		}
 	}
 
+	public boolean isOPOrConsole(CommandSource cs) {
+		if (cs instanceof Player) {
+			if (isOP(((Player) cs).getUniqueId().toString())) {
+				return true;
+			} else {
+				cs.sendMessage(Texts.of(TextColors.RED, "This command requires operator privilages."));
+				return false;
+			}
+
+		} else if (cs instanceof ConsoleSource) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * Takes a UUID and checks if it is contained within the array
 	 * "BlockTrackR.authorized_player".
@@ -85,7 +101,6 @@ public class BTRPermissionCheck {
 		if (isOP(UUID)) {
 			return true;
 		} else {
-			BTRDebugger.DLog("isOP returned false");
 			if (BlockTrackR.authorized_players != null) {
 				BTRDebugger.DLog("authorized_players is not null");
 				if (Arrays.asList(BlockTrackR.authorized_players)
@@ -134,6 +149,7 @@ public class BTRPermissionCheck {
 			if (isAuthed(((Player) cs).getUniqueId().toString())) {
 				return true;
 			} else {
+				cs.sendMessage(Texts.of(TextColors.RED, "You are not an authorized user."));
 				return false;
 			}
 

@@ -23,6 +23,7 @@ import org.spongepowered.api.util.command.source.ConsoleSource;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
@@ -34,9 +35,9 @@ public class BTRDebugCommand {
 	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
 
 	public void ToggleDebug(final CommandSource cs) {
-		BlockTrackR.logger.info("ToggleDebug - preAuth");
+		BTRDebugger.DLog("ToggleDebug - preAuth");
 		if (BTRPC.isAuthed(cs)) {
-			BlockTrackR.logger.info("ToggleDebug - isAuthed");
+			BTRDebugger.DLog("ToggleDebug - isAuthed");
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread.currentThread().setName("BTRDC");
@@ -52,8 +53,7 @@ public class BTRDebugCommand {
 					} else {
 						BlockTrackR.debug = "true";
 						BTRc.setConfigValue("debug", "true");
-						BlockTrackR.logger.info("Debugging: "
-								+ BlockTrackR.debug);
+						BTRDebugger.DLog("Debugging: " + BlockTrackR.debug);
 						if (!(cs instanceof ConsoleSource)) {
 							cs.sendMessage(Texts.of("Debugging: "
 									+ BlockTrackR.debug));
@@ -62,10 +62,7 @@ public class BTRDebugCommand {
 				}
 			});
 		} else {
-			BlockTrackR.logger.info("ToggleDebug - notAuthed");
-			cs.sendMessage(Texts.of("You are not an authorized user."));
-			cs.sendMessage(Texts
-					.of("/btr auth [Playername] - Requires OP privilages."));
+			BTRDebugger.DLog("ToggleDebug - notAuthed");
 		}
 	}
 }

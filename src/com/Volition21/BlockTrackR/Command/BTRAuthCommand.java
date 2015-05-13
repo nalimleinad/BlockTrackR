@@ -26,6 +26,7 @@ import org.spongepowered.api.util.command.source.ConsoleSource;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
+import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
 import com.google.common.base.Optional;
@@ -34,48 +35,55 @@ public class BTRAuthCommand {
 
 	BTRPermissionCheck BTROC = new BTRPermissionCheck();
 	BTRConfiguration BTRC = new BTRConfiguration();
+	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
 
 	public void authCommand(final CommandSource cs, final String[] args,
 			final Server server) {
-		BTRExecutorService.ThreadPool.execute(new Runnable() {
-
-			public void run() {
-				String PlayerName = null;
-				Thread.currentThread().setName("BTRAC");
-				try {
-					PlayerName = args[1];
-				} catch (IndexOutOfBoundsException e) {
-					cs.sendMessage(Texts.of(TextColors.RED,
-							"Inncorrect Syntax."));
-					cs.sendMessage(Texts.of(TextColors.RED,
-							"/BTR auth [Playername] - Player must be online."));
-				}
-				if (PlayerName != null) {
-					Optional<Player> player = server.getPlayer(PlayerName);
-					if (player.isPresent()) {
-						if (cs instanceof Player) {
-							if (BTROC.isOP(((Player) cs).getIdentifier()
-									.toString())) {
+		BTRDebugger.DLog("authCommand - preAuth");
+		if (BTRPC.isOPOrConsole(cs)) {
+			BTRDebugger.DLog("authCommand - isAuthed");
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					String PlayerName = null;
+					Thread.currentThread().setName("BTRAC");
+					try {
+						PlayerName = args[1];
+					} catch (IndexOutOfBoundsException e) {
+						cs.sendMessage(Texts.of(TextColors.RED,
+								"Inncorrect Syntax."));
+						cs.sendMessage(Texts
+								.of(TextColors.RED,
+										"/BTR auth [Playername] - Player must be online."));
+					}
+					if (PlayerName != null) {
+						Optional<Player> player = server.getPlayer(PlayerName);
+						if (player.isPresent()) {
+							if (cs instanceof Player) {
+								if (BTROC.isOP(((Player) cs).getIdentifier()
+										.toString())) {
+									authorizeUser(cs, player.get());
+								} else {
+									cs.sendMessage(Texts
+											.of(TextColors.RED,
+													"BTR authorization requires OP privilages."));
+								}
+							} else if (cs instanceof ConsoleSource) {
 								authorizeUser(cs, player.get());
 							} else {
 								cs.sendMessage(Texts
-										.of(TextColors.RED,
-												"BTR authorization requires OP privilages."));
+										.of("Command cannot be called by anything other than ConsoleSource or Player"));
 							}
-						} else if (cs instanceof ConsoleSource) {
-							authorizeUser(cs, player.get());
 						} else {
-							cs.sendMessage(Texts
-									.of("Command cannot be called by anything other than ConsoleSource or Player"));
+							cs.sendMessage(Texts.of(TextColors.RED, PlayerName
+									+ " is not online."));
 						}
-					} else {
-						cs.sendMessage(Texts.of(TextColors.RED, PlayerName
-								+ " is not online."));
-					}
 
+					}
 				}
-			}
-		});
+			});
+		} else {
+			BTRDebugger.DLog("authCommand - notAuthed");
+		}
 	}
 
 	public void authorizeUser(CommandSource cs, Player player) {
