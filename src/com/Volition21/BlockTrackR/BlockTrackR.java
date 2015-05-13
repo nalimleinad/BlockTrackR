@@ -26,10 +26,9 @@ import com.Volition21.BlockTrackR.Event.*;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRVersionCheck;
-
 import com.google.inject.Inject;
-import org.slf4j.Logger;
 
+import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.event.Subscribe;

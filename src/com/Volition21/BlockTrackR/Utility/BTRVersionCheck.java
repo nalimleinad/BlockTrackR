@@ -17,18 +17,11 @@
  */
 package com.Volition21.BlockTrackR.Utility;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Map;
-
 import com.Volition21.BlockTrackR.BlockTrackR;
-import com.json.parsers.JSONParser;
-import com.json.parsers.JsonParserFactory;
 
 public class BTRVersionCheck {
+	
+	BTRJSONTools BTRJSONT = new BTRJSONTools();
 
 	/**
 	 * Compares the current version of the plugin to the version reported in the
@@ -38,8 +31,8 @@ public class BTRVersionCheck {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
 			public void run() {
 				Thread.currentThread().setName("BTRVC");
-				if (BlockTrackR.id.equals(getJSONasString("id"))) {
-					String tempversion = getJSONasString("version");
+				if (BlockTrackR.id.equals(BTRJSONT.getValueFromJSON("id"))) {
+					String tempversion = BTRJSONT.getValueFromJSON("version");
 					if (!(BlockTrackR.version.equals(tempversion))) {
 						// Version mismatch.
 						BlockTrackR.logger
@@ -59,50 +52,6 @@ public class BTRVersionCheck {
 				}
 			}
 		});
-	}
-
-	/**
-	 * Gets the JSON data as a map and returns the string value relative to the
-	 * key that was parsed to this method.
-	 */
-	public String getJSONasString(String val) {
-		BTRDebugger.DLog("getJSONasString val: " + val);
-		if (!(getJSONasMap() == null)) {
-			BTRDebugger.DLog("getJSONasMap not null");
-			Map<?, ?> METADATA = getJSONasMap();
-			String Meta_Result = (String) METADATA.get(val);
-			BTRDebugger.DLog("getJSONasString return " + Meta_Result);
-			return Meta_Result;
-		} else {
-			BTRDebugger.DLog("getJSONasMap is null");
-			return null;
-			// Couldn't get the metadata for the plugin, do something creative.
-		}
-	}
-
-	/**
-	 * Gets the JSON data and returns it to the caller as a Map.
-	 */
-	public Map<?, ?> getJSONasMap() {
-		URL url;
-		try {
-			url = new URL("http://volition21.com/META-INF/BlockTrackR/");
-			String line;
-			StringBuilder builder = new StringBuilder();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					url.openStream()));
-			while ((line = reader.readLine()) != null) {
-				builder.append(line);
-			}
-			JsonParserFactory factory = JsonParserFactory.getInstance();
-			JSONParser parser = factory.newJsonParser();
-			Map<?, ?> jsonData = parser.parseJson(builder.toString());
-			return jsonData;
-		} catch (MalformedURLException e) {
-			return null;
-		} catch (IOException e) {
-			return null;
-		}
 	}
 
 }

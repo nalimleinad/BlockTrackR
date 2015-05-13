@@ -23,18 +23,18 @@ import org.spongepowered.api.util.command.CommandSource;
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
-import com.Volition21.BlockTrackR.Utility.BTRVersionCheck;
+import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
 
 public class BTRVersionCheckCommand {
 
-	BTRVersionCheck BTRvc = new BTRVersionCheck();
+	BTRJSONTools BTRvc = new BTRJSONTools();
 
 	public void VersionCheckCommand(final CommandSource cs) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
 			public void run() {
 				Thread.currentThread().setName("BTRVCC");
-				if (BlockTrackR.id.equals(BTRvc.getJSONasString("id"))) {
-					String tempversion = BTRvc.getJSONasString("version");
+				if (BlockTrackR.id.equals(BTRvc.getValueFromJSON("id"))) {
+					String tempversion = BTRvc.getValueFromJSON("version");
 					if (!(BlockTrackR.version.equals(tempversion))) {
 						cs.sendMessage(Texts
 								.of("This version of BlockTrackR may be outdated!"));

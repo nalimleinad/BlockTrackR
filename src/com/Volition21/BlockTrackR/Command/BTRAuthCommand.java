@@ -17,40 +17,49 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
+import org.spongepowered.api.Server;
+import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.source.ConsoleSource;
 
-import com.Volition21.BlockTrackR.BlockTrackR;
-import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
-import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
+import com.Volition21.BlockTrackR.Utility.BTROperatorCheck;
+import com.google.common.base.Optional;
 
-public class BTRDebugCommand {
+public class BTRAuthCommand {
 
-	BTRJSONTools BTRvc = new BTRJSONTools();
-	BTRConfiguration BTRc = new BTRConfiguration();
+	BTROperatorCheck BTROC = new BTROperatorCheck();
 
-	public void ToggleDebug(final CommandSource cs) {
+	public void authCommand(final CommandSource cs, final String[] args,
+			final Server server) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
+
 			public void run() {
-				Thread.currentThread().setName("BTRDC");
-				if (BlockTrackR.debug.equals("true")) {
-					BlockTrackR.debug = "false";
-					BlockTrackR.logger.info("Debugging: " + BlockTrackR.debug);
-					if (!(cs instanceof ConsoleSource)) {
-						cs.sendMessage(Texts.of("Debugging: "
-								+ BlockTrackR.debug));
+				String PlayerName = null;
+				Thread.currentThread().setName("BTRAC");
+				try {
+					PlayerName = args[1];
+				} catch (IndexOutOfBoundsException e) {
+					cs.sendMessage(Texts.of(TextColors.RED,
+							"Inncorrect Syntax."));
+					cs.sendMessage(Texts.of(TextColors.RED,
+							"/BTR auth [Playername] - Player must be online."));
+				}
+				if (PlayerName != null) {
+					Optional<Player> player = server.getPlayer(PlayerName);
+					if (player.isPresent()) {
+						Player p = player.get();
+						String UUID = p.getUniqueId().toString();
+						if (BTROC.isOP(UUID)) {
+							cs.sendMessage(Texts.of(TextColors.GREEN,
+									"Player IS OP"));
+						} else {
+							cs.sendMessage(Texts.of(TextColors.RED,
+									"Player is NOT OP"));
+						}
 					}
-					BTRc.setConfigValue("debug", "false");
-				} else {
-					BlockTrackR.debug = "true";
-					BTRc.setConfigValue("debug", "true");
-					BlockTrackR.logger.info("Debugging: " + BlockTrackR.debug);
-					if (!(cs instanceof ConsoleSource)) {
-						cs.sendMessage(Texts.of("Debugging: "
-								+ BlockTrackR.debug));
-					}
+
 				}
 			}
 		});

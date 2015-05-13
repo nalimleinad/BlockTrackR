@@ -35,7 +35,6 @@ import com.google.common.base.Optional;
 
 public class BTRMainCommand implements CommandCallable {
 
-	@SuppressWarnings("unused")
 	private Server server;
 	@SuppressWarnings("unused")
 	private Game game;
@@ -50,6 +49,7 @@ public class BTRMainCommand implements CommandCallable {
 	BTRVersionCheckCommand BTRVCC = new BTRVersionCheckCommand();
 	BTRDebugCommand BTRDC = new BTRDebugCommand();
 	BTRRetriveCommand BTRRC = new BTRRetriveCommand();
+	BTRAuthCommand BTRAC = new BTRAuthCommand();
 
 	@Override
 	public Optional<CommandResult> process(CommandSource cs, String arguments)
@@ -61,6 +61,8 @@ public class BTRMainCommand implements CommandCallable {
 			BTRVCC.VersionCheckCommand(cs);
 		} else if (args[0].equals("retrive")) {
 			BTRRC.retriveCommand(cs, args);
+		} else if (args[0].equals("auth")) {
+			BTRAC.authCommand(cs, args, server);
 		} else {
 			cs.sendMessage(Texts.of(TextColors.RED, "BTR Commands:"));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
@@ -100,7 +102,11 @@ public class BTRMainCommand implements CommandCallable {
 
 	@Override
 	public boolean testPermission(CommandSource source) {
-		// TODO Auto-generated method stub
+		if (source.hasPermission("test.test")) {
+			source.sendMessage(Texts.of("Perm - True"));
+			return true;
+		}
+		source.sendMessage(Texts.of("Perm - False"));
 		return false;
 	}
 
