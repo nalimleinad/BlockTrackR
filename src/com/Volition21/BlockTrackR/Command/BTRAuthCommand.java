@@ -17,12 +17,17 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
+import java.util.Arrays;
+
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
+import org.spongepowered.api.util.command.source.ConsoleSource;
 
+import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTROperatorCheck;
 import com.google.common.base.Optional;
@@ -30,6 +35,7 @@ import com.google.common.base.Optional;
 public class BTRAuthCommand {
 
 	BTROperatorCheck BTROC = new BTROperatorCheck();
+	BTRConfiguration BTRC = new BTRConfiguration();
 
 	public void authCommand(final CommandSource cs, final String[] args,
 			final Server server) {
@@ -49,14 +55,19 @@ public class BTRAuthCommand {
 				if (PlayerName != null) {
 					Optional<Player> player = server.getPlayer(PlayerName);
 					if (player.isPresent()) {
-						Player p = player.get();
-						String UUID = p.getUniqueId().toString();
-						if (BTROC.isOP(UUID)) {
-							cs.sendMessage(Texts.of(TextColors.GREEN,
-									"Player IS OP"));
+						if (cs instanceof Player) {
+							if (BTROC.isOP(((Player) cs).getIdentifier()
+									.toString())) {
+								authorizeUser(cs, player.get());
+							} else {
+								cs.sendMessage(Texts
+										.of("/BTR Auth requires OP privilages."));
+							}
+						} else if (cs instanceof ConsoleSource) {
+							authorizeUser(cs, player.get());
 						} else {
-							cs.sendMessage(Texts.of(TextColors.RED,
-									"Player is NOT OP"));
+							cs.sendMessage(Texts
+									.of("Command cannot be called by anything other than ConsoleSource or Player"));
 						}
 					} else {
 						cs.sendMessage(Texts.of(TextColors.RED, PlayerName
@@ -66,5 +77,26 @@ public class BTRAuthCommand {
 				}
 			}
 		});
+	}
+
+	public void authorizeUser(CommandSource cs, Player player) {
+		String PlayerName = player.getName();
+		int status = BTRC.authorizeUser("authorized_players", player
+				.getUniqueId().toString());
+
+		if (status == 1) {
+			cs.sendMessage(Texts.of(TextColors.GREEN, PlayerName
+					+ " Added to the list of authorized users."));
+		} else if (status == 2) {
+			cs.sendMessage(Texts.of(TextColors.RED, PlayerName
+					+ " Removed from the list of authorized users."));
+		} else if ((status != 1) || (status != 2)) {
+			cs.sendMessage(Texts
+					.of("There was an error of somekind, please inform your administrator or Volition21."));
+			BlockTrackR.logger
+					.info("There was an error, setConfigValue has returned a value other than 1 or 2");
+		}
+		BlockTrackR.logger
+				.info(Arrays.toString(BlockTrackR.authorized_players));
 	}
 }

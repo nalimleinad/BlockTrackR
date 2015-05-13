@@ -26,6 +26,10 @@ public class BTROperatorCheck {
 
 	static Map<?, ?> mm = BTRJSONT.getOpsJSONasMap();
 
+	private String value;
+	private String[] values;
+	private String OP_UUID;
+
 	/**
 	 * Takes a UUID and compares it to all the UUIDs in the ops.JSON file.
 	 * 
@@ -35,13 +39,11 @@ public class BTROperatorCheck {
 	 */
 	public boolean isOP(String UUID) {
 		for (Entry<?, ?> entry : mm.entrySet()) {
-			String value = entry.getValue().toString();
-			String[] values = entry.getValue().toString()
+			value = entry.getValue().toString();
+			values = entry.getValue().toString()
 					.substring(2, value.length() - 2).split(",");
-			String OP_UUID = values[2].replace("uuid=", "");
+			OP_UUID = values[2].replace("uuid=", "");
 			OP_UUID = OP_UUID.replaceAll("\\s|\\s+", "");
-			BTRDebugger.DLog("REQ_UUID: " + UUID);
-			BTRDebugger.DLog("OP__UUID: " + OP_UUID);
 			if (OP_UUID.equals(UUID)) {
 				return true;
 			}
