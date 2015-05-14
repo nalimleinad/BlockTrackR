@@ -54,8 +54,7 @@ public class BTRToolCommand {
 		} else {
 			BTRDebugger.DLog("giveTool - notAuthed");
 			cs.sendMessage(Texts.of("You are not an authorized user."));
-			cs.sendMessage(Texts
-					.of("/btr tool - Gives you the block tool."));
+			cs.sendMessage(Texts.of("/btr tool - Gives you the block tool."));
 		}
 	}
 }

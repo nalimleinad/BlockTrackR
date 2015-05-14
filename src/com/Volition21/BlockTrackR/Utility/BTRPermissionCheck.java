@@ -72,12 +72,21 @@ public class BTRPermissionCheck {
 		}
 	}
 
+	/**
+	 * Returns true if the CommandSource is an Operator or of a ConsoleSource
+	 * 
+	 * @param cs
+	 *            The CommandSource.
+	 * @return True if instaceof Player and is OP OR is instanceof
+	 *         ConsoleSource.
+	 */
 	public boolean isOPOrConsole(CommandSource cs) {
 		if (cs instanceof Player) {
 			if (isOP(((Player) cs).getUniqueId().toString())) {
 				return true;
 			} else {
-				cs.sendMessage(Texts.of(TextColors.RED, "This command requires operator privilages."));
+				cs.sendMessage(Texts.of(TextColors.RED,
+						"This command requires operator privilages."));
 				return false;
 			}
 
@@ -149,7 +158,8 @@ public class BTRPermissionCheck {
 			if (isAuthed(((Player) cs).getUniqueId().toString())) {
 				return true;
 			} else {
-				cs.sendMessage(Texts.of(TextColors.RED, "You are not an authorized user."));
+				cs.sendMessage(Texts.of(TextColors.RED,
+						"You are not an authorized user."));
 				return false;
 			}
 

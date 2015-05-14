@@ -60,7 +60,7 @@ public class BTRConfiguration {
 
 			FileOutputStream out = new FileOutputStream(ConfDir);
 			if (array == null) {
-				String[] a = {value};
+				String[] a = { value };
 				array = a;
 				status = 1;
 			} else {

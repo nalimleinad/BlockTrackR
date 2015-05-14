@@ -76,7 +76,7 @@ public class BTRMainCommand implements CommandCallable {
 					"/BTR debug - Toggle debug output."));
 			cs.sendMessage(Texts
 					.of(TextColors.GREEN,
-							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinate."));
+							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinsate."));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
 					"/BTR auth [Playername] - Player must be online."));
 			break;

@@ -20,7 +20,7 @@ package com.Volition21.BlockTrackR.Utility;
 import com.Volition21.BlockTrackR.BlockTrackR;
 
 public class BTRVersionCheck {
-	
+
 	BTRJSONTools BTRJSONT = new BTRJSONTools();
 
 	/**

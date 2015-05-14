@@ -86,6 +86,12 @@ public class BTRAuthCommand {
 		}
 	}
 
+	/**
+	 * Adds or removes a user from the list of authorized users.
+	 * 
+	 * @param cs The CommandSource.
+	 * @param player The player to add or remove as an authorized user.
+	 */
 	public void authorizeUser(CommandSource cs, Player player) {
 		String PlayerName = player.getName();
 		int status = BTRC.authorizeUser("authorized_players", player
