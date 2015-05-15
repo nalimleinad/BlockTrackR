@@ -24,16 +24,16 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
-import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 public class BTRVersionCheckCommand {
 
 	BTRJSONTools BTRvc = new BTRJSONTools();
-	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
 
 	public void VersionCheckCommand(final CommandSource cs) {
 		BTRDebugger.DLog("VersionCheckCommand - preAuth");
-		if (BTRPC.isAuthed(cs)) {
+		if (BTRPT.isAuthed(cs)) {
 			BTRDebugger.DLog("VersionCheckCommand - isAuthed");
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {

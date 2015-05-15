@@ -27,12 +27,12 @@ import org.spongepowered.api.util.command.CommandSource;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
-import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 public class BTRRetriveCommand {
 
 	BTRSQL BTRsql = new BTRSQL();
-	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
 
 	List<String> listresults;
 	public String[] results;
@@ -49,7 +49,7 @@ public class BTRRetriveCommand {
 	 */
 	public void retriveCommand(final CommandSource cs, final String[] args) {
 		BTRDebugger.DLog("retriveCommand - preAuth");
-		if (BTRPC.isAuthed(cs)) {
+		if (BTRPT.isAuthed(cs)) {
 			BTRDebugger.DLog("retriveCommand - isAuthed");
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				String X;

@@ -60,6 +60,7 @@ public class BlockTrackR {
 	public Server server;
 	public static Logger logger;
 	public static String[] authorized_players;
+	public static String[] tooled_players;
 
 	@Inject
 	private void setLogger(Logger logger) {

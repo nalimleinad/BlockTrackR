@@ -29,7 +29,7 @@ import org.spongepowered.api.util.command.source.ConsoleSource;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 
-public class BTRPermissionCheck {
+public class BTRPermissionTools {
 
 	private String value;
 	private String[] values;
@@ -73,7 +73,7 @@ public class BTRPermissionCheck {
 	}
 
 	/**
-	 * Returns true if the CommandSource is an Operator or of a ConsoleSource
+	 * Returns true if the CommandSource is an Operator or of a ConsoleSource.
 	 * 
 	 * @param cs
 	 *            The CommandSource.
@@ -99,7 +99,7 @@ public class BTRPermissionCheck {
 
 	/**
 	 * Takes a UUID and checks if it is contained within the array
-	 * "BlockTrackR.authorized_player".
+	 * "BlockTrackR.authorized_player" or in the ops.json file.
 	 * 
 	 * @param UUID
 	 *            The UUID of the player.
@@ -129,7 +129,7 @@ public class BTRPermissionCheck {
 
 	/**
 	 * Takes a UUID and checks if it is contained within
-	 * BlockTrackR.authorized_players.
+	 * BlockTrackR.authorized_players or ops.json.
 	 * 
 	 * @param player
 	 *            The player object.
@@ -145,8 +145,10 @@ public class BTRPermissionCheck {
 	}
 
 	/**
-	 * Takes a CommandSource and returns true if it's a player and is
-	 * authorized, or if it's a ConsoleSource.
+	 * Takes a CommandSource and returns true if it's a player and is authorized
+	 * (or an operator), or if it's a ConsoleSource.
+	 * 
+	 * Will also inform the CommandSource if they are not authorized.
 	 * 
 	 * @param cs
 	 *            The CommandSource
@@ -166,6 +168,22 @@ public class BTRPermissionCheck {
 		} else if (cs instanceof ConsoleSource) {
 			return true;
 		} else {
+			return false;
+		}
+	}
+
+	public boolean isTooled(String UUID) {
+		if (BlockTrackR.tooled_players != null) {
+			BTRDebugger.DLog("tooled_players is not null");
+			if (Arrays.asList(BlockTrackR.tooled_players).contains(UUID)) {
+				BTRDebugger.DLog("UUID found in tooled_players");
+				return true;
+			} else {
+				BTRDebugger.DLog("UUID NOT found in tooled_players");
+				return false;
+			}
+		} else {
+			BTRDebugger.DLog("tooled_players is null");
 			return false;
 		}
 	}

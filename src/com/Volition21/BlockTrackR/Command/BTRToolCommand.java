@@ -19,18 +19,18 @@ package com.Volition21.BlockTrackR.Command;
 
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.item.ItemTypes;
-import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.Volition21.BlockTrackR.Tool.BTRItemManipulation;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
-import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
+import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 public class BTRToolCommand {
 	BTRItemManipulation BTRIM = new BTRItemManipulation();
-	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
 
 	/*
 	 * TODO
@@ -44,17 +44,41 @@ public class BTRToolCommand {
 
 	public void giveTool(Game game, final CommandSource cs, final String[] args) {
 		BTRDebugger.DLog("giveTool - preAuth");
-		if (BTRPC.isAuthed(cs)) {
+		if (BTRPT.isAuthed(cs)) {
 			BTRDebugger.DLog("giveTool - isAuthed");
-			ItemStack i = BTRIM.createCustomItem(game, "Log Block",
-					ItemTypes.LOG);
-			if (cs instanceof Player) {
-				((Player) cs).getInventory().offer(i);
-			}
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					Thread.currentThread().setName("BTRTC");
+					if (cs instanceof Player) {
+						// TODO
+						// tool player
+					} else {
+						cs.sendMessage(Texts.of(TextColors.RED,
+								"Only a player can use the in-game tool!"));
+					}
+				}
+			});
+			/*
+			 * ItemStack i = BTRIM.createCustomItem(game, "Log Block",
+			 * ItemTypes.LOG); if (cs instanceof Player) { ((Player)
+			 * cs).getInventory().offer(i); }
+			 */
 		} else {
 			BTRDebugger.DLog("giveTool - notAuthed");
 			cs.sendMessage(Texts.of("You are not an authorized user."));
-			cs.sendMessage(Texts.of("/btr tool - Gives you the block tool."));
+		}
+	}
+
+	public void toolPlayer(CommandSource cs, Player player) {
+		String PlayerName = player.getName();
+		boolean status = BTRPT.isTooled(player.getIdentifier().toString());
+
+		if (status) {
+			cs.sendMessage(Texts.of(TextColors.GREEN, PlayerName
+					+ " Added to the list of tooled users."));
+		} else if (!(status)) {
+			cs.sendMessage(Texts.of(TextColors.RED, PlayerName
+					+ " Removed from the list of tooled users."));
 		}
 	}
 }

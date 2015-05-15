@@ -26,17 +26,17 @@ import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRJSONTools;
-import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 public class BTRDebugCommand {
 
 	BTRJSONTools BTRvc = new BTRJSONTools();
 	BTRConfiguration BTRc = new BTRConfiguration();
-	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
 
 	public void ToggleDebug(final CommandSource cs) {
 		BTRDebugger.DLog("ToggleDebug - preAuth");
-		if (BTRPC.isAuthed(cs)) {
+		if (BTRPT.isAuthed(cs)) {
 			BTRDebugger.DLog("ToggleDebug - isAuthed");
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {

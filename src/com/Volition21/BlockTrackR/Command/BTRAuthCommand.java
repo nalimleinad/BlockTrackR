@@ -28,19 +28,19 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
-import com.Volition21.BlockTrackR.Utility.BTRPermissionCheck;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 import com.google.common.base.Optional;
 
 public class BTRAuthCommand {
 
-	BTRPermissionCheck BTROC = new BTRPermissionCheck();
+	BTRPermissionTools BTROC = new BTRPermissionTools();
 	BTRConfiguration BTRC = new BTRConfiguration();
-	BTRPermissionCheck BTRPC = new BTRPermissionCheck();
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
 
 	public void authCommand(final CommandSource cs, final String[] args,
 			final Server server) {
 		BTRDebugger.DLog("authCommand - preAuth");
-		if (BTRPC.isOPOrConsole(cs)) {
+		if (BTRPT.isOPOrConsole(cs)) {
 			BTRDebugger.DLog("authCommand - isAuthed");
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
