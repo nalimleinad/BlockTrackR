@@ -52,6 +52,7 @@ public class BTRDeletionScheduler {
 		TimerTask hourlyTask = new TimerTask() {
 			@Override
 			public void run() {
+				Thread.currentThread().setName("BTRDS");
 				BTRDebugger.DLog("recordDeletionScheduler");
 				BTRDebugger.DLog("Deleting records older than: " + age);
 				BTRSQL.delRecords(age);
