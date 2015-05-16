@@ -17,12 +17,14 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
 
+import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.Tool.BTRItemManipulation;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
@@ -50,8 +52,7 @@ public class BTRToolCommand {
 				public void run() {
 					Thread.currentThread().setName("BTRTC");
 					if (cs instanceof Player) {
-						// TODO
-						// tool player
+						toggleTool(cs, ((Player) cs).getPlayer().get());
 					} else {
 						cs.sendMessage(Texts.of(TextColors.RED,
 								"Only a player can use the in-game tool!"));
@@ -65,20 +66,29 @@ public class BTRToolCommand {
 			 */
 		} else {
 			BTRDebugger.DLog("giveTool - notAuthed");
-			cs.sendMessage(Texts.of("You are not an authorized user."));
 		}
 	}
 
-	public void toolPlayer(CommandSource cs, Player player) {
-		String PlayerName = player.getName();
-		boolean status = BTRPT.isTooled(player.getIdentifier().toString());
+	public void toggleTool(CommandSource cs, Player player) {
+		String UUID = player.getIdentifier().toString();
 
-		if (status) {
-			cs.sendMessage(Texts.of(TextColors.GREEN, PlayerName
-					+ " Added to the list of tooled users."));
-		} else if (!(status)) {
-			cs.sendMessage(Texts.of(TextColors.RED, PlayerName
-					+ " Removed from the list of tooled users."));
+		if (!(BTRPT.isTooled(UUID))) {
+			if (BlockTrackR.tooled_players == null) {
+				String[] a = { UUID };
+				BlockTrackR.tooled_players = a;
+				cs.sendMessage(Texts.of(TextColors.GREEN,
+						"You has been added to the list of tooled users."));
+			} else {
+				BlockTrackR.tooled_players = (String[]) ArrayUtils.add(
+						BlockTrackR.tooled_players, UUID);
+				cs.sendMessage(Texts.of(TextColors.GREEN,
+						"You has been added to the list of tooled users."));
+			}
+		} else {
+			BlockTrackR.tooled_players = (String[]) ArrayUtils.removeElement(
+					BlockTrackR.tooled_players, UUID);
+			cs.sendMessage(Texts.of(TextColors.RED,
+					"You has been removed from the list of tooled users."));
 		}
 	}
 }

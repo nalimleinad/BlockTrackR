@@ -18,19 +18,29 @@
 package com.Volition21.BlockTrackR.Event;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerQuitEvent;
 
 public class BTRPlayerQuitEvent {
 
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
+	BTRGetRecords BTRGR = new BTRGetRecords();
+
 	@Subscribe
 	public void PlayerQuitEvent(PlayerQuitEvent event) {
-		if (BlockTrackR.Track) {
+		if (BTRPT.isTooled(event.getPlayer().getUniqueId().toString())) {
+			BlockTrackR.tooled_players = (String[]) ArrayUtils.removeElement(
+					BlockTrackR.tooled_players, event.getPlayer().getUniqueId()
+							.toString());
+		} else if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.

@@ -36,7 +36,6 @@ import com.google.common.base.Optional;
 public class BTRMainCommand implements CommandCallable {
 
 	private Server server;
-	@SuppressWarnings("unused")
 	private Game game;
 
 	Player p;
@@ -50,6 +49,7 @@ public class BTRMainCommand implements CommandCallable {
 	BTRDebugCommand BTRDC = new BTRDebugCommand();
 	BTRRetriveCommand BTRRC = new BTRRetriveCommand();
 	BTRAuthCommand BTRAC = new BTRAuthCommand();
+	BTRToolCommand BTRTC = new BTRToolCommand();
 
 	@Override
 	public Optional<CommandResult> process(CommandSource cs, String arguments)
@@ -68,12 +68,17 @@ public class BTRMainCommand implements CommandCallable {
 		case "auth":
 			BTRAC.authCommand(cs, args, server);
 			break;
+		case "tool":
+			BTRTC.giveTool(game, cs, args);
+			break;
 		default:
 			cs.sendMessage(Texts.of(TextColors.RED, "BTR Commands:"));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
 					"/BTR version - Check for updates."));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
 					"/BTR debug - Toggle debug output."));
+			cs.sendMessage(Texts.of(TextColors.GREEN,
+					"/BTR tool - Enables or disables tool mode on you."));
 			cs.sendMessage(Texts
 					.of(TextColors.GREEN,
 							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinsate."));

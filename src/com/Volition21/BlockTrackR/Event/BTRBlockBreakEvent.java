@@ -21,17 +21,35 @@ import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
+import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 import org.spongepowered.api.event.entity.player.PlayerBreakBlockEvent;
 
 public class BTRBlockBreakEvent {
 
+	BTRPermissionTools BTRPT = new BTRPermissionTools();
+	BTRGetRecords BTRGR = new BTRGetRecords();
+
 	@Subscribe
-	public void PlayerBreakBlockEvent(PlayerBreakBlockEvent event) {
-		if (BlockTrackR.Track) {
+	public void PlayerBreakBlockEvent(final PlayerBreakBlockEvent event) {
+		if (BTRPT.isTooled(event.getPlayer().getUniqueId().toString())) {
+			event.setCancelled(true);
+			BTRExecutorService.ThreadPool.execute(new Runnable() {
+				public void run() {
+					// Name this thread for debug purposes.
+					Thread.currentThread().setName("BTRBBE");
+					String X = String.valueOf(event.getBlock().getBlockX());
+					String Y = String.valueOf(event.getBlock().getBlockY());
+					String Z = String.valueOf(event.getBlock().getBlockZ());
+					BTRGR.getRecords(X, Y, Z, event);
+				}
+			});
+
+		} else if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
@@ -86,5 +104,4 @@ public class BTRBlockBreakEvent {
 
 		}
 	}
-
 }

@@ -17,6 +17,9 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
+import java.util.Arrays;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Texts;
@@ -89,8 +92,10 @@ public class BTRAuthCommand {
 	/**
 	 * Adds or removes a user from the list of authorized users.
 	 * 
-	 * @param cs The CommandSource.
-	 * @param player The player to add or remove as an authorized user.
+	 * @param cs
+	 *            The CommandSource.
+	 * @param player
+	 *            The player to add or remove as an authorized user.
 	 */
 	public void authorizeUser(CommandSource cs, Player player) {
 		String PlayerName = player.getName();
@@ -103,6 +108,14 @@ public class BTRAuthCommand {
 		} else if (status == 2) {
 			cs.sendMessage(Texts.of(TextColors.RED, PlayerName
 					+ " Removed from the list of authorized users."));
+			if (Arrays.asList(BlockTrackR.tooled_players).contains(
+					player.getUniqueId().toString())) {
+				cs.sendMessage(Texts.of(TextColors.RED, PlayerName
+						+ " was also removed from the list of tooled players."));
+				BlockTrackR.tooled_players = (String[]) ArrayUtils
+						.removeElement(BlockTrackR.tooled_players, player
+								.getUniqueId().toString());
+			}
 		} else if ((status != 1) || (status != 2)) {
 			cs.sendMessage(Texts
 					.of("There was an error of somekind, please inform your administrator or Volition21."));

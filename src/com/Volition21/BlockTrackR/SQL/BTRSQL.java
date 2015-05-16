@@ -108,19 +108,27 @@ public class BTRSQL {
 		closeStatement(statement);
 		return true;
 	}
-	
+
 	/**
 	 * Inserts BlockBreakEvent data to the SQL server.
 	 * 
 	 * 
-	 * @param player The responsible player's name.
-	 * @param UUID The responsible player's Universal Unique Identifier.
-	 * @param x The X coordinate of the affected block.
-	 * @param y The Y coordinate of the affected block.
-	 * @param z The Z coordinate of the affected block.
-	 * @param world The world the affected block resides in.
-	 * @param time The time this action took place.
-	 * @param block The name of the blocktype that was affected.
+	 * @param player
+	 *            The responsible player's name.
+	 * @param UUID
+	 *            The responsible player's Universal Unique Identifier.
+	 * @param x
+	 *            The X coordinate of the affected block.
+	 * @param y
+	 *            The Y coordinate of the affected block.
+	 * @param z
+	 *            The Z coordinate of the affected block.
+	 * @param world
+	 *            The world the affected block resides in.
+	 * @param time
+	 *            The time this action took place.
+	 * @param block
+	 *            The name of the blocktype that was affected.
 	 * @return True on successful insert.
 	 */
 	public static boolean insertBlockBreak(String player, String UUID, int x,
@@ -161,19 +169,27 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
+
 	/**
 	 * Inserts BlockPlaceEvent data to the SQL server.
 	 * 
 	 * 
-	 * @param player The responsible player's name.
-	 * @param UUID The responsible player's Universal Unique Identifier.
-	 * @param x The X coordinate of the affected block.
-	 * @param y The Y coordinate of the affected block.
-	 * @param z The Z coordinate of the affected block.
-	 * @param world The world the affected block resides in.
-	 * @param time The time this action took place.
-	 * @param block The name of the blocktype that was affected.
+	 * @param player
+	 *            The responsible player's name.
+	 * @param UUID
+	 *            The responsible player's Universal Unique Identifier.
+	 * @param x
+	 *            The X coordinate of the affected block.
+	 * @param y
+	 *            The Y coordinate of the affected block.
+	 * @param z
+	 *            The Z coordinate of the affected block.
+	 * @param world
+	 *            The world the affected block resides in.
+	 * @param time
+	 *            The time this action took place.
+	 * @param block
+	 *            The name of the blocktype that was affected.
 	 * @return True on successful insert.
 	 */
 	public static boolean insertBlockPlace(String player, String UUID, int x,
@@ -214,19 +230,27 @@ public class BTRSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
+
 	/**
 	 * Inserts AsyncPlayerChatEvent data to the SQL server.
 	 * 
 	 * 
-	 * @param player The responsible player's name.
-	 * @param UUID The responsible player's Universal Unique Identifier.
-	 * @param x The X coordinate of the responsible player.
-	 * @param y The Y coordinate of the responsible player.
-	 * @param z The Z coordinate of the responsible player.
-	 * @param world The world the responsible player resides in.
-	 * @param time The time this action took place.
-	 * @param MSG The message itself.
+	 * @param player
+	 *            The responsible player's name.
+	 * @param UUID
+	 *            The responsible player's Universal Unique Identifier.
+	 * @param x
+	 *            The X coordinate of the responsible player.
+	 * @param y
+	 *            The Y coordinate of the responsible player.
+	 * @param z
+	 *            The Z coordinate of the responsible player.
+	 * @param world
+	 *            The world the responsible player resides in.
+	 * @param time
+	 *            The time this action took place.
+	 * @param MSG
+	 *            The message itself.
 	 * @return True on successful insert.
 	 */
 	public static boolean insertPlayerChat(String player, String UUID, int x,
@@ -450,6 +474,67 @@ public class BTRSQL {
 	}
 
 	/**
+	 * Inserts PlayerInteractBlockEvent data to the SQL server.
+	 * 
+	 * 
+	 * @param player
+	 *            The responsible player's name.
+	 * @param UUID
+	 *            The responsible player's Universal Unique Identifier.
+	 * @param x
+	 *            The X coordinate of the affected block.
+	 * @param y
+	 *            The Y coordinate of the affected block.
+	 * @param z
+	 *            The Z coordinate of the affected block.
+	 * @param world
+	 *            The world the affected block resides in.
+	 * @param time
+	 *            The time this action took place.
+	 * @param InteractionType
+	 *            The name of the InteractionType.
+	 * @return True on successful insert.
+	 */
+	public static boolean insertPlayerInteract(String player, String UUID,
+			int x, int y, int z, String world, String time,
+			String InteractionType) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "PlayerInteract";
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ UUID
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ world
+					+ "', '"
+					+ time
+					+ "', '"
+					+ InteractionType + "', '" + event + "'" + ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+
+	/**
 	 * getBlockRecord
 	 * 
 	 * Fetches edits to provided coordinates.
@@ -485,10 +570,45 @@ public class BTRSQL {
 			if (!(rs.last())) {
 				BTRDebugger.DLog("getBlockRecord - No Rows");
 			} else {
-				for (int i = 0; i < result.length; i++) {
-					BTRDebugger.DLog(result[i]);
-				}
+				BTRDebugger.DLog("getBlockRecord - Rows were found!");
 			}
+
+		} catch (SQLException ex) {
+			BlockTrackR.logger.warn(ex.toString());
+		}
+
+		closeConnection(connection);
+		closeStatement(statement);
+		return list;
+
+	}
+
+	/**
+	 * getBlockRecord
+	 * 
+	 * Fetches edits to provided coordinates.
+	 * 
+	 **/
+	// TODO
+	public List<String> delRecords(String age) {
+
+		Connection connection = null;
+		Statement statement = null;
+		ArrayList<String> list = new ArrayList<String>();
+
+		try {
+			connection = openConnection(connection);
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String Fetch = "SELECT * FROM `blocktrackr` WHERE `x`='" + age
+					+ "';";
+			statement.execute(SelectDB);
+			BTRDebugger.DLog(Fetch);
+
+			// TODO
+			// Get todays date
+			// remove all sql rows that contain a date older than the
+			// submitted value.
 
 		} catch (SQLException ex) {
 			BlockTrackR.logger.warn(ex.toString());

@@ -60,7 +60,7 @@ public class BlockTrackR {
 	public Server server;
 	public static Logger logger;
 	public static String[] authorized_players;
-	public static String[] tooled_players;
+	public static String[] tooled_players = null;
 
 	@Inject
 	private void setLogger(Logger logger) {
@@ -106,6 +106,8 @@ public class BlockTrackR {
 			game.getEventManager().register(this, new BTRBlockBreakEvent());
 			game.getEventManager()
 					.register(this, new BTRAsyncPlayerChatEvent());
+			game.getEventManager().register(this,
+					new BTRPlayerInteractBlockEvent());
 		} catch (Exception e) {
 			// This should pretty much never ever happen. Ever.
 			logger.info("Event registration error, please submit bug report to Volition21 with your log files.");
