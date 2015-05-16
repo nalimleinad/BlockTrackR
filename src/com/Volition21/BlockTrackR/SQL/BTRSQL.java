@@ -94,7 +94,7 @@ public class BTRSQL {
 					+ "`time` VARCHAR(45) NOT NULL, "
 					+ "`content` VARCHAR(255) NOT NULL, "
 					+ "`event` VARCHAR(45) NOT NULL, "
-					+ "PRIMARY KEY (`UID`));";
+					+ "`unix_time` int NOT NULL, " + "PRIMARY KEY (`UID`));";
 			statement.execute(createTable);
 		} catch (SQLException e) {
 			BlockTrackR.logger.warn("Disabled!");
@@ -140,7 +140,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -156,7 +156,12 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ block
-					+ "', '" + event + "'" + ")" + ";";
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())"
+					+ ")"
+					+ ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -201,7 +206,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -217,7 +222,12 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ block
-					+ "', '" + event + "'" + ")" + ";";
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())"
+					+ ")"
+					+ ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -262,7 +272,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -278,7 +288,12 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ MSG
-					+ "', '" + event + "'" + ")" + ";";
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())"
+					+ ")"
+					+ ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -307,7 +322,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -323,7 +338,12 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ ItemType
-					+ "', '" + event + "'" + ")" + ";";
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())"
+					+ ")"
+					+ ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -352,7 +372,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -368,7 +388,12 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ ItemType
-					+ "', '" + event + "'" + ")" + ";";
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())"
+					+ ")"
+					+ ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -397,7 +422,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -414,7 +439,7 @@ public class BTRSQL {
 					+ "', '"
 					+ IP
 					+ "', '"
-					+ event + "'" + ")" + ";";
+					+ event + "', " + "UNIX_TIMESTAMP(NOW())" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -443,7 +468,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -459,7 +484,12 @@ public class BTRSQL {
 					+ time
 					+ "', '"
 					+ Name
-					+ "', '" + event + "'" + ")" + ";";
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())"
+					+ ")"
+					+ ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -505,7 +535,7 @@ public class BTRSQL {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
 					+ player
 					+ "', '"
 					+ UUID
@@ -520,7 +550,11 @@ public class BTRSQL {
 					+ "', '"
 					+ time
 					+ "', '"
-					+ InteractionType + "', '" + event + "'" + ")" + ";";
+					+ InteractionType
+					+ "', '"
+					+ event
+					+ "', "
+					+ "UNIX_TIMESTAMP(NOW())" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
@@ -584,31 +618,30 @@ public class BTRSQL {
 	}
 
 	/**
-	 * getBlockRecord
+	 * Deletes all SQL records <= the unix timestamp parsed in 'age'.
 	 * 
-	 * Fetches edits to provided coordinates.
-	 * 
-	 **/
-	// TODO
-	public List<String> delRecords(String age) {
+	 * @param age
+	 *            The unix timestamp to delete from.
+	 */
+	public void delRecords(Long age) {
 
 		Connection connection = null;
 		Statement statement = null;
-		ArrayList<String> list = new ArrayList<String>();
 
 		try {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
-			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Fetch = "SELECT * FROM `blocktrackr` WHERE `x`='" + age
-					+ "';";
-			statement.execute(SelectDB);
-			BTRDebugger.DLog(Fetch);
 
-			// TODO
-			// Get todays date
-			// remove all sql rows that contain a date older than the
-			// submitted value.
+			String SelectDB = "USE " + BlockTrackR.database + ";";
+			String DisableSafe = "SET SQL_SAFE_UPDATES = 0;";
+			String Delete = "delete from minecraft.blocktrackr where unix_time <= '"
+					+ age + "' ;";
+			String EnableSafe = "SET SQL_SAFE_UPDATES = 1;";
+			statement.execute(SelectDB);
+			statement.execute(DisableSafe);
+			statement.execute(Delete);
+			BTRDebugger.DLog(Delete);
+			statement.execute(EnableSafe);
 
 		} catch (SQLException ex) {
 			BlockTrackR.logger.warn(ex.toString());
@@ -616,8 +649,6 @@ public class BTRSQL {
 
 		closeConnection(connection);
 		closeStatement(statement);
-		return list;
-
 	}
 
 	/**

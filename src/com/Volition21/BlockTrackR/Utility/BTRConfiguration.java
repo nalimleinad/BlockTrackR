@@ -140,6 +140,8 @@ public class BTRConfiguration {
 			} else {
 				BlockTrackR.authorized_players = null;
 			}
+			BlockTrackR.StoreRecordsFor = Integer.valueOf(prop
+					.getProperty("StoreRecordsFor"));
 			BlockTrackR.version_check = prop.getProperty("version_check");
 			BlockTrackR.debug = prop.getProperty("debug");
 			BlockTrackR.host = prop.getProperty("host");
@@ -171,6 +173,7 @@ public class BTRConfiguration {
 
 			output = new FileOutputStream(ConfDir);
 
+			prop.setProperty("StoreRecordsFor", "7");
 			prop.setProperty("authorized_players", "[]");
 			prop.setProperty("version_check", "true");
 			prop.setProperty("debug", "false");

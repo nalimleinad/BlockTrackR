@@ -23,6 +23,7 @@ import java.util.Date;
 
 import com.Volition21.BlockTrackR.Command.BTRMainCommand;
 import com.Volition21.BlockTrackR.Event.*;
+import com.Volition21.BlockTrackR.SQL.BTRDeletionScheduler;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 import com.Volition21.BlockTrackR.Utility.BTRVersionCheck;
@@ -46,6 +47,8 @@ public class BlockTrackR {
 	public static String version_check = "true";
 	public static String debug = "false";
 
+	public static int StoreRecordsFor = 7;
+
 	public static String host;
 	public static String port;
 	public static String connector;
@@ -68,6 +71,7 @@ public class BlockTrackR {
 	}
 
 	BTRVersionCheck BTRvc = new BTRVersionCheck();
+	BTRDeletionScheduler BTRDS = new BTRDeletionScheduler();
 
 	/**
 	 * Initialize all of BlockTrackR
@@ -124,6 +128,8 @@ public class BlockTrackR {
 			if (BTRSQL.checkDB()) {
 				logger.info("Checking SQL Table...");
 				if (BTRSQL.checkTable()) {
+					logger.info("Initing Deletion Scheduler...");
+					BTRDS.initDeletionScheduler();
 					logger.info("Everything appears OK");
 					logger.info("Debugging: " + debug);
 					logger.info("Enabled!");
