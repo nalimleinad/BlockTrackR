@@ -29,7 +29,7 @@ import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
-public class BTRRetriveCommand {
+public class BTRRetrieveCommand {
 
 	BTRSQL BTRsql = new BTRSQL();
 	BTRPermissionTools BTRPT = new BTRPermissionTools();
@@ -47,17 +47,17 @@ public class BTRRetriveCommand {
 	 * @param args
 	 *            The commands arguments.
 	 */
-	public void retriveCommand(final CommandSource cs, final String[] args) {
-		BTRDebugger.DLog("retriveCommand - preAuth");
+	public void retrieveCommand(final CommandSource cs, final String[] args) {
+		BTRDebugger.DLog("retrieveCommand - preAuth");
 		if (BTRPT.isAuthed(cs)) {
-			BTRDebugger.DLog("retriveCommand - isAuthed");
+			BTRDebugger.DLog("retrieveCommand - isAuthed");
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				String X;
 				String Y;
 				String Z;
 
 				public void run() {
-					Thread.currentThread().setName("BTRRR");
+					Thread.currentThread().setName("BTRRC");
 					try {
 						String X_ = args[1];
 						String Y_ = args[2];
@@ -72,7 +72,7 @@ public class BTRRetriveCommand {
 								"/BTR retrive [x] [y] [z]"));
 					}
 					if (!(X == null || Y == null || Z == null)) {
-						BTRDebugger.DLog("BTRRetriveRecord");
+						BTRDebugger.DLog("BTRRetrieveRecord");
 						BTRDebugger.DLog("X: " + X);
 						BTRDebugger.DLog("Y: " + Y);
 						BTRDebugger.DLog("Z: " + Z);
@@ -102,7 +102,7 @@ public class BTRRetriveCommand {
 				}
 			});
 		} else {
-			BTRDebugger.DLog("retriveCommand - notAuthed");
+			BTRDebugger.DLog("retrieveCommand - notAuthed");
 		}
 	}
 }

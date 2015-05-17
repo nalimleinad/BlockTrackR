@@ -28,7 +28,7 @@ import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
-public class BTRRetriveRecord {
+public class BTRRetrieveRecord {
 
 	BTRSQL BTRsql = new BTRSQL();
 
@@ -44,7 +44,7 @@ public class BTRRetriveRecord {
 	 * 
 	 * -The InventoryAPI is not yet complete.
 	 */
-	public void retriveRecordsByTool(final CommandSource cs, final String[] args) {
+	public void retrieveRecordsByTool(final CommandSource cs, final String[] args) {
 		BTRExecutorService.ThreadPool.execute(new Runnable() {
 			String X;
 			String Y;

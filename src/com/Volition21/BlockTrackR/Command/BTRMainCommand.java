@@ -47,7 +47,7 @@ public class BTRMainCommand implements CommandCallable {
 
 	BTRVersionCheckCommand BTRVCC = new BTRVersionCheckCommand();
 	BTRDebugCommand BTRDC = new BTRDebugCommand();
-	BTRRetriveCommand BTRRC = new BTRRetriveCommand();
+	BTRRetrieveCommand BTRRC = new BTRRetrieveCommand();
 	BTRAuthCommand BTRAC = new BTRAuthCommand();
 	BTRToolCommand BTRTC = new BTRToolCommand();
 
@@ -59,8 +59,8 @@ public class BTRMainCommand implements CommandCallable {
 		case "version":
 			BTRVCC.VersionCheckCommand(cs);
 			break;
-		case "retrive":
-			BTRRC.retriveCommand(cs, args);
+		case "retrieve":
+			BTRRC.retrieveCommand(cs, args);
 			break;
 		case "debug":
 			BTRDC.ToggleDebug(cs);
@@ -81,7 +81,7 @@ public class BTRMainCommand implements CommandCallable {
 					"/BTR tool - Enables or disables tool mode on you."));
 			cs.sendMessage(Texts
 					.of(TextColors.GREEN,
-							"/BTR retrive [x] [y] [z] - Retrive records at the specified X,Y,Z coordinsate."));
+							"/BTR retrieve [x] [y] [z] - Retrive records at the specified X,Y,Z coordinsate."));
 			cs.sendMessage(Texts.of(TextColors.GREEN,
 					"/BTR auth [Playername] - Player must be online."));
 			break;
