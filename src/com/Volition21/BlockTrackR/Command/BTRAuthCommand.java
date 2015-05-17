@@ -108,13 +108,15 @@ public class BTRAuthCommand {
 		} else if (status == 2) {
 			cs.sendMessage(Texts.of(TextColors.RED, PlayerName
 					+ " Removed from the list of authorized users."));
-			if (Arrays.asList(BlockTrackR.tooled_players).contains(
-					player.getUniqueId().toString())) {
-				cs.sendMessage(Texts.of(TextColors.RED, PlayerName
-						+ " was also removed from the list of tooled players."));
-				BlockTrackR.tooled_players = (String[]) ArrayUtils
-						.removeElement(BlockTrackR.tooled_players, player
-								.getUniqueId().toString());
+			if (BlockTrackR.tooled_players != null){
+				if (Arrays.asList(BlockTrackR.tooled_players).contains(
+						player.getUniqueId().toString())) {
+					cs.sendMessage(Texts.of(TextColors.RED, PlayerName
+							+ " was also removed from the list of tooled players."));
+					BlockTrackR.tooled_players = (String[]) ArrayUtils
+							.removeElement(BlockTrackR.tooled_players, player
+									.getUniqueId().toString());
+				}
 			}
 		} else if ((status != 1) || (status != 2)) {
 			cs.sendMessage(Texts
