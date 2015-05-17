@@ -41,7 +41,7 @@ import org.spongepowered.api.service.command.CommandService;
 public class BlockTrackR {
 
 	public static String id = "BTR";
-	public static String version = "1.0";
+	public static String version = "2.0";
 
 	public static Boolean Track = false;
 	public static String version_check = "true";
