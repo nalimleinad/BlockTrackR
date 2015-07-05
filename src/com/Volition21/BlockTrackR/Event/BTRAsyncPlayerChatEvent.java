@@ -46,7 +46,7 @@ public class BTRAsyncPlayerChatEvent {
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getPlayer();
+			Player player = event.getUser();
 
 			/*
 			 * Initialize a String object with the Text object converted to a

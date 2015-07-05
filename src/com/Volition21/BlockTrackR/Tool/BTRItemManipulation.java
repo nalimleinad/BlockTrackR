@@ -18,7 +18,7 @@
 package com.Volition21.BlockTrackR.Tool;
 
 import org.spongepowered.api.Game;
-import org.spongepowered.api.data.manipulators.DisplayNameData;
+import org.spongepowered.api.data.manipulator.DisplayNameData;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Texts;

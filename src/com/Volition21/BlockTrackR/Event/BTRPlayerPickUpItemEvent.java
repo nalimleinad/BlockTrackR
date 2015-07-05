@@ -28,6 +28,10 @@ import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
 public class BTRPlayerPickUpItemEvent {
 
+	public BTRPlayerPickUpItemEvent(){
+	BTRDebugger.DLog("BTRPlayerPickUpItemEvent instanced.");
+	}
+	
 	// TODO
 	// Change to human event, player not firing.
 
@@ -38,7 +42,7 @@ public class BTRPlayerPickUpItemEvent {
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getPlayer();
+			Player player = event.getUser();
 
 			/*
 			 * Initialize a String object with the name of the affected item.

@@ -27,6 +27,10 @@ import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 
 public class BTRPlayerJoinEvent {
+	
+	public BTRPlayerJoinEvent(){
+		BTRDebugger.DLog("BTRPlayerJoinEvent instanced.");
+		}
 
 	@Subscribe
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -35,13 +39,13 @@ public class BTRPlayerJoinEvent {
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getPlayer();
+			Player player = event.getUser();
 
 			/*
 			 * Initialize a String object with the IP address of the connecting
 			 * player.
 			 */
-			final String IP = event.getPlayer().getConnection().getAddress()
+			final String IP = event.getUser().getConnection().getAddress()
 					.toString();
 
 			/*

@@ -25,7 +25,6 @@ import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 import com.google.common.base.Optional;
 
-import org.spongepowered.api.data.manipulators.DisplayNameData;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.cause.Cause;
@@ -39,7 +38,7 @@ public class BTRBlockPlaceEvent {
 
 	@Subscribe
 	public void PlayerBlockPlaceEvent(final PlayerPlaceBlockEvent event) {
-		if (BTRPT.isTooled(event.getPlayer().getUniqueId().toString())) {
+		if (BTRPT.isTooled(event.getUser().getUniqueId().toString())) {
 			event.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
@@ -56,12 +55,12 @@ public class BTRBlockPlaceEvent {
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getPlayer();
+			Player player = event.getUser();
 
 			/*
 			 * Initialize a String object with the name of the affected block.
 			 */
-			final String BlockType = event.getBlock().getType().getName();
+			final String BlockType = event.getBlock().getBlockType().getName();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.

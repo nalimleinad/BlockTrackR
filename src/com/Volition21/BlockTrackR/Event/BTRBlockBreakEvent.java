@@ -36,7 +36,7 @@ public class BTRBlockBreakEvent {
 
 	@Subscribe
 	public void PlayerBreakBlockEvent(final PlayerBreakBlockEvent event) {
-		if (BTRPT.isTooled(event.getPlayer().getUniqueId().toString())) {
+		if (BTRPT.isTooled(event.getUser().getUniqueId().toString())) {
 			event.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
@@ -54,12 +54,12 @@ public class BTRBlockBreakEvent {
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getPlayer();
+			Player player = event.getUser();
 
 			/*
 			 * Initialize a String object with the name of the affected block.
 			 */
-			final String BlockType = event.getBlock().getType().getName();
+			final String BlockType = event.getBlock().getBlockType().getName();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.

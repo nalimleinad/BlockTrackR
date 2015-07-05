@@ -32,7 +32,6 @@ public class BTRDeletionScheduler {
 	public void initDeletionScheduler() {
 		BTRDebugger.DLog("initDeletionScheduler");
 		long StoreRecordsFor = getOldUNIXTime(BlockTrackR.StoreRecordsFor);
-		BTRDebugger.DLog("StoreRecordsFor: " + StoreRecordsFor);
 		recordDeletionScheduler(StoreRecordsFor);
 	}
 
@@ -40,10 +39,10 @@ public class BTRDeletionScheduler {
 		Calendar cal = Calendar.getInstance();
 		BTRDebugger.DLog("getOldUNIXTime");
 		cal.add(Calendar.DAY_OF_MONTH, -days);
-		BTRDebugger.DLog("int days: " + days);
+		BTRDebugger.DLog("Storing records for : " + BlockTrackR.StoreRecordsFor + " days.");
 		Date thendate = cal.getTime();
 		long unixTime = thendate.getTime() / 1000;
-		BTRDebugger.DLog("unixTime: " + unixTime);
+		BTRDebugger.DLog("UNIXTime " + days + " ago: " + unixTime);
 		return unixTime;
 	}
 

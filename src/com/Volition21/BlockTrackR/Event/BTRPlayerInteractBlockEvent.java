@@ -48,7 +48,7 @@ public class BTRPlayerInteractBlockEvent {
 
 	@Subscribe
 	public void PlayerInteractBlockEvent(final PlayerInteractBlockEvent event) {
-		if (BTRPT.isTooled(event.getPlayer().getUniqueId().toString())) {
+		if (BTRPT.isTooled(event.getUser().getUniqueId().toString())) {
 			event.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
@@ -63,12 +63,12 @@ public class BTRPlayerInteractBlockEvent {
 
 		} else if (BlockTrackR.Track) {
 			if (Arrays.asList(Blocks).contains(
-					event.getBlock().getType().getName())) {
+					event.getBlock().getBlockType().getName())) {
 				/*
 				 * Initialize a Player object with the event's source cast as a
 				 * Player object.
 				 */
-				Player player = event.getPlayer();
+				Player player = event.getUser();
 
 				/*
 				 * Initialize a String object with the name of the affected

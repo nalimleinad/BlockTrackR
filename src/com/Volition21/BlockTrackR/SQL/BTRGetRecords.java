@@ -46,20 +46,20 @@ public class BTRGetRecords {
 
 		int length = results.length;
 		if (length == 0) {
-			event.getPlayer().sendMessage(
+			event.getUser().sendMessage(
 					Texts.of(TextColors.RED, "No Results"));
 		} else {
-			event.getPlayer().sendMessage(
+			event.getUser().sendMessage(
 					Texts.of(TextColors.DARK_AQUA, "BlockTrackR Results @ " + X
 							+ "," + Y + "," + Z));
-			event.getPlayer().sendMessage(
+			event.getUser().sendMessage(
 					Texts.of(TextColors.DARK_RED,
 							"------------------------------"));
 			for (int i = 0; i < results.length; i++) {
-				event.getPlayer().sendMessage(
+				event.getUser().sendMessage(
 						Texts.of(TextColors.RED, results[i]));
 			}
-			event.getPlayer().sendMessage(
+			event.getUser().sendMessage(
 					Texts.of(TextColors.DARK_RED,
 							"----------------------------"));
 		}
