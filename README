@@ -1,12 +1,8 @@
 BlockTrackR
 --
 
-BlockTrackR is currently under heavy development. 
-The end goal is a product that monitors major world events such as block breaks, block placement, and item usage.
+Minecraft monitoring plugin designed to capture, index, and correlate real-time data in a searchable repository.
 
-This data will be written to a SQL database for storage and will be accessible via in-game command or by way of the provided tool (TODO).
-A front-end web interface is also planned for easy access to the data from an out-of-game environment.
+Currently only supports MySQL. All SQL processes actuate asynchronously and take advantage of connection pooling thanks to HikariCP.
 
-BlockTrackR is currently being written for Sponge development builds.
-
-BlockTrackR will always be compiled with Java 8. Please consider this if you find yourself with concurrency errors.
+This project is built against Java 1.7, the Sponge API, and utilizes Gradle for build automation.
