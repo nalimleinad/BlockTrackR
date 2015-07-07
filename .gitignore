@@ -5,3 +5,5 @@
 .gradle
 .settings
 .git
+.classpath
+.project
