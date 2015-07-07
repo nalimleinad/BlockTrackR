@@ -37,11 +37,11 @@ import org.spongepowered.api.event.state.ServerStartingEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
 
-@Plugin(id = "BTR", name = "BlockTrackR", version = "1.0")
+@Plugin(id = "BTR", name = "BlockTrackR", version = "2.2")
 public class BlockTrackR {
 
 	public static String id = "BTR";
-	public static String version = "2.1";
+	public static String version = "2.2";
 
 	public static Boolean Track = false;
 	public static String version_check = "true";
