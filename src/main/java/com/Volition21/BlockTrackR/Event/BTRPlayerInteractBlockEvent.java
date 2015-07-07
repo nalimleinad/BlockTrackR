@@ -52,7 +52,6 @@ public class BTRPlayerInteractBlockEvent {
 			event.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
-					// Name this thread for debug purposes.
 					Thread.currentThread().setName("BTRPIBE");
 					String X = String.valueOf(event.getBlock().getBlockX());
 					String Y = String.valueOf(event.getBlock().getBlockY());
