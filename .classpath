@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="lib/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="lib/HikariCP-2.3.3.jar"/>
-	<classpathentry kind="lib" path="lib/quick-json-1.0.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/sponge-1.8-1446-2.1DEV-514.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://spongepowered.github.io/SpongeAPI/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/spongeapi-2.1-20150528.033129-93.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://spongepowered.github.io/SpongeAPI/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
