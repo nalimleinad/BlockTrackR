@@ -20,6 +20,7 @@ package com.Volition21.BlockTrackR.SQL;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -267,35 +268,34 @@ public class BTRSQL {
 			int y, int z, String world, String time, String MSG) {
 		Connection connection = null;
 		Statement statement = null;
+		PreparedStatement stmt = null;
 		String event = "PlayerChat";
 		try {
 			connection = openConnection(connection);
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTrackR.database + ";";
-			String Insert = "INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
-					+ player
-					+ "', '"
-					+ UUID
-					+ "', '"
-					+ x
-					+ "', '"
-					+ y
-					+ "', '"
-					+ z
-					+ "', '"
-					+ world
-					+ "', '"
-					+ time
-					+ "', '"
-					+ MSG
-					+ "', '"
-					+ event
-					+ "', "
-					+ "UNIX_TIMESTAMP(NOW())"
-					+ ")"
-					+ ";";
+			stmt = connection
+					.prepareStatement("INSERT INTO `blocktrackr` (`player`, `UUID`, `x`, `y`, `z`, `world`, `time`, `content`, `event`, `unix_time`) VALUES ('"
+							+ player
+							+ "', '"
+							+ UUID
+							+ "', '"
+							+ x
+							+ "', '"
+							+ y
+							+ "', '"
+							+ z
+							+ "', '"
+							+ world
+							+ "', '"
+							+ time
+							+ "', ?, '"
+							+ event
+							+ "', "
+							+ "UNIX_TIMESTAMP(NOW())" + ")" + ";");
 			statement.execute(SelectDB);
-			statement.execute(Insert);
+			stmt.setString(1, MSG);
+			stmt.executeUpdate();
 		} catch (SQLException sqlException) {
 			BlockTrackR.logger.warn("BlockTrackR Disabled!", sqlException);
 			closeStatement(statement);
@@ -574,7 +574,6 @@ public class BTRSQL {
 	 * Fetches edits to provided coordinates.
 	 * 
 	 **/
-	// TODO
 	public List<String> getBlockRecord(String X, String Y, String Z) {
 
 		Connection connection = null;

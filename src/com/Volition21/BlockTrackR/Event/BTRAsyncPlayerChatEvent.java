@@ -17,26 +17,16 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.Tamer;
 import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.entity.player.User;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerChatEvent;
-import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.TextBuilder;
-import org.spongepowered.api.text.TextBuilder.Literal;
 import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.Identifiable;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
-@SuppressWarnings("unused")
 public class BTRAsyncPlayerChatEvent {
 
 	@Subscribe
@@ -50,10 +40,11 @@ public class BTRAsyncPlayerChatEvent {
 
 			/*
 			 * Initialize a String object with the Text object converted to a
-			 * plain String. Sanitize the String for insertion to SQL database.
+			 * plain String. 
+			 * 
+			 * NB:String is sanitized before execution.
 			 */
 			final String MSG = Texts.toPlain(event.getMessage());
-			final String SanatizedMSG = StringEscapeUtils.escapeSql(MSG);
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
@@ -82,7 +73,7 @@ public class BTRAsyncPlayerChatEvent {
 					Thread.currentThread().setName("BTRAPCE");
 					// Debug output controlled by switch in configuration file.
 					BTRDebugger.DLog("BTRAsyncPlayerChatEvent");
-					BTRDebugger.DLog("MSG: " + SanatizedMSG);
+					BTRDebugger.DLog("MSG: " + MSG);
 					BTRDebugger.DLog("Player: " + Player);
 					BTRDebugger.DLog("PlayerUUID: " + PlayerUUID);
 					BTRDebugger.DLog("X: " + X);
@@ -92,7 +83,7 @@ public class BTRAsyncPlayerChatEvent {
 
 					// Insert to DB
 					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), SanatizedMSG);
+							BlockTrackR.getTime(), MSG);
 				}
 			});
 
