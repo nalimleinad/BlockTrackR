@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>BlockTrackR</name>
-	<comment></comment>
+	<comment>Minecraft monitoring plugin designed to capture, index, and correlate real-time data in a searchable repository.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
