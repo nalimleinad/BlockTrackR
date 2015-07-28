@@ -52,7 +52,7 @@ public class BTRMainCommand implements CommandCallable {
 	BTRToolCommand BTRTC = new BTRToolCommand();
 
 	@Override
-	public Optional<CommandResult> process(CommandSource cs, String arguments)
+	public CommandResult process(CommandSource cs, String arguments)
 			throws CommandException {
 		String[] args = arguments.split("\\s|\\s+");
 		switch (args[0]) {
@@ -86,7 +86,7 @@ public class BTRMainCommand implements CommandCallable {
 					"/BTR auth [Playername] - Player must be online."));
 			break;
 		}
-		return Optional.of(CommandResult.success());
+		return CommandResult.success();
 	}
 
 	@Override
