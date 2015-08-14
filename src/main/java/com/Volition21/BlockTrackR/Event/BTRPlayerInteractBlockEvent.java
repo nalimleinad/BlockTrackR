@@ -53,16 +53,16 @@ public class BTRPlayerInteractBlockEvent {
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread.currentThread().setName("BTRPIBE");
-					String X = String.valueOf(event.getBlock().getBlockX());
-					String Y = String.valueOf(event.getBlock().getBlockY());
-					String Z = String.valueOf(event.getBlock().getBlockZ());
+					String X = String.valueOf(event.getLocation().getBlockX());
+					String Y = String.valueOf(event.getLocation().getBlockY());
+					String Z = String.valueOf(event.getLocation().getBlockZ());
 					BTRGR.getRecords(X, Y, Z, event);
 				}
 			});
 
 		} else if (BlockTrackR.Track) {
 			if (Arrays.asList(Blocks).contains(
-					event.getBlock().getBlockType().getName())) {
+					event.getLocation().getBlockType().getName())) {
 				/*
 				 * Initialize a Player object with the event's source cast as a
 				 * Player object.
@@ -81,9 +81,9 @@ public class BTRPlayerInteractBlockEvent {
 				 * object.
 				 */
 
-				final int X = event.getBlock().getBlockX();
-				final int Y = event.getBlock().getBlockY();
-				final int Z = event.getBlock().getBlockZ();
+				final int X = event.getLocation().getBlockX();
+				final int Y = event.getLocation().getBlockY();
+				final int Z = event.getLocation().getBlockZ();
 
 				/*
 				 * Isolates the player's name and UUID from the MessageEvent
