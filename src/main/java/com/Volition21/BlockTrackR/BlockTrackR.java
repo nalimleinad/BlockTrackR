@@ -51,13 +51,12 @@ public class BlockTrackR {
 
 	public static String host;
 	public static String port;
-	public static String connector;
 	public static String database;
+	public static String dbtype;
 	public static String dbuser;
 	public static String dbpass;
 
-	@Inject
-	public Game game;
+	public static Game game;
 
 	public CommandService cs;
 	public Server server;
@@ -68,6 +67,11 @@ public class BlockTrackR {
 	@Inject
 	private void setLogger(Logger logger) {
 		BlockTrackR.logger = logger;
+	}
+	
+	@Inject
+	private void setGame(Game game) {
+		BlockTrackR.game = game;
 	}
 
 	BTRVersionCheck BTRvc = new BTRVersionCheck();

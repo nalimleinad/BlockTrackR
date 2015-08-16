@@ -18,16 +18,21 @@
 package com.Volition21.BlockTrackR.SQL;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.Volition21.BlockTrackR.Utility.BTRConfiguration;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import org.spongepowered.api.service.sql.SqlService;
 
 public class BTRConnectionPool {
 
 	private static BTRConnectionPool instance = null;
-	private static HikariDataSource ds = null;
+	private static SqlService sql = null;
+	private static String jdbcUrl;
+	private final String dbuser;
+    private final String dbpass;
 
 	static {
 		try {
@@ -39,15 +44,42 @@ public class BTRConnectionPool {
 	}
 
 	private BTRConnectionPool() {
-		HikariConfig config = new HikariConfig();
-		config.setMaximumPoolSize(10);
-		config.setDataSourceClassName(BlockTrackR.connector);
-		config.setJdbcUrl("jdbc:mysql://" + BlockTrackR.host + ":"
-				+ BlockTrackR.port);
-		config.setUsername(BlockTrackR.dbuser);
-		config.setPassword(BlockTrackR.dbpass);
+		StringBuilder urlBuilder = new StringBuilder("jdbc:").append(BlockTrackR.dbtype.toLowerCase()).append("://");
+		
+		if (BlockTrackR.dbtype.toLowerCase().equals("mysql")) {
+            this.dbuser = BlockTrackR.dbuser;
+            this.dbpass = BlockTrackR.dbpass;
+        } else {
+            this.dbuser = "";
+            this.dbpass = "";
+        }
+		
+		switch (BlockTrackR.dbtype.toLowerCase()) {
+        case "sqlite":
+            urlBuilder.append(BlockTrackR.host
+                    .replace("%DIR%", BTRConfiguration.Dir.getAbsolutePath()))
+                    .append(File.separatorChar)
+                    .append("database.db");
+            break;
+        case "mysql":
+            urlBuilder.append(dbuser).append(':').append(dbpass).append("@")
+                    .append(BlockTrackR.host)
+                    .append(':')
+                    .append(BlockTrackR.port)
+                    .append('/')
+                    .append(BlockTrackR.database);
+            break;
+        case "h2":
+        default:
+            urlBuilder.append(BlockTrackR.host
+                    .replace("%DIR%", BTRConfiguration.Dir.getAbsolutePath()))
+                    .append(File.separatorChar)
+                    .append("database");
+            break;
+    }
 
-		ds = new HikariDataSource(config);
+    BTRConnectionPool.jdbcUrl = urlBuilder.toString();
+
 	}
 
 	public static BTRConnectionPool getInstance() {
@@ -55,7 +87,11 @@ public class BTRConnectionPool {
 	}
 
 	public static Connection getConnection() throws SQLException {
-		return ds.getConnection();
-	}
+        if (sql == null) {
+            sql = BlockTrackR.game.getServiceManager().provide(SqlService.class).get();
+        }
+
+        return sql.getDataSource(jdbcUrl).getConnection();
+    }
 
 }
