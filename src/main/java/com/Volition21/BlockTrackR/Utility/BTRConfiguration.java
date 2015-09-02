@@ -35,7 +35,7 @@ public class BTRConfiguration {
 
 	static Properties prop = new Properties();
 	static OutputStream output = null;
-	static File Dir = new File("config//BlockTrackR");
+	public static File Dir = new File("config//BlockTrackR");
 	static String ConfDir = "config//BlockTrackR//BlockTrackR.conf";
 
 	/**
@@ -146,8 +146,8 @@ public class BTRConfiguration {
 			BlockTrackR.debug = prop.getProperty("debug");
 			BlockTrackR.host = prop.getProperty("host");
 			BlockTrackR.port = prop.getProperty("port");
-			BlockTrackR.connector = prop.getProperty("connector");
 			BlockTrackR.database = prop.getProperty("database");
+			BlockTrackR.dbtype = prop.getProperty("dbtype");
 			BlockTrackR.dbuser = prop.getProperty("dbuser");
 			BlockTrackR.dbpass = prop.getProperty("dbpass");
 
@@ -179,9 +179,8 @@ public class BTRConfiguration {
 			prop.setProperty("debug", "false");
 			prop.setProperty("host", "localhost");
 			prop.setProperty("port", "3306");
-			prop.setProperty("connector",
-					"com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 			prop.setProperty("database", "minecraft");
+			prop.setProperty("dbtype", "mysql");
 			prop.setProperty("dbuser", "db_username");
 			prop.setProperty("dbpass", "db_pasword");
 

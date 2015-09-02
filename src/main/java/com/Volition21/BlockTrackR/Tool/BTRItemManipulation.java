@@ -18,7 +18,7 @@
 package com.Volition21.BlockTrackR.Tool;
 
 import org.spongepowered.api.Game;
-import org.spongepowered.api.data.manipulator.DisplayNameData;
+import org.spongepowered.api.data.manipulator.mutable.DisplayNameData;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Texts;
@@ -36,11 +36,11 @@ public class BTRItemManipulation {
 	 *         Name.
 	 */
 	public ItemStack createCustomItem(Game game, String name, ItemType itype) {
-		ItemStack specialItem = game.getRegistry().getItemBuilder()
+		ItemStack specialItem = game.getRegistry().createItemBuilder()
 				.itemType(itype).build();
 		DisplayNameData nameData = specialItem.getOrCreate(
 				DisplayNameData.class).get();
-		specialItem.offer(nameData.setDisplayName(Texts.of(name)));
+		specialItem.offer(nameData.displayName().set(Texts.of(name)));
 		specialItem.setQuantity(1);
 		return specialItem;
 	}
