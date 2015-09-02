@@ -17,8 +17,7 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
+import org.spongepowered.api.entity.living.player.Player;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
@@ -27,24 +26,23 @@ import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
-import org.spongepowered.api.event.entity.player.PlayerBreakBlockEvent;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.block.BreakBlockEvent;
 
 public class BTRBlockBreakEvent {
 
 	BTRPermissionTools BTRPT = new BTRPermissionTools();
 	BTRGetRecords BTRGR = new BTRGetRecords();
 
-	@Subscribe
-	public void PlayerBreakBlockEvent(final PlayerBreakBlockEvent event) {
-		if (BTRPT.isTooled(event.getUser().getUniqueId().toString())) {
+	@Listener
+	public void PlayerBreakBlockEvent(final BreakBlockEvent.SourcePlayer event) {
+		if (BTRPT.isTooled(event.getSourceEntity().getUniqueId().toString())) {
 			event.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
-					// Name this thread for debug purposes.
-					Thread.currentThread().setName("BTRBBE");
-					String X = String.valueOf(event.getLocation().getBlockX());
-					String Y = String.valueOf(event.getLocation().getBlockY());
-					String Z = String.valueOf(event.getLocation().getBlockZ());
+					String X = String.valueOf(event.getSourceTransform().getLocation().getBlockX());
+					String Y = String.valueOf(event.getSourceTransform().getLocation().getBlockY());
+					String Z = String.valueOf(event.getSourceTransform().getLocation().getBlockZ());
 					BTRGR.getRecords(X, Y, Z, event);
 				}
 			});
@@ -54,19 +52,19 @@ public class BTRBlockBreakEvent {
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getUser();
+			Player player = event.getSourceEntity();
 
 			/*
 			 * Initialize a String object with the name of the affected block.
 			 */
-			final String BlockType = event.getLocation().getBlockType().getName();
+			final String BlockType = event.getSourceTransform().getLocation().getBlockType().getName();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
 			 */
-			final int X = event.getLocation().getBlockX();
-			final int Y = event.getLocation().getBlockY();
-			final int Z = event.getLocation().getBlockZ();
+			final int X = event.getSourceTransform().getLocation().getBlockX();
+			final int Y = event.getSourceTransform().getLocation().getBlockY();
+			final int Z = event.getSourceTransform().getLocation().getBlockZ();
 
 			/*
 			 * Isolates the player's name and UUID from the MessageEvent object.
@@ -97,8 +95,7 @@ public class BTRBlockBreakEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), BlockType);
+					BTRSQL.insertBlockBreak(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(), BlockType);
 				}
 			});
 

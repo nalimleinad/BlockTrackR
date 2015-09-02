@@ -19,8 +19,9 @@ package com.Volition21.BlockTrackR.Event;
 
 import java.util.Arrays;
 
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.block.InteractBlockEvent;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
@@ -29,61 +30,54 @@ import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
-import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
-
 public class BTRPlayerInteractBlockEvent {
 
 	BTRPermissionTools BTRPT = new BTRPermissionTools();
 	BTRGetRecords BTRGR = new BTRGetRecords();
 
-	String[] Blocks = { "minecraft:lever", "minecraft:wooden_button",
-			"minecraft:fence_gate", "minecraft:wooden_door",
-			"minecraft:dark_oak_door", "minecraft:spruce_door",
-			"minecraft:birch_door", "minecraft:jungle_door",
-			"minecraft:acacia_door", "minecraft:dispenser",
-			"minecraft:dropper", "minecraft:hopper", "minecraft:furnace",
-			"minecraft:chest", "minecraft:jukebox ",
-			"minecraft:enchanting_table", "minecraft:crafting_table",
-			"minecraft:ender_chest" };
+	String[] Blocks = { "minecraft:lever", "minecraft:wooden_button", "minecraft:fence_gate", "minecraft:wooden_door",
+			"minecraft:dark_oak_door", "minecraft:spruce_door", "minecraft:birch_door", "minecraft:jungle_door",
+			"minecraft:acacia_door", "minecraft:dispenser", "minecraft:dropper", "minecraft:hopper",
+			"minecraft:furnace", "minecraft:chest", "minecraft:jukebox ", "minecraft:enchanting_table",
+			"minecraft:crafting_table", "minecraft:ender_chest" };
 
-	@Subscribe
-	public void PlayerInteractBlockEvent(final PlayerInteractBlockEvent event) {
-		if (BTRPT.isTooled(event.getUser().getUniqueId().toString())) {
-			event.setCancelled(true);
+	@Listener
+	public void PlayerInteractBlockEvent(final InteractBlockEvent.SourcePlayer sourcePlayerData,
+			final InteractBlockEvent.Use usageData) {
+		if (BTRPT.isTooled(sourcePlayerData.getSourceEntity().getUniqueId().toString())) {
+			sourcePlayerData.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread.currentThread().setName("BTRPIBE");
-					String X = String.valueOf(event.getLocation().getBlockX());
-					String Y = String.valueOf(event.getLocation().getBlockY());
-					String Z = String.valueOf(event.getLocation().getBlockZ());
-					BTRGR.getRecords(X, Y, Z, event);
+					String X = String.valueOf(sourcePlayerData.getTargetLocation().getBlockX());
+					String Y = String.valueOf(sourcePlayerData.getTargetLocation().getBlockY());
+					String Z = String.valueOf(sourcePlayerData.getTargetLocation().getBlockZ());
+					BTRGR.getRecords(X, Y, Z, sourcePlayerData);
 				}
 			});
 
 		} else if (BlockTrackR.Track) {
-			if (Arrays.asList(Blocks).contains(
-					event.getLocation().getBlockType().getName())) {
+			if (Arrays.asList(Blocks).contains(sourcePlayerData.getTargetLocation().getBlockType().getName())) {
 				/*
 				 * Initialize a Player object with the event's source cast as a
 				 * Player object.
 				 */
-				Player player = event.getUser();
+				Player player = sourcePlayerData.getSourceEntity();
 
 				/*
 				 * Initialize a String object with the name of the affected
 				 * block.
 				 */
-				final String InteractionType = event.getInteractionType()
-						.getName();
+				final String InteractionType = "Hopefully usage, I'll sort this out later.";
 
 				/*
 				 * Extrapolates the X,Y,and Z coordinates from the Player
 				 * object.
 				 */
 
-				final int X = event.getLocation().getBlockX();
-				final int Y = event.getLocation().getBlockY();
-				final int Z = event.getLocation().getBlockZ();
+				final int X = sourcePlayerData.getSourceTransform().getLocation().getBlockX();
+				final int Y = sourcePlayerData.getSourceTransform().getLocation().getBlockY();
+				final int Z = sourcePlayerData.getSourceTransform().getLocation().getBlockZ();
 
 				/*
 				 * Isolates the player's name and UUID from the MessageEvent
@@ -116,8 +110,7 @@ public class BTRPlayerInteractBlockEvent {
 						BTRDebugger.DLog("World: " + world);
 
 						// Insert to DB
-						BTRSQL.insertPlayerInteract(Player, PlayerUUID, X, Y,
-								Z, world, BlockTrackR.getTime(),
+						BTRSQL.insertPlayerInteract(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(),
 								InteractionType);
 					}
 				});

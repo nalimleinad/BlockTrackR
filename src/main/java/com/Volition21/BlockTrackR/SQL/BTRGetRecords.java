@@ -19,7 +19,7 @@ package com.Volition21.BlockTrackR.SQL;
 
 import java.util.List;
 
-import org.spongepowered.api.event.entity.player.PlayerEvent;
+import org.spongepowered.api.event.entity.living.player.PlayerEvent;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -46,22 +46,15 @@ public class BTRGetRecords {
 
 		int length = results.length;
 		if (length == 0) {
-			event.getUser().sendMessage(
-					Texts.of(TextColors.RED, "No Results"));
+			event.getSourceEntity().sendMessage(Texts.of(TextColors.RED, "No Results"));
 		} else {
-			event.getUser().sendMessage(
-					Texts.of(TextColors.DARK_AQUA, "BlockTrackR Results @ " + X
-							+ "," + Y + "," + Z));
-			event.getUser().sendMessage(
-					Texts.of(TextColors.DARK_RED,
-							"------------------------------"));
+			event.getSourceEntity()
+					.sendMessage(Texts.of(TextColors.DARK_AQUA, "BlockTrackR Results @ " + X + "," + Y + "," + Z));
+			event.getSourceEntity().sendMessage(Texts.of(TextColors.DARK_RED, "------------------------------"));
 			for (int i = 0; i < results.length; i++) {
-				event.getUser().sendMessage(
-						Texts.of(TextColors.RED, results[i]));
+				event.getSourceEntity().sendMessage(Texts.of(TextColors.RED, results[i]));
 			}
-			event.getUser().sendMessage(
-					Texts.of(TextColors.DARK_RED,
-							"----------------------------"));
+			event.getSourceEntity().sendMessage(Texts.of(TextColors.DARK_RED, "----------------------------"));
 		}
 
 	}

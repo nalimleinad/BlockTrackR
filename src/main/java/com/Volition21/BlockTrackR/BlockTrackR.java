@@ -32,16 +32,16 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.state.ServerStartingEvent;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
 
-@Plugin(id = "BTR", name = "BlockTrackR", version = "2.2")
+@Plugin(id = "BTR", name = "BlockTrackR", version = "2.3")
 public class BlockTrackR {
 
 	public static String id = "BTR";
-	public static String version = "2.2";
+	public static String version = "2.3";
 
 	public static Boolean Track = false;
 	public static String version_check = "true";
@@ -58,7 +58,7 @@ public class BlockTrackR {
 
 	public static Game game;
 
-	public CommandService cs;
+	public CommandService commandDispatcher;
 	public Server server;
 	public static Logger logger;
 	public static String[] authorized_players;
@@ -68,7 +68,7 @@ public class BlockTrackR {
 	private void setLogger(Logger logger) {
 		BlockTrackR.logger = logger;
 	}
-	
+
 	@Inject
 	private void setGame(Game game) {
 		BlockTrackR.game = game;
@@ -80,8 +80,8 @@ public class BlockTrackR {
 	/**
 	 * Initialize all of BlockTrackR
 	 */
-	@Subscribe
-	public void onServerStarting(ServerStartingEvent event) {
+	@Listener
+	public void OnGameStarted(GameStartedServerEvent event) {
 		logger.info("BlockTracker Starting Up...");
 		logger.info("Minecraft: v1.8 - Sponge");
 		/*
@@ -93,29 +93,26 @@ public class BlockTrackR {
 		 * -The CommandService object with the game's CommandDispatcher.
 		 */
 		server = game.getServer();
-		cs = game.getCommandDispatcher();
+		commandDispatcher = game.getCommandDispatcher();
 
 		/*
-		 * Register Commands.
+		 * registerListeners Commands.
 		 */
-		cs.register(this, new BTRMainCommand(server, game), "BTR");
+		commandDispatcher.register(this, new BTRMainCommand(server, game), "BTR");
 
 		/*
-		 * Register all the event listeners with the EventManager
+		 * registerListeners all the event listeners with the EventManager
 		 */
-		logger.info("Registering Events...");
+		logger.info("registerListenersing Events...");
 		try {
-			game.getEventManager().register(this, new BTRPlayerJoinEvent());
-			game.getEventManager().register(this, new BTRPlayerQuitEvent());
-			game.getEventManager().register(this,
-					new BTRPlayerPickUpItemEvent());
-			game.getEventManager().register(this, new BTRPlayerDropItemEvent());
-			game.getEventManager().register(this, new BTRBlockPlaceEvent());
-			game.getEventManager().register(this, new BTRBlockBreakEvent());
-			game.getEventManager()
-					.register(this, new BTRAsyncPlayerChatEvent());
-			game.getEventManager().register(this,
-					new BTRPlayerInteractBlockEvent());
+			game.getEventManager().registerListeners(this, new BTRPlayerJoinEvent());
+			game.getEventManager().registerListeners(this, new BTRPlayerQuitEvent());
+			game.getEventManager().registerListeners(this, new BTRPlayerPickUpItemEvent());
+			game.getEventManager().registerListeners(this, new BTRPlayerDropItemEvent());
+			game.getEventManager().registerListeners(this, new BTRBlockPlaceEvent());
+			game.getEventManager().registerListeners(this, new BTRBlockBreakEvent());
+			game.getEventManager().registerListeners(this, new BTRAsyncPlayerChatEvent());
+			game.getEventManager().registerListeners(this, new BTRPlayerInteractBlockEvent());
 		} catch (Exception e) {
 			// This should pretty much never ever happen. Ever.
 			logger.info("Event registration error, please submit bug report to Volition21 with your log files.");

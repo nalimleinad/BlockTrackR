@@ -17,9 +17,9 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerChatEvent;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.living.player.PlayerChatEvent;
 import org.spongepowered.api.text.Texts;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
@@ -29,14 +29,14 @@ import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
 public class BTRAsyncPlayerChatEvent {
 
-	@Subscribe
+	@Listener
 	public void AsyncPlayerChatEvent(PlayerChatEvent event) {
 		if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getUser();
+			Player player = event.getSource();
 
 			/*
 			 * Initialize a String object with the Text object converted to a

@@ -17,9 +17,9 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerPickUpItemEvent;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.inventory.PickUpItemEvent;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
@@ -27,23 +27,23 @@ import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
 public class BTRPlayerPickUpItemEvent {
-	
+
 	// TODO
 	// Change to human event, player not firing.
 
-	@Subscribe
-	public void PlayerPickUpItemEvent(PlayerPickUpItemEvent event) {
+	@Listener
+	public void PlayerPickUpItemEvent(PickUpItemEvent.SourcePlayer sourcePlayerData) {
 		if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = (Player) event.getEntity();
+			Player player = sourcePlayerData.getSourceEntity();
 
 			/*
 			 * Initialize a String object with the name of the affected item.
 			 */
-			final String ItemType = event.getItems().toString();
+			final String ItemType = sourcePlayerData.getItems().toString();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
@@ -81,8 +81,7 @@ public class BTRPlayerPickUpItemEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), ItemType);
+					BTRSQL.insertPickupItem(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(), ItemType);
 				}
 			});
 

@@ -25,34 +25,32 @@ import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerQuitEvent;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.living.player.PlayerQuitEvent;
 
 public class BTRPlayerQuitEvent {
 
 	BTRPermissionTools BTRPT = new BTRPermissionTools();
 	BTRGetRecords BTRGR = new BTRGetRecords();
 
-	@Subscribe
+	@Listener
 	public void PlayerQuitEvent(PlayerQuitEvent event) {
-		if (BTRPT.isTooled(event.getUser().getUniqueId().toString())) {
-			BlockTrackR.tooled_players = (String[]) ArrayUtils.removeElement(
-					BlockTrackR.tooled_players, event.getUser().getUniqueId()
-							.toString());
+		if (BTRPT.isTooled(event.getSourceEntity().getUniqueId().toString())) {
+			BlockTrackR.tooled_players = (String[]) ArrayUtils.removeElement(BlockTrackR.tooled_players,
+					event.getSourceEntity().getUniqueId().toString());
 		} else if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getUser();
+			Player player = event.getSourceEntity();
 
 			/*
 			 * Initialize a String object with the IP address of the connecting
 			 * player.
 			 */
-			final String IP = event.getUser().getConnection().getAddress()
-					.toString();
+			final String IP = event.getSourceEntity().getConnection().getAddress().toString();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
@@ -90,8 +88,7 @@ public class BTRPlayerQuitEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), IP);
+					BTRSQL.insertPlayerQuit(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(), IP);
 				}
 			});
 

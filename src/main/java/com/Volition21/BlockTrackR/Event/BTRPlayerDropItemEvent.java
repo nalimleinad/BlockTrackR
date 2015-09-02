@@ -22,25 +22,25 @@ import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerDropItemEvent;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.inventory.DropItemStackEvent;
 
 public class BTRPlayerDropItemEvent {
 
-	@Subscribe
-	public void PlayerDropItemEvent(PlayerDropItemEvent event) {
+	@Listener
+	public void PlayerDropItemEvent(DropItemStackEvent.SourcePlayer sourcePlayerData, DropItemStackEvent.Pre preData) {
 		if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getUser();
+			Player player = sourcePlayerData.getSourceEntity();
 
 			/*
 			 * Initialize a String object with the name of the affected item.
 			 */
-			final String ItemType = event.getDroppedItems().toString();
+			final String ItemType = preData.getDroppedItems().toString();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
@@ -78,8 +78,7 @@ public class BTRPlayerDropItemEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), ItemType);
+					BTRSQL.insertDropItem(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(), ItemType);
 				}
 			});
 
