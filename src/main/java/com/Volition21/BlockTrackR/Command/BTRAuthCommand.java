@@ -17,9 +17,7 @@
  */
 package com.Volition21.BlockTrackR.Command;
 
-import java.util.Arrays;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
@@ -40,8 +38,7 @@ public class BTRAuthCommand {
 	BTRConfiguration BTRC = new BTRConfiguration();
 	BTRPermissionTools BTRPT = new BTRPermissionTools();
 
-	public void authCommand(final CommandSource cs, final String[] args,
-			final Server server) {
+	public void authCommand(final CommandSource cs, final String[] args, final Server server) {
 		BTRDebugger.DLog("authCommand - preAuth");
 		if (BTRPT.isOPOrConsole(cs)) {
 			BTRDebugger.DLog("authCommand - isAuthed");
@@ -52,23 +49,18 @@ public class BTRAuthCommand {
 					try {
 						PlayerName = args[1];
 					} catch (IndexOutOfBoundsException e) {
-						cs.sendMessage(Texts.of(TextColors.RED,
-								"Inncorrect Syntax."));
-						cs.sendMessage(Texts
-								.of(TextColors.RED,
-										"/BTR auth [Playername] - Player must be online."));
+						cs.sendMessage(Texts.of(TextColors.RED, "Inncorrect Syntax."));
+						cs.sendMessage(Texts.of(TextColors.RED, "/BTR auth [Playername] - Player must be online."));
 					}
 					if (PlayerName != null) {
 						Optional<Player> player = server.getPlayer(PlayerName);
 						if (player.isPresent()) {
 							if (cs instanceof Player) {
-								if (BTROC.isOP(((Player) cs).getIdentifier()
-										.toString())) {
+								if (BTROC.isOP(((Player) cs).getIdentifier().toString())) {
 									authorizeUser(cs, player.get());
 								} else {
-									cs.sendMessage(Texts
-											.of(TextColors.RED,
-													"BTR authorization requires OP privilages."));
+									cs.sendMessage(
+											Texts.of(TextColors.RED, "BTR authorization requires OP privilages."));
 								}
 							} else if (cs instanceof ConsoleSource) {
 								authorizeUser(cs, player.get());
@@ -77,8 +69,7 @@ public class BTRAuthCommand {
 										.of("Command cannot be called by anything other than ConsoleSource or Player"));
 							}
 						} else {
-							cs.sendMessage(Texts.of(TextColors.RED, PlayerName
-									+ " is not online."));
+							cs.sendMessage(Texts.of(TextColors.RED, PlayerName + " is not online."));
 						}
 
 					}
@@ -99,30 +90,23 @@ public class BTRAuthCommand {
 	 */
 	public void authorizeUser(CommandSource cs, Player player) {
 		String PlayerName = player.getName();
-		int status = BTRC.authorizeUser("authorized_players", player
-				.getUniqueId().toString());
+		int status = BTRC.authorizeUser("authorized_players", player.getUniqueId().toString());
 
 		if (status == 1) {
-			cs.sendMessage(Texts.of(TextColors.GREEN, PlayerName
-					+ " Added to the list of authorized users."));
+			cs.sendMessage(Texts.of(TextColors.GREEN, PlayerName + " Added to the list of authorized users."));
 		} else if (status == 2) {
-			cs.sendMessage(Texts.of(TextColors.RED, PlayerName
-					+ " Removed from the list of authorized users."));
-			if (BlockTrackR.tooled_players != null){
-				if (Arrays.asList(BlockTrackR.tooled_players).contains(
-						player.getUniqueId().toString())) {
-					cs.sendMessage(Texts.of(TextColors.RED, PlayerName
-							+ " was also removed from the list of tooled players."));
-					BlockTrackR.tooled_players = (String[]) ArrayUtils
-							.removeElement(BlockTrackR.tooled_players, player
-									.getUniqueId().toString());
+			cs.sendMessage(Texts.of(TextColors.RED, PlayerName + " Removed from the list of authorized users."));
+			if (BlockTrackR.tooled_players != null) {
+				for (int i = 0; i < BlockTrackR.tooled_players.length; i++) {
+					if (BlockTrackR.tooled_players[i].contains((player.getUniqueId().toString()))) {
+						BlockTrackR.tooled_players[i] = null;
+						break;
+					}
 				}
 			}
 		} else if ((status != 1) || (status != 2)) {
-			cs.sendMessage(Texts
-					.of("There was an error of somekind, please inform your administrator or Volition21."));
-			BlockTrackR.logger
-					.info("There was an error, setConfigValue has returned a value other than 1 or 2");
+			cs.sendMessage(Texts.of("There was an error of somekind, please inform your administrator or Volition21."));
+			BlockTrackR.logger.info("There was an error, setConfigValue has returned a value other than 1 or 2");
 		}
 	}
 }
