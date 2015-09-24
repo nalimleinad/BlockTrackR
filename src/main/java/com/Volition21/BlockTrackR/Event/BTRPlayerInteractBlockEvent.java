@@ -28,6 +28,7 @@ import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRGetPlayer;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 public class BTRPlayerInteractBlockEvent {
@@ -42,28 +43,30 @@ public class BTRPlayerInteractBlockEvent {
 			"minecraft:crafting_table", "minecraft:ender_chest" };
 
 	@Listener
-	public void PlayerInteractBlockEvent(final InteractBlockEvent.SourcePlayer sourcePlayerData,
-			final InteractBlockEvent.Use usageData) {
-		if (BTRPT.isTooled(sourcePlayerData.getSourceEntity().getUniqueId().toString())) {
+	public void PlayerInteractBlockEvent(InteractBlockEvent sourcePlayerData) {
+		/*
+		 * Get the Player object.
+		 */
+		Player player = BTRGetPlayer.getPlayer(sourcePlayerData.getCause().first(Player.class));
+		if (player == null) {
+			return;
+		}
+
+		if (BTRPT.isTooled(player.getUniqueId().toString())) {
 			sourcePlayerData.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					Thread.currentThread().setName("BTRPIBE");
-					String X = String.valueOf(sourcePlayerData.getTargetLocation().getBlockX());
-					String Y = String.valueOf(sourcePlayerData.getTargetLocation().getBlockY());
-					String Z = String.valueOf(sourcePlayerData.getTargetLocation().getBlockZ());
-					BTRGR.getRecords(X, Y, Z, sourcePlayerData);
+					String X = String.valueOf(sourcePlayerData.getTargetBlock().getLocation().get().getBlockX());
+					String Y = String.valueOf(sourcePlayerData.getTargetBlock().getLocation().get().getBlockY());
+					String Z = String.valueOf(sourcePlayerData.getTargetBlock().getLocation().get().getBlockZ());
+					BTRGR.getRecords(X, Y, Z, player);
 				}
 			});
 
 		} else if (BlockTrackR.Track) {
-			if (Arrays.asList(Blocks).contains(sourcePlayerData.getTargetLocation().getBlockType().getName())) {
-				/*
-				 * Initialize a Player object with the event's source cast as a
-				 * Player object.
-				 */
-				Player player = sourcePlayerData.getSourceEntity();
-
+			if (Arrays.asList(Blocks)
+					.contains(sourcePlayerData.getTargetBlock().getLocation().get().getBlockType().getName())) {
 				/*
 				 * Initialize a String object with the name of the affected
 				 * block.
@@ -74,10 +77,9 @@ public class BTRPlayerInteractBlockEvent {
 				 * Extrapolates the X,Y,and Z coordinates from the Player
 				 * object.
 				 */
-
-				final int X = sourcePlayerData.getSourceTransform().getLocation().getBlockX();
-				final int Y = sourcePlayerData.getSourceTransform().getLocation().getBlockY();
-				final int Z = sourcePlayerData.getSourceTransform().getLocation().getBlockZ();
+				final int X = player.getTransform().getLocation().getBlockX();
+				final int Y = player.getTransform().getLocation().getBlockY();
+				final int Z = player.getTransform().getLocation().getBlockZ();
 
 				/*
 				 * Isolates the player's name and UUID from the MessageEvent
@@ -95,6 +97,7 @@ public class BTRPlayerInteractBlockEvent {
 				 * Add to queue for insertion to SQL database.
 				 */
 				BTRExecutorService.ThreadPool.execute(new Runnable() {
+
 					public void run() {
 						// Name this thread for debug purposes.
 						Thread.currentThread().setName("BTRPIBE");

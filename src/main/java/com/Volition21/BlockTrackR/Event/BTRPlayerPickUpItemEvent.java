@@ -25,6 +25,7 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRGetPlayer;
 
 public class BTRPlayerPickUpItemEvent {
 
@@ -32,18 +33,19 @@ public class BTRPlayerPickUpItemEvent {
 	// Change to human event, player not firing.
 
 	@Listener
-	public void PlayerPickUpItemEvent(PickUpItemEvent.SourcePlayer sourcePlayerData) {
+	public void PlayerPickUpItemEvent(PickUpItemEvent sourcePlayerData) {
 		if (BlockTrackR.Track) {
 			/*
-			 * Initialize a Player object with the event's source cast as a
-			 * Player object.
+			 * Get the Player object.
 			 */
-			Player player = sourcePlayerData.getSourceEntity();
-
+			Player player = BTRGetPlayer.getPlayer(sourcePlayerData.getCause().first(Player.class));
+			if (player == null) {
+				return;
+			}
 			/*
 			 * Initialize a String object with the name of the affected item.
 			 */
-			final String ItemType = sourcePlayerData.getItems().toString();
+			final String ItemType = sourcePlayerData.getEntities().toString();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.

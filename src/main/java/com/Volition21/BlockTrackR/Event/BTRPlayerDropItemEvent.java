@@ -21,6 +21,7 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRGetPlayer;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -29,14 +30,16 @@ import org.spongepowered.api.event.inventory.DropItemStackEvent;
 public class BTRPlayerDropItemEvent {
 
 	@Listener
-	public void PlayerDropItemEvent(DropItemStackEvent.SourcePlayer sourcePlayerData, DropItemStackEvent.Pre preData) {
-		if (BlockTrackR.Track) {
-			/*
-			 * Initialize a Player object with the event's source cast as a
-			 * Player object.
-			 */
-			Player player = sourcePlayerData.getSourceEntity();
+	public void PlayerDropItemEvent(DropItemStackEvent event, DropItemStackEvent.Pre preData) {
+		/*
+		 * Get the Player object.
+		 */
+		Player player = BTRGetPlayer.getPlayer(event.getCause().first(Player.class));
+		if (player == null) {
+			return;
+		}
 
+		if (BlockTrackR.Track) {
 			/*
 			 * Initialize a String object with the name of the affected item.
 			 */

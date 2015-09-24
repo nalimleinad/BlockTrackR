@@ -26,25 +26,21 @@ import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
-import com.google.common.base.Optional;
+import com.Volition21.BlockTrackR.Utility.BTRGetPlayer;
 
 public class BTRAsyncPlayerChatEvent {
-	
+
 	Player player;
 
 	@Listener
 	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
 			/*
-			 * Initialize an Optional<Player> object with the event's first
-			 * cause querying for a Player. Terminate it there was no Player
-			 * object.
+			 * Get the Player object.
 			 */
-			Optional<Player> obj = event.getCause().first(Player.class);
-			if (!(obj.isPresent())) {
+			Player player = BTRGetPlayer.getPlayer(event.getCause().first(Player.class));
+			if (player == null) {
 				return;
-			} else {
-				player = obj.get();
 			}
 
 			/*

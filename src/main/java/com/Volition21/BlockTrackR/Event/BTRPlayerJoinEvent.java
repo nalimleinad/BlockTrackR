@@ -19,7 +19,7 @@ package com.Volition21.BlockTrackR.Event;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.entity.living.player.PlayerJoinEvent;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
@@ -29,23 +29,26 @@ import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 public class BTRPlayerJoinEvent {
 
 	public BTRPlayerJoinEvent() {
+		/*
+		 * Not sure why this constructor is here, testing?
+		 */
 		BTRDebugger.DLog("BTRPlayerJoinEvent instanced.");
 	}
 
 	@Listener
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	public void onPlayerJoin(ClientConnectionEvent.Join event) {
 		if (BlockTrackR.Track) {
 			/*
 			 * Initialize a Player object with the event's source cast as a
 			 * Player object.
 			 */
-			Player player = event.getSourceEntity();
+			Player player = (Player) event.getTargetEntity();
 
 			/*
 			 * Initialize a String object with the IP address of the connecting
 			 * player.
 			 */
-			final String IP = event.getSourceEntity().getConnection().getClass().toString();
+			final String IP = player.getConnection().getAddress().toString();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.

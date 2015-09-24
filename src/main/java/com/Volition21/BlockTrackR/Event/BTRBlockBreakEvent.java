@@ -17,24 +17,20 @@
  */
 package com.Volition21.BlockTrackR.Event;
 
-import org.spongepowered.api.entity.living.player.Player;
-
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRGetOriginalBlock;
 import com.Volition21.BlockTrackR.Utility.BTRGetPlayer;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.block.BreakBlockEvent;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-
-import java.util.List;
-import org.spongepowered.api.block.BlockTransaction;
-import com.google.common.base.Optional;
 
 public class BTRBlockBreakEvent {
 
@@ -45,9 +41,6 @@ public class BTRBlockBreakEvent {
 
 	@Listener
 	public void PlayerBreakBlockEvent(BreakBlockEvent event) {
-		// This is really messy and I'll clean it up after I merge with
-		// nalimleinad's pull request.
-		// EW
 
 		/*
 		 * Get the Player object.
@@ -57,15 +50,12 @@ public class BTRBlockBreakEvent {
 			return;
 		}
 
-		List<BlockTransaction> transactions = event.getTransactions();
-		for (BlockTransaction block : transactions) {
-			Optional<Location<World>> optLoc = block.getOriginal().getLocation();
-
-			if (!optLoc.isPresent()) {
-				continue;
-			}
-
-			loc = optLoc.get();
+		/*
+		 * Get the original block.
+		 */
+		loc = BTRGetOriginalBlock.getOriginalBlock(event.getTransactions());
+		if (loc == null) {
+			return;
 		}
 
 		if (BTRPT.isTooled(player.getUniqueId().toString())) {
@@ -84,7 +74,7 @@ public class BTRBlockBreakEvent {
 			/*
 			 * Initialize a String object with the name of the affected block.
 			 */
-			final String BlockType = event.getTransactions().get(0).getOriginal().getState().getType().getName();
+			final String BlockType = loc.getBlockType().getName();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.

@@ -22,53 +22,67 @@ import com.Volition21.BlockTrackR.SQL.BTRGetRecords;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.Volition21.BlockTrackR.Utility.BTRGetOriginalBlock;
+import com.Volition21.BlockTrackR.Utility.BTRGetPlayer;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
-import com.google.common.base.Optional;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.block.BreakBlockEvent;
 import org.spongepowered.api.event.block.PlaceBlockEvent;
-import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
-@SuppressWarnings("unused")
 public class BTRBlockPlaceEvent {
 
 	BTRPermissionTools BTRPT = new BTRPermissionTools();
 	BTRGetRecords BTRGR = new BTRGetRecords();
 
+	Location<World> loc;
+
 	@Listener
-	public void PlayerBlockPlaceEvent(final PlaceBlockEvent.SourcePlayer event) {
-		if (BTRPT.isTooled(event.getSourceEntity().getUniqueId().toString())) {
+	public void PlayerBlockPlaceEvent(PlaceBlockEvent event) {
+
+		/*
+		 * Get the Player object.
+		 */
+		Player player = BTRGetPlayer.getPlayer(event.getCause().first(Player.class));
+		if (player == null) {
+			return;
+		}
+
+		/*
+		 * Get the original block.
+		 */
+		loc = BTRGetOriginalBlock.getOriginalBlock(event.getTransactions());
+		if (loc == null) {
+			return; // Technically this cannot happen (?)
+		}
+
+		if (BTRPT.isTooled(player.getUniqueId().toString())) {
 			event.setCancelled(true);
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
 				public void run() {
 					// Name this thread for debug purposes.
 					Thread.currentThread().setName("BTRBPE");
-					String X = String.valueOf(event.getSourceTransform().getLocation().getBlockX());
-					String Y = String.valueOf(event.getSourceTransform().getLocation().getBlockY());
-					String Z = String.valueOf(event.getSourceTransform().getLocation().getBlockZ());
-					BTRGR.getRecords(X, Y, Z, event);
+					String X = String.valueOf(loc.getBlockX());
+					String Y = String.valueOf(loc.getBlockY());
+					String Z = String.valueOf(loc.getBlockZ());
+					BTRGR.getRecords(X, Y, Z, player);
 				}
 			});
-		} else if (BlockTrackR.Track) {
-			/*
-			 * Initialize a Player object with the event's source cast as a
-			 * Player object.
-			 */
-			Player player = event.getSourceEntity();
 
+		} else if (BlockTrackR.Track) {
 			/*
 			 * Initialize a String object with the name of the affected block.
 			 */
-			final String BlockType = event.getSourceTransform().getLocation().getBlockType().getName();
+			final String BlockType = loc.getBlockType().getName();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
 			 */
-			final int X = event.getSourceTransform().getLocation().getBlockX();
-			final int Y = event.getSourceTransform().getLocation().getBlockY();
-			final int Z = event.getSourceTransform().getLocation().getBlockZ();
+			final int X = loc.getBlockX();
+			final int Y = loc.getBlockY();
+			final int Z = loc.getBlockZ();
 
 			/*
 			 * Isolates the player's name and UUID from the MessageEvent object.
@@ -85,10 +99,12 @@ public class BTRBlockPlaceEvent {
 			 * Add to queue for insertion to SQL database.
 			 */
 			BTRExecutorService.ThreadPool.execute(new Runnable() {
+
 				public void run() {
 					// Name this thread for debug purposes.
 					Thread.currentThread().setName("BTRBPE");
-					// Debug output controlled by switch in configuration file.
+					// Debug output controlled by switch in configuration
+					// file.
 					BTRDebugger.DLog("BTRBlockPlaceEvent");
 					BTRDebugger.DLog("BlockType: " + BlockType);
 					BTRDebugger.DLog("Player: " + Player);
@@ -100,6 +116,7 @@ public class BTRBlockPlaceEvent {
 
 					// Insert to DB
 					BTRSQL.insertBlockPlace(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(), BlockType);
+
 				}
 			});
 

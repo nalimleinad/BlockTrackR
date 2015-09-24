@@ -24,10 +24,9 @@ import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
 import com.Volition21.BlockTrackR.Utility.BTRPermissionTools;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.entity.living.player.PlayerQuitEvent;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 
 public class BTRPlayerQuitEvent {
 
@@ -35,22 +34,28 @@ public class BTRPlayerQuitEvent {
 	BTRGetRecords BTRGR = new BTRGetRecords();
 
 	@Listener
-	public void PlayerQuitEvent(PlayerQuitEvent event) {
-		if (BTRPT.isTooled(event.getSourceEntity().getUniqueId().toString())) {
-			BlockTrackR.tooled_players = (String[]) ArrayUtils.removeElement(BlockTrackR.tooled_players,
-					event.getSourceEntity().getUniqueId().toString());
-		} else if (BlockTrackR.Track) {
-			/*
-			 * Initialize a Player object with the event's source cast as a
-			 * Player object.
-			 */
-			Player player = event.getSourceEntity();
+	public void PlayerQuitEvent(ClientConnectionEvent.Disconnect event) {
+		/*
+		 * Initialize a Player object with the event's source cast as a Player
+		 * object.
+		 */
+		Player player = (Player) event.getTargetEntity();
 
+		if (BTRPT.isTooled(player.getUniqueId().toString())) {
+			if (BlockTrackR.tooled_players != null) {
+				for (int i = 0; i < BlockTrackR.tooled_players.length; i++) {
+					if (BlockTrackR.tooled_players[i].contains((player.getUniqueId().toString()))) {
+						BlockTrackR.tooled_players[i] = null;
+						break;
+					}
+				}
+			}
+		} else if (BlockTrackR.Track) {
 			/*
 			 * Initialize a String object with the IP address of the connecting
 			 * player.
 			 */
-			final String IP = event.getSourceEntity().getConnection().getAddress().toString();
+			final String IP = player.getConnection().getAddress().toString();
 
 			/*
 			 * Extrapolates the X,Y,and Z coordinates from the Player object.
