@@ -19,28 +19,37 @@ package com.Volition21.BlockTrackR.Event;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.entity.living.player.PlayerChatEvent;
+import org.spongepowered.api.event.action.MessageEvent;
 import org.spongepowered.api.text.Texts;
 
 import com.Volition21.BlockTrackR.BlockTrackR;
 import com.Volition21.BlockTrackR.SQL.BTRSQL;
 import com.Volition21.BlockTrackR.Utility.BTRDebugger;
 import com.Volition21.BlockTrackR.Utility.BTRExecutorService;
+import com.google.common.base.Optional;
 
 public class BTRAsyncPlayerChatEvent {
+	
+	Player player;
 
 	@Listener
-	public void AsyncPlayerChatEvent(PlayerChatEvent event) {
+	public void AsyncPlayerChatEvent(MessageEvent event) {
 		if (BlockTrackR.Track) {
 			/*
-			 * Initialize a Player object with the event's source cast as a
-			 * Player object.
+			 * Initialize an Optional<Player> object with the event's first
+			 * cause querying for a Player. Terminate it there was no Player
+			 * object.
 			 */
-			Player player = event.getSource();
+			Optional<Player> obj = event.getCause().first(Player.class);
+			if (!(obj.isPresent())) {
+				return;
+			} else {
+				player = obj.get();
+			}
 
 			/*
 			 * Initialize a String object with the Text object converted to a
-			 * plain String. 
+			 * plain String.
 			 * 
 			 * NB:String is sanitized before execution.
 			 */
@@ -82,8 +91,7 @@ public class BTRAsyncPlayerChatEvent {
 					BTRDebugger.DLog("World: " + world);
 
 					// Insert to DB
-					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world,
-							BlockTrackR.getTime(), MSG);
+					BTRSQL.insertPlayerChat(Player, PlayerUUID, X, Y, Z, world, BlockTrackR.getTime(), MSG);
 				}
 			});
 
