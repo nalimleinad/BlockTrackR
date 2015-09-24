@@ -71,7 +71,7 @@ public class BTRPlayerInteractBlockEvent {
 				 * Initialize a String object with the name of the affected
 				 * block.
 				 */
-				final String InteractionType = "Hopefully usage, I'll sort this out later.";
+				final String InteractionType = "BEEPBOOPFILLERTEXT";
 
 				/*
 				 * Extrapolates the X,Y,and Z coordinates from the Player
